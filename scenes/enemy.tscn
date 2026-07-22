@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
 radius = 8.062258
 
-[node name="enemy" type="CharacterBody2D" unique_id=617679549]
+[node name="enemy" type="CharacterBody2D" unique_id=617679549 groups=["enemies"]]
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_md0e3")
