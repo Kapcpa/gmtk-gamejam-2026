@@ -1,0 +1,28 @@
+gracz:
+	movement
+	dash (iframes)
+	broń (katana, kunai)
+
+przeciwnik:
+movement
+	typy przeciwników
+	umiejętności (zróżnicowanie):
+		archetypy:
+			melee:
+				tank
+				fighter
+				stealth? (hacker?)
+			range:
+				sniper
+				machine gun
+				hacker
+				
+interakcja:
+	atakowanie
+	power up
+	combo (adrenalina)
+	przyspieszanie czasu, prędkość gry
+	
+
+
+
