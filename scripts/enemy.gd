@@ -5,6 +5,8 @@ extends CharacterBody2D
 
 const SPEED = 100.0
 
+@export var health: float
+
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
 
@@ -43,3 +45,9 @@ func _physics_process(_delta: float) -> void:
 		velocity = Vector2.ZERO
 		
 	move_and_slide()
+
+func take_damage(damage: float) -> void:
+	health -= damage
+	print(health)
+	if health <= 0:
+		queue_free()
