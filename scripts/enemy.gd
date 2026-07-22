@@ -92,13 +92,13 @@ func _state_hit(_delta: float) -> void:
 func _change_state(new_state: State) -> void:
 	current_state = new_state
 
-func take_damage(damage: float) -> void:
+func take_damage(damage: float, knockback_direction: Vector2) -> void:
 	if current_state == State.HIT:
 		return
 	
 	health -= damage
 	
-	knockback = Vector2(0, 400)  # should be set up 
+	knockback = knockback_direction * 200
 	_change_state(State.HIT)
 	
 	print(health)

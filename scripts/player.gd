@@ -67,9 +67,9 @@ func _state_dashing(_delta: float) -> void:
 func _state_attacking(_delta: float) -> void:
 	if melee_hitbox.is_colliding():
 		var _collider = melee_hitbox.get_collider()
-		if _collider.is_in_group("enemies"):
+		if _collider and _collider.is_in_group("enemies"):
 			if _collider.current_state != _collider.State.HIT:
-				melee_hitbox.get_collider().take_damage(1.0)
+				melee_hitbox.get_collider().take_damage(1.0, melee_hitbox.target_position.normalized())
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
 		_change_state(State.IDLE)
