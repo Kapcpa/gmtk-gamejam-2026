@@ -16,14 +16,21 @@ enum State {
 }
 
 var current_state: State = State.IDLE
-var attack_timer: float = 0.5
+var attack_timer: float = 0.5  # probably will be removed since we can just check if attack animation ended or not
+var hit_enemies: Array[Node2D] = []
 
 const SPEED = 200.0
 const MELEE_RANGE = 32.0
+const MELEE_SPEED = 300
+const MELEE_FRICTION = 1200
+const MELEE_FORCE = 300
 
 var knockback: Vector2 = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:	
+	if current_state in [State.IDLE, State.RUNNING]:
+		_aim()
+	
 	match current_state:
 		State.IDLE:
 			_state_idle(delta)
@@ -38,75 +45,85 @@ func _physics_process(delta: float) -> void:
 		State.DEAD:
 			_state_dead(delta)
 	
-	_aim()
-	
 	move_and_slide()
 
-func _process(delta: float) -> void:
-	pass
+func _animate(direction: Vector2) -> void:
+	if not direction:
+		return  # just change action / animate, no direction changing
+	
+	var animation_map: Dictionary = {
+		Vector2i(0, -1): "up",
+		Vector2i(0, 1): "down",
+		Vector2i(1, 0): "side",
+		Vector2i(1, -1): "side_up",
+		Vector2i(1, 1): "side_down"
+	}
+	
+	if direction.x:
+		sprite.flip_h = direction.x < 0
+	
+	var threshold = 0.38
+	var snap_x = 0
+	var snap_y = 0
+	
+	# snap to 1 or -1 if the vector pulls strongly enough in that direction
+	if abs(direction.x) > threshold:
+		snap_x = sign(direction.x)
+		
+	if abs(direction.y) > threshold:
+		snap_y = sign(direction.y)
+	
+	var direction_key = Vector2i(int(abs(snap_x)), int(snap_y))
+	
+	if animation_map.has(direction_key):
+		sprite.play(animation_map.get(direction_key))
 
 func _state_idle(_delta: float) -> void:
-	velocity = Vector2(move_toward(velocity.x, 0, SPEED), move_toward(velocity.y, 0, SPEED))
 	var direction = Input.get_vector("left", "right", "up", "down")
+	
+	_animate(direction)
+	
 	if direction:
 		_change_state(State.RUNNING)
-		
+	
+	velocity = velocity.move_toward(Vector2.ZERO, SPEED * 10 * _delta)
+	
 	if Input.is_action_just_pressed("attack"):
-		_aim()
-		attack_timer = 0.5
-		_change_state(State.ATTACKING)
+		_start_attacking()
 
 func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	
+	_animate(direction)
+	
 	if direction:
-		if direction.x > 0 and direction.y > 0:
-			sprite.play("side_up")
-			sprite.flip_h = false
-		elif direction.x > 0 and direction.y < 0:
-			sprite.play("side_down")
-			sprite.flip_h = false	
-		elif direction.x < 0 and direction.y < 0:
-			sprite.play("side_up")
-			sprite.flip_h = true
-		elif direction.x < 0 and direction.y > 0:
-			sprite.play("side_down")
-			sprite.flip_h = true	
-		elif direction.x < 0:
-			sprite.play("side")
-			sprite.flip_h = true
-		elif direction.x > 0:
-			sprite.play("side")
-			sprite.flip_h = false	
-		elif direction.y > 0: 
-			sprite.play("down")
-		elif direction.y < 0: 
-			sprite.play("up")
-		
 		velocity = direction * SPEED
 	else:
 		_change_state(State.IDLE)
 		
 	if Input.is_action_just_pressed("attack"):
-		attack_timer = 0.5
-		_change_state(State.ATTACKING)
-		
+		_start_attacking()
+
 func _state_dashing(_delta: float) -> void:
 	pass
 
+func _start_attacking() -> void:
+	attack_timer = 0.25
+	hit_enemies.clear()
+	velocity = melee_hitbox.target_position.normalized() * MELEE_SPEED
+	_change_state(State.ATTACKING)
+
 func _state_attacking(_delta: float) -> void:
-	var direction = Input.get_vector("left", "right", "up", "down")
+	velocity = velocity.move_toward(Vector2.ZERO, MELEE_FRICTION * _delta)	
 	
-	if direction:
-		velocity = direction * SPEED
-	else:
-		velocity = Vector2(move_toward(velocity.x, 0, SPEED), move_toward(velocity.y, 0, SPEED))
+	_animate(velocity.normalized())
 	
 	if melee_hitbox.is_colliding():
 		var _collider = melee_hitbox.get_collider()
-		if _collider and _collider.is_in_group("enemies"):
+		if _collider and _collider.is_in_group("enemies") and _collider not in hit_enemies:
 			if _collider.current_state != _collider.State.HIT:
-				melee_hitbox.get_collider().take_damage(1.0, melee_hitbox.target_position.normalized())
+				var attack_force = melee_hitbox.target_position.normalized() * MELEE_FORCE
+				melee_hitbox.get_collider().take_damage(1.0, attack_force)
 	
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
@@ -134,9 +151,9 @@ func _aim():
 			Vector2.ZERO, melee_hitbox.target_position
 		]
 		
-func take_damage(knockback_direction: Vector2) -> void:
+func take_damage(knockback_force: Vector2) -> void:
 	if current_state == State.HIT:
 		return
 	
-	knockback = knockback_direction * 200
+	knockback = knockback_force
 	_change_state(State.HIT)

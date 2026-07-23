@@ -101,7 +101,7 @@ func _state_attacking(_delta: float) -> void:
 	# windup here
 	
 	var direction = global_position.direction_to(player.global_position)
-	player.take_damage(direction)
+	player.take_damage(direction * 200)
 	
 	attack_cooldown = 0.5
 	_change_state(State.IDLE)
@@ -117,14 +117,14 @@ func _state_hit(_delta: float) -> void:
 func _change_state(new_state: State) -> void:
 	current_state = new_state
 
-func take_damage(damage: float, knockback_direction: Vector2) -> void:
+func take_damage(damage: float, knockback_force: Vector2) -> void:
 	invincible_time = 0.75
 	if current_state == State.HIT:
 		return
 	
 	health -= damage
 	
-	knockback = knockback_direction * 200
+	knockback = knockback_force
 	_change_state(State.HIT)
 	
 	print(health)
