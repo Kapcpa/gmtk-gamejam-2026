@@ -72,6 +72,10 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
+	if player in attack_trigger.get_overlapping_bodies():
+		_start_attacking()
+		return
+	
 	velocity = Vector2.ZERO
 
 	var start_cell = tilemap.local_to_map(global_position)
@@ -79,11 +83,15 @@ func _state_idle(_delta: float) -> void:
 	
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
-	if path.size() < vision:
+	if 1 < path.size() and path.size() < vision:
 		_change_state(State.RUNNING)
 		return
 
 func _state_running(_delta: float) -> void:
+	if player in attack_trigger.get_overlapping_bodies():
+		_start_attacking()
+		return
+	
 	var start_cell = tilemap.local_to_map(global_position)
 	var target_cell = tilemap.local_to_map(player.global_position)
 	
@@ -108,6 +116,10 @@ func _start_attacking() -> void:
 
 func _state_attacking(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
+	
+	if player in hurtbox.get_overlapping_bodies():
+		var direction = global_position.direction_to(player.global_position)
+		player.take_damage(direction * ATTACK_FORCE)
 	
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
@@ -139,16 +151,3 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 	print(health)
 	if health <= 0:
 		_change_state(State.DEAD)
-
-func _on_hurtbox_body_entered(body: Node2D) -> void:	
-	if body != player or current_state != State.ATTACKING:
-		return
-	
-	var direction = global_position.direction_to(player.global_position)
-	player.take_damage(direction * ATTACK_FORCE)
-
-func _on_trigger_body_entered(body: Node2D) -> void:
-	if body != player:
-		return
-	
-	_start_attacking()

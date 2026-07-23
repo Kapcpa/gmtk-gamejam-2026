@@ -35,22 +35,6 @@ tile_set = SubResource("TileSet_87140")
 position = Vector2(-30, -101)
 health = 3.0
 
-[node name="enemy2" parent="." unique_id=5597812 instance=ExtResource("3_sugp2")]
-position = Vector2(139, -98)
-health = 3.0
-
-[node name="enemy3" parent="." unique_id=921861323 instance=ExtResource("3_sugp2")]
-position = Vector2(311, -69)
-health = 3.0
-
-[node name="enemy4" parent="." unique_id=138940968 instance=ExtResource("3_sugp2")]
-position = Vector2(295, 51)
-health = 3.0
-
-[node name="enemy5" parent="." unique_id=502752731 instance=ExtResource("3_sugp2")]
-position = Vector2(169, 37)
-health = 3.0
-
 [node name="transition_zone" parent="." unique_id=1123111444 instance=ExtResource("5_x1x1l")]
 position = Vector2(352, -146)
 next_scene_path = "uid://cxq6mmq7yxdbb"
