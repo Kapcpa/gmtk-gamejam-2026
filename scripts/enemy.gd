@@ -12,16 +12,18 @@ enum State {
 @onready var tilemap: TileMapLayer = %tilemap
 
 @onready var hurtbox: Area2D = $hurtbox
+@onready var attack_trigger: Area2D = $trigger
 
 const SPEED = 100.0
+const ATTACK_SPEED = 200.0
+const ATTACK_FRICTION = 1200
+const ATTACK_FORCE = 300
 
 @export var health: float
 @export var vision: int = 8
 
 var knockback: Vector2 = Vector2.ZERO
-var invincible_time: float = 0.0
-
-var attack_cooldown: float = 0.0
+var attack_timer: float = 0.0
 
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
@@ -65,11 +67,7 @@ func _physics_process(_delta: float) -> void:
 
 func _state_idle(_delta: float) -> void:
 	velocity = Vector2.ZERO
-	
-	if attack_cooldown > 0.0:
-		attack_cooldown -= _delta
-		return
-	
+
 	var start_cell = tilemap.local_to_map(global_position)
 	var target_cell = tilemap.local_to_map(player.global_position)
 	
@@ -93,32 +91,33 @@ func _state_running(_delta: float) -> void:
 	var direction = global_position.direction_to(next_point)
 	
 	velocity = direction * SPEED
-		
-func _state_attacking(_delta: float) -> void:
-	if hurtbox.body_exited:
-		_change_state(State.RUNNING)
 
-	# windup here
+func _start_attacking() -> void:
+	attack_timer = 0.25
 	
 	var direction = global_position.direction_to(player.global_position)
-	player.take_damage(direction * 200)
+	velocity = direction.normalized() * ATTACK_SPEED
 	
-	attack_cooldown = 0.5
-	_change_state(State.IDLE)
+	_change_state(State.ATTACKING)
+
+func _state_attacking(_delta: float) -> void:
+	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
+	
+	attack_timer -= _delta
+	if attack_timer <= 0.0:
+		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:
 	velocity = knockback
-	knockback = Vector2(move_toward(knockback.x, 0, 10), move_toward(knockback.y, 0, 10))
-	invincible_time -= _delta
-	if invincible_time <= 0.0:
-		_change_state(State.IDLE)
+	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta) 
 	
+	if knockback == Vector2.ZERO:
+		_change_state(State.IDLE)
 
 func _change_state(new_state: State) -> void:
 	current_state = new_state
 
 func take_damage(damage: float, knockback_force: Vector2) -> void:
-	invincible_time = 0.75
 	if current_state == State.HIT:
 		return
 	
@@ -132,9 +131,15 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 		_change_state(State.DEAD)
 		queue_free()
 
+func _on_hurtbox_body_entered(body: Node2D) -> void:	
+	if body != player or current_state != State.ATTACKING:
+		return
+	
+	var direction = global_position.direction_to(player.global_position)
+	player.take_damage(direction * ATTACK_FORCE)
 
-func _on_area_2d_body_entered(body: Node2D) -> void:
+func _on_trigger_body_entered(body: Node2D) -> void:
 	if body != player:
 		return
-		
-	_change_state(State.ATTACKING)
+	
+	_start_attacking()

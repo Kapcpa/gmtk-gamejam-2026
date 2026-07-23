@@ -114,7 +114,7 @@ func _start_attacking() -> void:
 	_change_state(State.ATTACKING)
 
 func _state_attacking(_delta: float) -> void:
-	velocity = velocity.move_toward(Vector2.ZERO, MELEE_FRICTION * _delta)	
+	velocity = velocity.move_toward(Vector2.ZERO, MELEE_FRICTION * _delta)
 	
 	_animate(velocity.normalized())
 	
@@ -131,7 +131,7 @@ func _state_attacking(_delta: float) -> void:
 
 func _state_hit(_delta: float) -> void:
 	velocity = knockback
-	knockback = Vector2(move_toward(knockback.x, 0, 10), move_toward(knockback.y, 0, 10))
+	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta) 
 	
 	if knockback == Vector2.ZERO:
 		_change_state(State.IDLE)

@@ -9,6 +9,9 @@ radius = 8.062258
 [sub_resource type="CircleShape2D" id="CircleShape2D_oamls"]
 radius = 8.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3o11d"]
+radius = 19.0
+
 [node name="enemy" type="CharacterBody2D" unique_id=617679549 groups=["enemies"]]
 collision_layer = 4
 motion_mode = 1
@@ -28,4 +31,12 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1406469227]
 shape = SubResource("CircleShape2D_oamls")
 
-[connection signal="body_entered" from="hurtbox" to="." method="_on_area_2d_body_entered"]
+[node name="trigger" type="Area2D" parent="." unique_id=1453928519]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="trigger" unique_id=1049161710]
+shape = SubResource("CircleShape2D_3o11d")
+
+[connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
+[connection signal="body_entered" from="trigger" to="." method="_on_trigger_body_entered"]
