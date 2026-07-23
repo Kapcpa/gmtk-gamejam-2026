@@ -11,7 +11,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if get_slide_collision_count() > 0:
-		if player and player in hurtbox.get_overlapping_bodies():
-			player.take_damage(BULLET_FORCE * velocity.normalized())
 		queue_free()
+	elif player and player in hurtbox.get_overlapping_bodies() and player.current_state not in [player.State.DASHING, player.State.GRAPPLING]:
+		player.take_damage(BULLET_FORCE * velocity.normalized())
+		queue_free()
+	
 	move_and_slide()

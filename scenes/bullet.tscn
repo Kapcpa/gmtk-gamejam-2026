@@ -14,9 +14,9 @@ height = 11.428572
 [node name="bullet" type="CharacterBody2D" unique_id=1534914301]
 scale = Vector2(0.4, 0.7)
 collision_layer = 8
-collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_y25gk")
+SPEED = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1092049309]
 scale = Vector2(0.4, 0.7)

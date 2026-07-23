@@ -149,13 +149,10 @@ func _state_running(_delta: float) -> void:
 		_change_state(State.DASHING)
 
 func _state_dashing(_delta: float) -> void:
-	# change to input based dash
-	collision_layer = 0
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
 	velocity = dash_direction * DASH_VELOCITY
 	if dash_timer <= 0.0:
-		collision_layer = 2
 		_change_state(State.IDLE)
 
 func _start_attacking() -> void:

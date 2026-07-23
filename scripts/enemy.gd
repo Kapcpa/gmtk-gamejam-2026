@@ -125,7 +125,7 @@ func _can_attack() -> bool:
 
 func _start_attacking() -> void:
 	attack_timer = 0.25
-	attack_cooldown = 0.5
+	attack_cooldown = 0.8
 	
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction.normalized() * ATTACK_SPEED
