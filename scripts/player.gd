@@ -4,6 +4,10 @@ class_name PlayerCharacter
 
 @onready var melee_hitbox: RayCast2D = $melee_hitbox
 @onready var debug_melee: Line2D = $melee_hitbox/debug_melee
+
+@onready var throw_hitbox: RayCast2D = $throw_hitbox
+@onready var debug_throw: Line2D = $throw_hitbox/debug_throw
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 enum State {
@@ -11,6 +15,8 @@ enum State {
 	RUNNING,
 	DASHING,
 	ATTACKING,
+	GRAPPLED,
+	GRAPPLING,
 	HIT,
 	DEAD
 }
@@ -20,19 +26,30 @@ const MELEE_RANGE = 32.0
 const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 300
-const DASH_VELOCITY = 800
+const THROW_RANGE = 80.0
+const GRAPPLE_VELOCITY = 500
+const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
 
 var current_state: State = State.IDLE
 var attack_timer: float = 0.5  # probably will be removed since we can just check if attack animation ended or not
-var hit_enemies: Array[Node2D] = []
+var hit_enemies: Array[EnemyCharacter] = []
 var dash_timer: float = DASH_TIME
+
+var kunai_target: EnemyCharacter = null
+var validate_raycast: RayCast2D = RayCast2D.new()
+var validate_raycast_debug: Line2D = Line2D.new()
 
 var animation_direction: Vector2 = Vector2.ZERO
 
 var knockback: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	validate_raycast.collision_mask = 1
+
+	add_child(validate_raycast)
+	validate_raycast.add_child(validate_raycast_debug)
+
 	GameManager.register_player(self)
 
 func _physics_process(delta: float) -> void:	
@@ -48,6 +65,10 @@ func _physics_process(delta: float) -> void:
 			_state_dashing(delta)
 		State.ATTACKING:
 			_state_attacking(delta)
+		State.GRAPPLED:
+			_state_grappled(delta)
+		State.GRAPPLING:
+			_state_grappling(delta)
 		State.HIT:
 			_state_hit(delta)
 		State.DEAD:
@@ -101,10 +122,13 @@ func _state_idle(_delta: float) -> void:
 	if direction:
 		_change_state(State.RUNNING)
 	
-	velocity = velocity.move_toward(Vector2.ZERO, SPEED * 10 * _delta)
+	velocity = velocity.move_toward(Vector2.ZERO, 3000 * _delta)
 	
 	if Input.is_action_just_pressed("attack"):
 		_start_attacking()
+		return
+	if Input.is_action_just_pressed("throw"):
+		_kunai_throw()
 		return
 	if Input.is_action_just_pressed("dash"):
 		dash_timer = DASH_TIME
@@ -119,9 +143,12 @@ func _state_running(_delta: float) -> void:
 		velocity = direction * SPEED
 	else:
 		_change_state(State.IDLE)
-		
+
 	if Input.is_action_just_pressed("attack"):
 		_start_attacking()
+		return
+	if Input.is_action_just_pressed("throw"):
+		_kunai_throw()
 		return
 	if Input.is_action_just_pressed("dash"):
 		dash_timer = DASH_TIME
@@ -131,7 +158,7 @@ func _state_dashing(_delta: float) -> void:
 	collision_layer = 0
 	dash_timer -= _delta
 	var dash_direction = to_local(get_global_mouse_position()).normalized()	
-	velocity = velocity.move_toward(dash_direction * DASH_VELOCITY, 2000 * _delta)
+	velocity = dash_direction * DASH_VELOCITY
 	if dash_timer <= 0.0:
 		collision_layer = 2
 		_change_state(State.IDLE)
@@ -152,11 +179,87 @@ func _state_attacking(_delta: float) -> void:
 		if _collider and _collider.is_in_group("enemies") and _collider not in hit_enemies:
 			if _collider.current_state != _collider.State.HIT:
 				var attack_force = melee_hitbox.target_position.normalized() * MELEE_FORCE
-				melee_hitbox.get_collider().take_damage(1.0, attack_force)
+				_collider.take_damage(1.0, attack_force)
 				GameManager.register_hit()
 	
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
+		_change_state(State.IDLE)
+
+func _kunai_throw() -> void:
+	if throw_hitbox.is_colliding():
+		var _collider = throw_hitbox.get_collider()
+		
+		validate_raycast.target_position = _collider.position - position
+		validate_raycast.force_raycast_update()
+		
+		if not validate_raycast.is_colliding():
+			kunai_target = _collider
+			
+			var attack_force = throw_hitbox.target_position.normalized() * MELEE_FORCE
+			_collider.take_damage(0.0, attack_force)  # don't deal damage in the beginning?
+			GameManager.register_hit()
+			
+			_change_state(State.GRAPPLED)
+
+func _state_grappled(_delta: float) -> void:
+	var direction = Input.get_vector("left", "right", "up", "down")
+	
+	if direction:
+		velocity = direction * SPEED
+		_animate(direction, "run")
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, 3000 * _delta)
+		_animate(direction)
+	
+	validate_raycast.target_position = kunai_target.position - position
+	validate_raycast.force_raycast_update()
+
+	validate_raycast_debug.points = [
+		validate_raycast.position,
+		validate_raycast.target_position
+	]
+		
+	if validate_raycast.is_colliding():
+		print("grapple not valid anymore ", validate_raycast.get_collider())
+		_change_state(State.IDLE)
+		
+		validate_raycast.position = Vector2.ZERO
+		validate_raycast.target_position = Vector2.ZERO
+		validate_raycast_debug.points = []
+		
+		return
+	
+	if Input.is_action_just_released("throw"):
+		_change_state(State.GRAPPLING)
+	
+func _state_grappling(_delta: float) -> void:
+	if not kunai_target:
+		collision_layer = 2
+		_change_state(State.IDLE)
+		return
+	
+	collision_layer = 0
+	
+	var grapple_end = kunai_target.position + throw_hitbox.target_position.normalized() * 32.0
+	var grapple_direction = (grapple_end - position).normalized()
+	velocity = grapple_direction * GRAPPLE_VELOCITY
+	
+	var world_collision = false
+	
+	for index in range(get_slide_collision_count()):
+		var _collision = get_slide_collision(index)
+		
+		if grapple_direction.dot(_collision.get_normal()) < -0.71:
+			world_collision = true
+			break
+	
+	if position.distance_to(grapple_end) <= 8.0 or world_collision:
+		velocity /= 1.5
+		
+		collision_layer = 2
+		kunai_target = null
+		
 		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:
@@ -173,12 +276,17 @@ func _change_state(new_state: State):
 	current_state = new_state
 
 func _aim():
-	var melee_direction = to_local(get_global_mouse_position())
+	var direction = to_local(get_global_mouse_position())
 	
-	if melee_direction != Vector2.ZERO:
-		melee_hitbox.target_position = melee_direction.normalized() * MELEE_RANGE
+	if direction != Vector2.ZERO:
+		melee_hitbox.target_position = direction.normalized() * MELEE_RANGE
 		debug_melee.points = [
 			Vector2.ZERO, melee_hitbox.target_position
+		]
+		
+		throw_hitbox.target_position = direction.normalized() * THROW_RANGE
+		debug_throw.points = [
+			Vector2.ZERO, throw_hitbox.target_position
 		]
 		
 func take_damage(knockback_force: Vector2) -> void:
@@ -186,6 +294,8 @@ func take_damage(knockback_force: Vector2) -> void:
 		return
 	
 	GameManager.reset_combo()
+	
+	kunai_target = null
 	
 	knockback = knockback_force
 	_change_state(State.HIT)
