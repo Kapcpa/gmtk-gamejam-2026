@@ -85,5 +85,5 @@ position = Vector2(-30, -101)
 health = 3.0
 
 [node name="transition_zone" parent="." unique_id=1123111444 instance=ExtResource("5_x1x1l")]
-position = Vector2(352, -146)
+position = Vector2(352, -117)
 next_scene_path = "uid://cxq6mmq7yxdbb"
