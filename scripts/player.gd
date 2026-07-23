@@ -79,9 +79,7 @@ func _animate(direction: Vector2, action: String = "") -> void:
 	
 	if not animation_direction:
 		return
-		
 	
-			
 	var direction_map: Dictionary = {
 		Vector2i(0, -1): "up",
 		Vector2i(0, 1): "down",

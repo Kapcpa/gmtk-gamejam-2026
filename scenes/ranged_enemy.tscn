@@ -15,6 +15,8 @@ radius = 144.03125
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_rs3ab")
+SPEED = 50.0
+ATTACK_SPEED = -100.0
 health = 3.0
 attack = NodePath("RangedAttack")
 

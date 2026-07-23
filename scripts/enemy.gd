@@ -14,9 +14,9 @@ enum State {
 @onready var tilemap: TileMapLayer = %tilemap
 @onready var attack_trigger: Area2D = $trigger
 
-const SPEED = 100.0
-const ATTACK_SPEED = 200.0
-const ATTACK_FRICTION = 1200
+@export var SPEED = 100.0
+@export var ATTACK_SPEED = 200.0
+@export var ATTACK_FRICTION = 1200
 
 @export var health: float
 @export var vision: int = 20

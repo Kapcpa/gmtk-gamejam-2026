@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 500
+@export var SPEED = 250
 const BULLET_FORCE = 200
 
 @onready var hurtbox: Area2D = $Area2D
