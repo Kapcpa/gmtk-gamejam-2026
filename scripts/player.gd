@@ -4,6 +4,7 @@ class_name PlayerCharacter
 
 @onready var melee_hitbox: RayCast2D = $melee_hitbox
 @onready var debug_melee: Line2D = $melee_hitbox/debug_melee
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 enum State {
 	IDLE,
@@ -59,6 +60,29 @@ func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	
 	if direction:
+		if direction.x > 0 and direction.y > 0:
+			sprite.play("side_up")
+			sprite.flip_h = false
+		elif direction.x > 0 and direction.y < 0:
+			sprite.play("side_down")
+			sprite.flip_h = false	
+		elif direction.x < 0 and direction.y < 0:
+			sprite.play("side_up")
+			sprite.flip_h = true
+		elif direction.x < 0 and direction.y > 0:
+			sprite.play("side_down")
+			sprite.flip_h = true	
+		elif direction.x < 0:
+			sprite.play("side")
+			sprite.flip_h = true
+		elif direction.x > 0:
+			sprite.play("side")
+			sprite.flip_h = false	
+		elif direction.y > 0: 
+			sprite.play("down")
+		elif direction.y < 0: 
+			sprite.play("up")
+		
 		velocity = direction * SPEED
 	else:
 		_change_state(State.IDLE)
