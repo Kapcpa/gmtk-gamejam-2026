@@ -68,6 +68,7 @@ sources/0 = SubResource("TileSetAtlasSource_cm1v6")
 [node name="player" parent="." unique_id=121862516 instance=ExtResource("1_o5qli")]
 unique_name_in_owner = true
 position = Vector2(-8, -8)
+wall_min_slide_angle = 0.7679449
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=2117657023]
 position_smoothing_enabled = true
