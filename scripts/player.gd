@@ -130,9 +130,6 @@ func _state_idle(_delta: float) -> void:
 	if Input.is_action_just_pressed("throw"):
 		_kunai_throw()
 		return
-	if Input.is_action_just_pressed("dash"):
-		dash_timer = DASH_TIME
-		_change_state(State.DASHING)
 
 func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
@@ -157,7 +154,7 @@ func _state_running(_delta: float) -> void:
 func _state_dashing(_delta: float) -> void:
 	collision_layer = 0
 	dash_timer -= _delta
-	var dash_direction = to_local(get_global_mouse_position()).normalized()	
+	var dash_direction = velocity.normalized()
 	velocity = dash_direction * DASH_VELOCITY
 	if dash_timer <= 0.0:
 		collision_layer = 2

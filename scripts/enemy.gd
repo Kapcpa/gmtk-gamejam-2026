@@ -26,6 +26,7 @@ const ATTACK_FORCE = 300
 
 var knockback: Vector2 = Vector2.ZERO
 var attack_timer: float = 0.0
+var attack_cooldown: float = 0.0
 
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
@@ -72,7 +73,8 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
-	if player in attack_trigger.get_overlapping_bodies():
+	attack_cooldown -= _delta
+	if player in attack_trigger.get_overlapping_bodies() and attack_cooldown <= 0.0:
 		_start_attacking()
 		return
 	
@@ -88,7 +90,8 @@ func _state_idle(_delta: float) -> void:
 		return
 
 func _state_running(_delta: float) -> void:
-	if player in attack_trigger.get_overlapping_bodies():
+	attack_cooldown -= _delta
+	if player in attack_trigger.get_overlapping_bodies() and attack_cooldown <= 0.0:
 		_start_attacking()
 		return
 	
@@ -108,6 +111,7 @@ func _state_running(_delta: float) -> void:
 
 func _start_attacking() -> void:
 	attack_timer = 0.25
+	attack_cooldown = 0.5
 	
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction.normalized() * ATTACK_SPEED
@@ -122,6 +126,7 @@ func _state_attacking(_delta: float) -> void:
 		player.take_damage(direction * ATTACK_FORCE)
 	
 	attack_timer -= _delta
+	attack_cooldown -= _delta
 	if attack_timer <= 0.0:
 		_change_state(State.IDLE)
 
