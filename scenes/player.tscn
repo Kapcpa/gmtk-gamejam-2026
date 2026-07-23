@@ -134,6 +134,7 @@ animations = [{
 [node name="player" type="CharacterBody2D" unique_id=121862516]
 collision_layer = 2
 motion_mode = 1
+wall_min_slide_angle = 0.7853982
 script = ExtResource("1_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=101421203]
