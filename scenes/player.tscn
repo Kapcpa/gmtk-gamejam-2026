@@ -84,7 +84,6 @@ sprite_frames = SubResource("SpriteFrames_ib0mu")
 animation = &"up"
 
 [node name="melee_hitbox" type="RayCast2D" parent="." unique_id=1625755717]
-visible = false
 target_position = Vector2(0, 32)
 collision_mask = 4
 
