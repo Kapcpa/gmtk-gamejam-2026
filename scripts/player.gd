@@ -28,6 +28,8 @@ var attack_timer: float = 0.5  # probably will be removed since we can just chec
 var hit_enemies: Array[Node2D] = []
 var dash_timer: float = DASH_TIME
 
+var animation_direction: Vector2 = Vector2.ZERO
+
 var knockback: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
@@ -53,11 +55,14 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-func _animate(direction: Vector2) -> void:
-	if not direction:
-		return  # just change action / animate, no direction changing
+func _animate(direction: Vector2, action: String = "") -> void:
+	if direction:
+		animation_direction = direction
 	
-	var animation_map: Dictionary = {
+	if not animation_direction:
+		return
+			
+	var direction_map: Dictionary = {
 		Vector2i(0, -1): "up",
 		Vector2i(0, 1): "down",
 		Vector2i(1, 0): "side",
@@ -65,24 +70,28 @@ func _animate(direction: Vector2) -> void:
 		Vector2i(1, 1): "side_down"
 	}
 	
-	if direction.x:
-		sprite.flip_h = direction.x < 0
+	if animation_direction.x:
+		sprite.flip_h = animation_direction.x < 0
 	
 	var threshold = 0.38
 	var snap_x = 0
 	var snap_y = 0
 	
 	# snap to 1 or -1 if the vector pulls strongly enough in that direction
-	if abs(direction.x) > threshold:
-		snap_x = sign(direction.x)
+	if abs(animation_direction.x) > threshold:
+		snap_x = sign(animation_direction.x)
 		
-	if abs(direction.y) > threshold:
-		snap_y = sign(direction.y)
+	if abs(animation_direction.y) > threshold:
+		snap_y = sign(animation_direction.y)
 	
 	var direction_key = Vector2i(int(abs(snap_x)), int(snap_y))
 	
-	if animation_map.has(direction_key):
-		sprite.play(animation_map.get(direction_key))
+	if direction_map.has(direction_key):
+		var animation = direction_map.get(direction_key)
+		if action and sprite.sprite_frames.has_animation(animation + "_" + action):
+			animation = animation + "_" + action
+		
+		sprite.play(animation)
 
 func _state_idle(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
@@ -104,7 +113,7 @@ func _state_idle(_delta: float) -> void:
 func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	
-	_animate(direction)
+	_animate(direction, "run")
 	
 	if direction:
 		velocity = direction * SPEED

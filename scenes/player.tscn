@@ -11,6 +11,14 @@ radius = 8.0
 atlas = ExtResource("2_g2els")
 region = Rect2(0, 0, 32, 36)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_oprun"]
+atlas = ExtResource("2_g2els")
+region = Rect2(64, 0, 32, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_g2els")
+region = Rect2(32, 0, 32, 36)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
 atlas = ExtResource("3_qhqgy")
 region = Rect2(0, 0, 32, 32)
@@ -43,10 +51,6 @@ region = Rect2(192, 0, 32, 32)
 atlas = ExtResource("3_qhqgy")
 region = Rect2(224, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("2_g2els")
-region = Rect2(32, 0, 32, 36)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
 atlas = ExtResource("2_g2els")
 region = Rect2(96, 0, 32, 36)
@@ -63,6 +67,22 @@ animations = [{
 }],
 "loop": 1,
 "name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oprun")
+}],
+"loop": 1,
+"name": &"side",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": 1,
+"name": &"side_down",
 "speed": 5.0
 }, {
 "frames": [{
@@ -91,16 +111,8 @@ animations = [{
 "texture": SubResource("AtlasTexture_f1ej7")
 }],
 "loop": 1,
-"name": &"side",
+"name": &"side_run",
 "speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qlg0r")
-}],
-"loop": 1,
-"name": &"side_down",
-"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -132,8 +144,6 @@ z_index = 1
 position = Vector2(0, -10)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
 animation = &"side"
-frame = 4
-frame_progress = 0.895769
 
 [node name="melee_hitbox" type="RayCast2D" parent="." unique_id=1625755717]
 target_position = Vector2(0, 32)
