@@ -10,12 +10,15 @@ enum State {
 
 var current_state: State = State.IDLE
 
-@onready var player: CharacterBody2D = %player
+@onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
+
+@onready var hurtbox: Area2D = $hurtbox
 
 const SPEED = 100.0
 
 @export var health: float
+@export var vision: int = 8
 
 var knockback: Vector2 = Vector2.ZERO
 
@@ -48,6 +51,8 @@ func _physics_process(_delta: float) -> void:
 			_state_idle(_delta)
 		State.RUNNING:
 			_state_running(_delta)
+		State.ATTACKING:
+			_state_attacking(_delta)
 		State.HIT:
 			_state_hit(_delta)
 		_:
@@ -63,7 +68,7 @@ func _state_idle(_delta: float) -> void:
 	
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
-	if path.size() > 1:
+	if path.size() < vision:
 		_change_state(State.RUNNING)
 		return
 
@@ -81,6 +86,17 @@ func _state_running(_delta: float) -> void:
 	var direction = global_position.direction_to(next_point)
 	
 	velocity = direction * SPEED
+		
+func _state_attacking(_delta: float) -> void:
+	if hurtbox.body_exited:
+		_change_state(State.RUNNING)
+
+	# windup here
+	
+	var direction = global_position.direction_to(player.global_position)
+	player.take_damage(direction)
+
+	_change_state(State.RUNNING)
 
 func _state_hit(_delta: float) -> void:
 	velocity = knockback
@@ -105,3 +121,10 @@ func take_damage(damage: float, knockback_direction: Vector2) -> void:
 	if health <= 0:
 		_change_state(State.DEAD)
 		queue_free()
+
+
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body != player:
+		return
+		
+	_change_state(State.ATTACKING)

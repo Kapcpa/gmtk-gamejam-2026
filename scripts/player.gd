@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name PlayerCharacter
+
 @onready var melee_hitbox: RayCast2D = $melee_hitbox
 @onready var debug_melee: Line2D = $melee_hitbox/debug_melee
 
@@ -17,6 +19,8 @@ var attack_timer: float = 0.5
 
 const SPEED = 200.0
 const MELEE_RANGE = 32.0
+
+var knockback: Vector2 = Vector2.ZERO
 
 func _physics_process(delta: float) -> void:	
 	match current_state:
@@ -75,7 +79,11 @@ func _state_attacking(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:
-	pass
+	velocity = knockback
+	knockback = Vector2(move_toward(knockback.x, 0, 10), move_toward(knockback.y, 0, 10))
+	
+	if knockback == Vector2.ZERO:
+		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
 	pass
@@ -91,3 +99,10 @@ func _aim():
 		debug_melee.points = [
 			Vector2.ZERO, melee_hitbox.target_position
 		]
+		
+func take_damage(knockback_direction: Vector2) -> void:
+	if current_state == State.HIT:
+		return
+	
+	knockback = knockback_direction * 200
+	_change_state(State.HIT)

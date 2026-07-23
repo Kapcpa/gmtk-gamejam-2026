@@ -6,6 +6,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
 radius = 8.062258
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_oamls"]
+radius = 8.0
+
 [node name="enemy" type="CharacterBody2D" unique_id=617679549 groups=["enemies"]]
 collision_layer = 4
 motion_mode = 1
@@ -17,3 +20,12 @@ shape = SubResource("CircleShape2D_87140")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1011928293]
 modulate = Color(1, 0, 0, 1)
 texture = ExtResource("1_7p1mj")
+
+[node name="hurtbox" type="Area2D" parent="." unique_id=1383664206]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1406469227]
+shape = SubResource("CircleShape2D_oamls")
+
+[connection signal="body_entered" from="hurtbox" to="." method="_on_area_2d_body_entered"]
