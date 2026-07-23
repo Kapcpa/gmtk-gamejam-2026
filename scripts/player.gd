@@ -38,7 +38,6 @@ var dash_timer: float = DASH_TIME
 
 var kunai_target: EnemyCharacter = null
 var validate_raycast: RayCast2D = RayCast2D.new()
-var validate_raycast_debug: Line2D = Line2D.new()
 
 var animation_direction: Vector2 = Vector2.ZERO
 
@@ -46,9 +45,7 @@ var knockback: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	validate_raycast.collision_mask = 1
-
 	add_child(validate_raycast)
-	validate_raycast.add_child(validate_raycast_debug)
 
 	GameManager.register_player(self)
 
@@ -82,13 +79,15 @@ func _animate(direction: Vector2, action: String = "") -> void:
 	
 	if not animation_direction:
 		return
+		
+	
 			
 	var direction_map: Dictionary = {
 		Vector2i(0, -1): "up",
 		Vector2i(0, 1): "down",
 		Vector2i(1, 0): "side",
-		Vector2i(1, -1): "side_up",
-		Vector2i(1, 1): "side_down"
+		Vector2i(1, -1): "up",
+		Vector2i(1, 1): "down"
 	}
 	
 	if animation_direction.x:
@@ -152,6 +151,7 @@ func _state_running(_delta: float) -> void:
 		_change_state(State.DASHING)
 
 func _state_dashing(_delta: float) -> void:
+	# change to input based dash
 	collision_layer = 0
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
@@ -211,19 +211,10 @@ func _state_grappled(_delta: float) -> void:
 	
 	validate_raycast.target_position = kunai_target.position - position
 	validate_raycast.force_raycast_update()
-
-	validate_raycast_debug.points = [
-		validate_raycast.position,
-		validate_raycast.target_position
-	]
 		
 	if validate_raycast.is_colliding():
-		print("grapple not valid anymore ", validate_raycast.get_collider())
-		_change_state(State.IDLE)
-		
-		validate_raycast.position = Vector2.ZERO
+		_change_state(State.IDLE)		
 		validate_raycast.target_position = Vector2.ZERO
-		validate_raycast_debug.points = []
 		
 		return
 	

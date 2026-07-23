@@ -9,6 +9,10 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
 radius = 6.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_g2els")
+region = Rect2(0, 0, 32, 36)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
 atlas = ExtResource("2_dqkch")
 region = Rect2(0, 0, 32, 32)
@@ -45,10 +49,6 @@ region = Rect2(224, 0, 32, 32)
 atlas = ExtResource("2_g2els")
 region = Rect2(64, 0, 32, 36)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("2_g2els")
-region = Rect2(32, 0, 32, 36)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
 atlas = ExtResource("3_qhqgy")
 region = Rect2(0, 0, 32, 32)
@@ -83,7 +83,7 @@ region = Rect2(224, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
 atlas = ExtResource("2_g2els")
-region = Rect2(96, 0, 32, 36)
+region = Rect2(128, 0, 32, 36)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ni07"]
 atlas = ExtResource("5_qlg0r")
@@ -121,6 +121,14 @@ region = Rect2(224, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": 1,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_fjrip")
 }, {
 "duration": 1.0,
@@ -145,7 +153,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_a38lo")
 }],
 "loop": 1,
-"name": &"down",
+"name": &"down_run",
 "speed": 10.0
 }, {
 "frames": [{
@@ -155,14 +163,6 @@ animations = [{
 "loop": 1,
 "name": &"side",
 "speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qlg0r")
-}],
-"loop": 1,
-"name": &"side_down",
-"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -198,7 +198,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_tuyoq")
 }],
 "loop": 1,
-"name": &"side_up",
+"name": &"up",
 "speed": 5.0
 }, {
 "frames": [{
@@ -227,7 +227,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_wqfne")
 }],
 "loop": 1,
-"name": &"up",
+"name": &"up_run",
 "speed": 10.0
 }]
 
@@ -244,7 +244,7 @@ shape = SubResource("CircleShape2D_87140")
 z_index = 1
 position = Vector2(0, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"up"
+animation = &"up_run"
 
 [node name="melee_hitbox" type="RayCast2D" parent="." unique_id=1625755717]
 target_position = Vector2(0, 32)
