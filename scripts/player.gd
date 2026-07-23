@@ -200,6 +200,10 @@ func _kunai_throw() -> void:
 			_change_state(State.GRAPPLED)
 
 func _state_grappled(_delta: float) -> void:
+	if not kunai_target:
+		_change_state(State.IDLE)
+		return
+	
 	var direction = Input.get_vector("left", "right", "up", "down")
 	
 	if direction:

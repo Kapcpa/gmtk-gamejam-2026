@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c0osy2d103goy"]
+
+[ext_resource type="Script" uid="uid://comxecvd7knf8" path="res://scripts/enemy.gd" id="1_rs3ab"]
+[ext_resource type="Texture2D" uid="uid://by4dbcayo4jmq" path="res://sprites/player.png" id="2_32iyl"]
+[ext_resource type="Script" uid="uid://degejo0hndkxy" path="res://scripts/ranged_attack.gd" id="3_32iyl"]
+[ext_resource type="PackedScene" uid="uid://cgjujcy13oenf" path="res://scenes/bullet.tscn" id="4_ptmmb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
+radius = 6.0827627
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3o11d"]
+radius = 144.03125
+
+[node name="RangedEnemy" type="CharacterBody2D" unique_id=617679549 node_paths=PackedStringArray("attack") groups=["enemies"]]
+collision_layer = 4
+motion_mode = 1
+script = ExtResource("1_rs3ab")
+health = 3.0
+attack = NodePath("RangedAttack")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
+shape = SubResource("CircleShape2D_87140")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1011928293]
+modulate = Color(1, 0, 0, 1)
+texture = ExtResource("2_32iyl")
+
+[node name="trigger" type="Area2D" parent="." unique_id=1453928519]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="trigger" unique_id=1049161710]
+shape = SubResource("CircleShape2D_3o11d")
+
+[node name="RangedAttack" type="Node2D" parent="." unique_id=809362083]
+script = ExtResource("3_32iyl")
+bullet_scene = ExtResource("4_ptmmb")

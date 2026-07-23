@@ -12,17 +12,17 @@ enum State {
 
 @onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
-
-@onready var hurtbox: Area2D = $hurtbox
 @onready var attack_trigger: Area2D = $trigger
 
 const SPEED = 100.0
 const ATTACK_SPEED = 200.0
 const ATTACK_FRICTION = 1200
-const ATTACK_FORCE = 300
 
 @export var health: float
-@export var vision: int = 8
+@export var vision: int = 20
+@export var attack: Node
+
+var validate_raycast: RayCast2D = RayCast2D.new()
 
 var knockback: Vector2 = Vector2.ZERO
 var attack_timer: float = 0.0
@@ -35,8 +35,10 @@ var current_state: State = State.IDLE
 
 func _ready() -> void:
 	GameManager.register_enemy(self)
-	
 	setup_grid()
+	
+	validate_raycast.collision_mask = 1
+	add_child(validate_raycast)
 
 func setup_grid() -> void:
 	pathfinding_grid = AStarGrid2D.new()
@@ -73,12 +75,12 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
+	velocity = Vector2.ZERO
+	
 	attack_cooldown -= _delta
-	if player in attack_trigger.get_overlapping_bodies() and attack_cooldown <= 0.0:
+	if attack_cooldown <= 0.0 and _can_attack():
 		_start_attacking()
 		return
-	
-	velocity = Vector2.ZERO
 
 	var start_cell = tilemap.local_to_map(global_position)
 	var target_cell = tilemap.local_to_map(player.global_position)
@@ -91,7 +93,7 @@ func _state_idle(_delta: float) -> void:
 
 func _state_running(_delta: float) -> void:
 	attack_cooldown -= _delta
-	if player in attack_trigger.get_overlapping_bodies() and attack_cooldown <= 0.0:
+	if attack_cooldown <= 0.0 and _can_attack():
 		_start_attacking()
 		return
 	
@@ -109,6 +111,18 @@ func _state_running(_delta: float) -> void:
 	
 	velocity = direction * SPEED
 
+func _can_attack() -> bool:
+	if player in attack_trigger.get_overlapping_bodies():
+		validate_raycast.target_position = player.position - position
+		validate_raycast.force_raycast_update()
+		
+		if validate_raycast.is_colliding():
+			return false
+		
+		return true
+		
+	return false
+
 func _start_attacking() -> void:
 	attack_timer = 0.25
 	attack_cooldown = 0.5
@@ -121,13 +135,12 @@ func _start_attacking() -> void:
 func _state_attacking(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	
-	if player in hurtbox.get_overlapping_bodies():
-		var direction = global_position.direction_to(player.global_position)
-		player.take_damage(direction * ATTACK_FORCE)
+	attack.attack(player)
 	
 	attack_timer -= _delta
 	attack_cooldown -= _delta
 	if attack_timer <= 0.0:
+		attack.reset()
 		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:

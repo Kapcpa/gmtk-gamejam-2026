@@ -16,6 +16,7 @@ func _process(delta: float) -> void:
 		combo_time_left -= delta
 		if combo_time_left <= 0.0:
 			reset_combo()
+	
 
 func register_hit() -> void:
 	combo_count += 1
