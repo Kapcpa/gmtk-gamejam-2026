@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b74at1dso2bto" path="res://sprites/up_walk.png" id="5_qlg0r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
-radius = 8.0
+radius = 6.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
 atlas = ExtResource("2_dqkch")
@@ -242,7 +242,7 @@ shape = SubResource("CircleShape2D_87140")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=176100917]
 z_index = 1
-position = Vector2(0, -10)
+position = Vector2(0, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
 animation = &"up"
 
