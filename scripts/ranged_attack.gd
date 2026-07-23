@@ -15,9 +15,9 @@ func attack(player: PlayerCharacter):
 	var angle = Vector2(0, -1).angle_to(direction)
 	var bullet = bullet_scene.instantiate()
 	bullet.rotation = angle
-	bullet.position = position
+	bullet.global_position = global_position
 	bullet.player = player
-	add_child(bullet)
+	get_tree().root.get_child(0).add_child(bullet)
 	
 	bullet_shot = true
 
