@@ -7,9 +7,6 @@ enum State {
 	HIT,
 	DEAD
 }
-
-var current_state: State = State.IDLE
-
 @onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
 
@@ -21,9 +18,12 @@ const SPEED = 100.0
 @export var vision: int = 8
 
 var knockback: Vector2 = Vector2.ZERO
+var invincible_time: float = 0.0
 
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
+
+var current_state: State = State.IDLE
 
 func _ready() -> void:
 	setup_grid()
@@ -95,20 +95,24 @@ func _state_attacking(_delta: float) -> void:
 	
 	var direction = global_position.direction_to(player.global_position)
 	player.take_damage(direction)
+	
 
 	_change_state(State.RUNNING)
 
 func _state_hit(_delta: float) -> void:
 	velocity = knockback
 	knockback = Vector2(move_toward(knockback.x, 0, 10), move_toward(knockback.y, 0, 10))
-	
-	if knockback == Vector2.ZERO:
+	invincible_time -= _delta
+	if invincible_time <= 0.0:
 		_change_state(State.IDLE)
+	
 
 func _change_state(new_state: State) -> void:
 	current_state = new_state
 
 func take_damage(damage: float, knockback_direction: Vector2) -> void:
+	print("elvispresley")
+	invincible_time = 0.6
 	if current_state == State.HIT:
 		return
 	
