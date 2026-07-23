@@ -5,21 +5,23 @@ gracz:
 
 przeciwnik:
 movement
-	typy przeciwników
-	umiejętności (zróżnicowanie):
-		archetypy:
-			melee:
-				tank
-				fighter
-				stealth? (hacker?)
-			range:
-				sniper
-				machine gun
-				hacker
+typy przeciwników
+umiejętności (zróżnicowanie):
+	archetypy:
+		melee:
+			tank
+			fighter
+			stealth? (hacker?)
+		range:
+			sniper
+			machine gun
+			hacker
 				
 interakcja:
 	atakowanie
 	power up
-	combo (adrenalina)
+	combo (adrenalina):
+		serce nie może przestać bić (adrenalina spada do 0 = porażka)
+		różne akcje np. unikanie pocisków o włos, zabijanie, bliska odległość i duża ilość przeciwników zwiększa adrenaline
 	przyspieszanie czasu, prędkość gry
 	
