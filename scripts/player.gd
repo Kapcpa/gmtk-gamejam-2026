@@ -152,8 +152,14 @@ func _state_dashing(_delta: float) -> void:
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
 	velocity = dash_direction * DASH_VELOCITY
+	if kunai_target and not Input.is_action_pressed("throw"):
+		_change_state(State.GRAPPLING)
+		return
 	if dash_timer <= 0.0:
-		_change_state(State.IDLE)
+		if kunai_target:
+			_change_state(State.GRAPPLED)
+		else:
+			_change_state(State.IDLE)
 
 func _start_attacking() -> void:
 	attack_timer = 0.25
@@ -204,6 +210,9 @@ func _state_grappled(_delta: float) -> void:
 	if direction:
 		velocity = direction * SPEED
 		_animate(direction, "run")
+		if Input.is_action_just_pressed("dash"):
+			dash_timer = DASH_TIME
+			_change_state(State.DASHING)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, 3000 * _delta)
 		_animate(direction)
