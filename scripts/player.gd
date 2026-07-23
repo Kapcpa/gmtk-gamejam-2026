@@ -15,15 +15,18 @@ enum State {
 	DEAD
 }
 
-var current_state: State = State.IDLE
-var attack_timer: float = 0.5  # probably will be removed since we can just check if attack animation ended or not
-var hit_enemies: Array[Node2D] = []
-
 const SPEED = 200.0
 const MELEE_RANGE = 32.0
 const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 300
+const DASH_VELOCITY = 800
+const DASH_TIME = 0.2
+
+var current_state: State = State.IDLE
+var attack_timer: float = 0.5  # probably will be removed since we can just check if attack animation ended or not
+var hit_enemies: Array[Node2D] = []
+var dash_timer: float = DASH_TIME
 
 var knockback: Vector2 = Vector2.ZERO
 
@@ -31,7 +34,7 @@ func _ready() -> void:
 	GameManager.register_player(self)
 
 func _physics_process(delta: float) -> void:	
-	if current_state in [State.IDLE, State.RUNNING]:
+	if current_state in [State.IDLE, State.RUNNING, State.DASHING]:
 		_aim()
 	
 	match current_state:
@@ -93,6 +96,10 @@ func _state_idle(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("attack"):
 		_start_attacking()
+		return
+	if Input.is_action_just_pressed("dash"):
+		dash_timer = DASH_TIME
+		_change_state(State.DASHING)
 
 func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
@@ -106,9 +113,19 @@ func _state_running(_delta: float) -> void:
 		
 	if Input.is_action_just_pressed("attack"):
 		_start_attacking()
+		return
+	if Input.is_action_just_pressed("dash"):
+		dash_timer = DASH_TIME
+		_change_state(State.DASHING)
 
 func _state_dashing(_delta: float) -> void:
-	pass
+	collision_layer = 0
+	dash_timer -= _delta
+	var dash_direction = to_local(get_global_mouse_position()).normalized()	
+	velocity = velocity.move_toward(dash_direction * DASH_VELOCITY, 2000 * _delta)
+	if dash_timer <= 0.0:
+		collision_layer = 2
+		_change_state(State.IDLE)
 
 func _start_attacking() -> void:
 	attack_timer = 0.25
