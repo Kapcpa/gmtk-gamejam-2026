@@ -2,6 +2,7 @@ extends Node2D
 
 @export var bullet_scene: PackedScene
 
+# 
 var bullet_shot = false
 
 const ATTACK_FORCE = 300
@@ -15,6 +16,7 @@ func attack(player: PlayerCharacter):
 	var bullet = bullet_scene.instantiate()
 	bullet.rotation = angle
 	bullet.position = position
+	bullet.player = player
 	add_child(bullet)
 	
 	bullet_shot = true

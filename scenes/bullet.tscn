@@ -4,10 +4,17 @@
 [ext_resource type="Script" uid="uid://bhyip2mu3u7bk" path="res://scripts/bullet.gd" id="1_y25gk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o2nk3"]
+radius = 6.12245
+height = 12.2449
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7kvw3"]
+radius = 5.0
+height = 11.428572
 
 [node name="bullet" type="CharacterBody2D" unique_id=1534914301]
 scale = Vector2(0.4, 0.7)
 collision_layer = 8
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_y25gk")
 
@@ -19,3 +26,10 @@ shape = SubResource("CapsuleShape2D_o2nk3")
 position = Vector2(0, -5.9604645e-08)
 scale = Vector2(0.4, 0.7)
 texture = ExtResource("1_mkf8s")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=513286240]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=275329221]
+shape = SubResource("CapsuleShape2D_7kvw3")

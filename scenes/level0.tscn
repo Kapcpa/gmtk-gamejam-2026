@@ -88,5 +88,5 @@ next_scene_path = "uid://cxq6mmq7yxdbb"
 [node name="MeleeEnemy" parent="." unique_id=617679549 instance=ExtResource("3_sugp2")]
 position = Vector2(109, -54)
 
-[node name="RangedEnemy" parent="." unique_id=1636672903 instance=ExtResource("7_cm1v6")]
-position = Vector2(146, 76)
+[node name="RangedEnemy" parent="." unique_id=1494898214 instance=ExtResource("7_cm1v6")]
+position = Vector2(155, 70)
