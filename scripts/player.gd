@@ -27,6 +27,9 @@ const MELEE_FORCE = 300
 
 var knockback: Vector2 = Vector2.ZERO
 
+func _ready() -> void:
+	GameManager.register_player(self)
+
 func _physics_process(delta: float) -> void:	
 	if current_state in [State.IDLE, State.RUNNING]:
 		_aim()
@@ -124,6 +127,7 @@ func _state_attacking(_delta: float) -> void:
 			if _collider.current_state != _collider.State.HIT:
 				var attack_force = melee_hitbox.target_position.normalized() * MELEE_FORCE
 				melee_hitbox.get_collider().take_damage(1.0, attack_force)
+				GameManager.register_hit()
 	
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
@@ -154,6 +158,8 @@ func _aim():
 func take_damage(knockback_force: Vector2) -> void:
 	if current_state == State.HIT:
 		return
+	
+	GameManager.reset_combo()
 	
 	knockback = knockback_force
 	_change_state(State.HIT)

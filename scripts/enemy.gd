@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name EnemyCharacter
+
 enum State {
 	IDLE,
 	RUNNING,
@@ -31,6 +33,8 @@ var path: PackedVector2Array
 var current_state: State = State.IDLE
 
 func _ready() -> void:
+	GameManager.register_enemy(self)
+	
 	setup_grid()
 
 func setup_grid() -> void:
@@ -60,6 +64,8 @@ func _physics_process(_delta: float) -> void:
 			_state_attacking(_delta)
 		State.HIT:
 			_state_hit(_delta)
+		State.DEAD:
+			_state_dead()
 		_:
 			pass
 	
@@ -114,6 +120,10 @@ func _state_hit(_delta: float) -> void:
 	if knockback == Vector2.ZERO:
 		_change_state(State.IDLE)
 
+func _state_dead() -> void:
+	GameManager.unregister_enemy(self)
+	queue_free()
+
 func _change_state(new_state: State) -> void:
 	current_state = new_state
 
@@ -129,7 +139,6 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 	print(health)
 	if health <= 0:
 		_change_state(State.DEAD)
-		queue_free()
 
 func _on_hurtbox_body_entered(body: Node2D) -> void:	
 	if body != player or current_state != State.ATTACKING:

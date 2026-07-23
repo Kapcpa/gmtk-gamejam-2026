@@ -69,7 +69,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D" unique_id=121862516]
+[node name="player" type="CharacterBody2D" unique_id=121862516]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_3vyb7")

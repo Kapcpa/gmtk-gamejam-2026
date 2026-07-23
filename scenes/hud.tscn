@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://lvmqbw3p5co7"]
+
+[ext_resource type="Script" uid="uid://ebjxi2e3sg1j" path="res://scripts/hud.gd" id="1_ahhtf"]
+
+[node name="hud" type="CanvasLayer" unique_id=1159213780]
+script = ExtResource("1_ahhtf")
+
+[node name="combo_debug" type="Label" parent="." unique_id=42772112]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "COMBO TIMER: XX; COMBO: XX"
