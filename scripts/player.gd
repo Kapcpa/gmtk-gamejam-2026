@@ -24,7 +24,7 @@ enum State {
 
 const SPEED = 200.0
 const MELEE_RANGE = 32.0
-const MELEE_SPEED = 300
+const MELEE_SPEED = 200
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 300
 const THROW_RANGE = 80.0
