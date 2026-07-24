@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://nx4t7myvlfx2" path="res://scripts/player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://b1qo84b8i8kqa" path="res://sprites/pelvis00.png" id="2_g2els"]
 [ext_resource type="AudioStream" uid="uid://cyy2qm5ays52w" path="res://audio/step_0.wav" id="3_tuyoq"]
+[ext_resource type="Texture2D" uid="uid://by4dbcayo4jmq" path="res://sprites/player.png" id="3_y4r1p"]
 [ext_resource type="AudioStream" uid="uid://dk2cmy0aiatjs" path="res://audio/step_1.wav" id="4_fjrip"]
 [ext_resource type="AudioStream" uid="uid://dav10mnsyilrp" path="res://audio/step_2.wav" id="5_smehm"]
 [ext_resource type="AudioStream" uid="uid://dd1lwje4p7wbg" path="res://audio/step_3.wav" id="6_ur7pv"]
@@ -673,6 +674,9 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_gj24f"]
+radius = 15.033297
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_87140"]
 streams_count = 4
 stream_0/stream = ExtResource("3_tuyoq")
@@ -700,16 +704,25 @@ shape = SubResource("CapsuleShape2D_cm1v6")
 z_index = 2
 position = Vector2(93, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"up_attack_0"
+animation = &"side_attack_2"
+frame = 5
+frame_progress = 0.86720085
 offset = Vector2(-93, 0)
 
-[node name="melee_hitbox" type="RayCast2D" parent="." unique_id=1625755717]
-target_position = Vector2(0, 32)
+[node name="melee_hitbox" type="Area2D" parent="." unique_id=722629095]
+position = Vector2(7, 0)
 collision_mask = 4
+metadata/_edit_group_ = true
 
-[node name="debug_melee" type="Line2D" parent="melee_hitbox" unique_id=1893905697]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="melee_hitbox" unique_id=1477110463]
+position = Vector2(3, -11)
+shape = SubResource("CircleShape2D_gj24f")
+
+[node name="debug_melee" type="Sprite2D" parent="melee_hitbox/CollisionShape2D" unique_id=1269187532]
 visible = false
-points = PackedVector2Array(0, 0, 0, 0)
+modulate = Color(0.8626159, 0.30585665, 1.92523e-07, 0.5686275)
+scale = Vector2(1.84, 1.84)
+texture = ExtResource("3_y4r1p")
 
 [node name="throw_hitbox" type="RayCast2D" parent="." unique_id=466974722]
 target_position = Vector2(0, 80)

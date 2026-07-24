@@ -2,8 +2,7 @@ extends CharacterBody2D
 
 class_name PlayerCharacter
 
-@onready var melee_hitbox: RayCast2D = $melee_hitbox
-@onready var debug_melee: Line2D = $melee_hitbox/debug_melee
+@onready var melee_hitbox: Area2D = $melee_hitbox
 
 @onready var throw_hitbox: RayCast2D = $throw_hitbox
 @onready var debug_throw: Line2D = $throw_hitbox/debug_throw
@@ -23,7 +22,7 @@ enum State {
 }
 
 const SPEED = 200.0
-const MELEE_RANGE = 32.0
+const MELEE_RANGE = 10.0
 const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 250
@@ -193,7 +192,7 @@ func _start_attacking() -> void:
 	continue_attack = false
 	
 	hit_enemies.clear()
-	velocity = melee_hitbox.target_position.normalized() * MELEE_SPEED
+	velocity = to_local(get_global_mouse_position()).normalized() * MELEE_SPEED
 	_change_state(State.ATTACKING)
 
 func _state_attacking(_delta: float) -> void:
@@ -204,12 +203,11 @@ func _state_attacking(_delta: float) -> void:
 	
 	_animate(velocity.normalized(), "attack_" + str(attack_count))
 	
-	if melee_hitbox.is_colliding():
-		var _collider = melee_hitbox.get_collider()
-		if _collider and _collider.is_in_group("enemies") and _collider not in hit_enemies:
-			if _collider.current_state != _collider.State.HIT:
-				var attack_force = melee_hitbox.target_position.normalized() * MELEE_FORCE
-				_collider.take_damage(1.0, attack_force)
+	for enemy in melee_hitbox.get_overlapping_bodies():
+		if enemy not in hit_enemies:
+			if enemy.current_state != enemy.State.HIT:
+				var attack_force = to_local(get_global_mouse_position()).normalized() * MELEE_FORCE
+				enemy.take_damage(1.0, attack_force)
 				GameManager.register_hit()
 	
 	if attack_count < 2 and Input.is_action_just_pressed("attack"):
@@ -309,11 +307,8 @@ func _change_state(new_state: State):
 func _aim():
 	var direction = to_local(get_global_mouse_position())
 	
-	if direction != Vector2.ZERO:
-		melee_hitbox.target_position = direction.normalized() * MELEE_RANGE
-		debug_melee.points = [
-			Vector2.ZERO, melee_hitbox.target_position
-		]
+	if direction:
+		melee_hitbox.position = direction.normalized() * MELEE_RANGE
 		
 		throw_hitbox.target_position = direction.normalized() * THROW_RANGE
 		debug_throw.points = [
