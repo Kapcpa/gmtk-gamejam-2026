@@ -33,6 +33,8 @@ var path: PackedVector2Array
 
 var current_state: State = State.IDLE
 
+@onready var damage_sound: AudioStreamPlayer2D = $damage_sound
+
 func _ready() -> void:
 	GameManager.register_enemy(self)
 	setup_grid()
@@ -160,6 +162,9 @@ func _change_state(new_state: State) -> void:
 func take_damage(damage: float, knockback_force: Vector2) -> void:
 	if current_state == State.HIT:
 		return
+	
+	if damage > 0:
+		damage_sound.play()
 	
 	health -= damage
 	
