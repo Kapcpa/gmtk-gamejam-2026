@@ -171,6 +171,5 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 	knockback = knockback_force
 	_change_state(State.HIT)
 	
-	print(health)
 	if health <= 0:
 		_change_state(State.DEAD)

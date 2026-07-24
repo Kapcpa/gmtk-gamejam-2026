@@ -24,16 +24,22 @@ enum State {
 
 const SPEED = 200.0
 const MELEE_RANGE = 32.0
-const MELEE_SPEED = 200
+const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
-const MELEE_FORCE = 300
+const MELEE_FORCE = 250
 const THROW_RANGE = 120.0
 const GRAPPLE_VELOCITY = 500
 const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
 
 var current_state: State = State.IDLE
-var attack_timer: float = 0.5  # probably will be removed since we can just check if attack animation ended or not
+
+var attack_count: int = 0
+var attack_timer: float = 0.0
+var attack_cooldown: float = 0.0
+var combo_window: float = 0.0
+var continue_attack: bool = false
+
 var hit_enemies: Array[EnemyCharacter] = []
 var dash_timer: float = DASH_TIME
 
@@ -56,6 +62,11 @@ func _ready() -> void:
 	_animate(Vector2.RIGHT)
 
 func _physics_process(delta: float) -> void:
+	combo_window -= delta 
+	if combo_window <= 0.0:
+		attack_count = 0
+		attack_cooldown -= delta
+	
 	if current_state in [State.IDLE, State.RUNNING, State.DASHING]:
 		_aim()
 	
@@ -108,6 +119,9 @@ func _animate(direction: Vector2, action: String = "") -> void:
 	if abs(animation_direction.y) > threshold:
 		snap_y = sign(animation_direction.y)
 	
+	if "attack" in action and snap_y != 0:
+		sprite.flip_h = attack_count % 2 == 0
+	
 	var direction_key = Vector2i(int(abs(snap_x)), int(snap_y))
 	
 	if direction_map.has(direction_key):
@@ -129,7 +143,7 @@ func _state_idle(_delta: float) -> void:
 	
 	velocity = velocity.move_toward(Vector2.ZERO, 3000 * _delta)
 	
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and (combo_window > 0.0 or attack_cooldown <= 0.0) and attack_count < 2:
 		_start_attacking()
 		return
 	if Input.is_action_just_pressed("throw"):
@@ -146,7 +160,7 @@ func _state_running(_delta: float) -> void:
 	else:
 		_change_state(State.IDLE)
 
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and (combo_window > 0.0 or attack_cooldown <= 0.0) and attack_count < 2:
 		_start_attacking()
 		return
 	if Input.is_action_just_pressed("throw"):
@@ -159,6 +173,9 @@ func _state_running(_delta: float) -> void:
 func _state_dashing(_delta: float) -> void:
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
+	
+	_animate(dash_direction, "dash")
+	
 	velocity = dash_direction * DASH_VELOCITY
 	if kunai_target and not Input.is_action_pressed("throw"):
 		_change_state(State.GRAPPLING)
@@ -173,14 +190,20 @@ func _start_attacking() -> void:
 	attack_sound.play()
 	
 	attack_timer = 0.25
+	attack_count += 1
+	continue_attack = false
+	
 	hit_enemies.clear()
 	velocity = melee_hitbox.target_position.normalized() * MELEE_SPEED
 	_change_state(State.ATTACKING)
 
 func _state_attacking(_delta: float) -> void:
+	combo_window = 0.25
+	attack_cooldown = 0.25
+
 	velocity = velocity.move_toward(Vector2.ZERO, MELEE_FRICTION * _delta)
 	
-	_animate(velocity.normalized(), "attack")
+	_animate(velocity.normalized(), "attack_" + str(attack_count))
 	
 	if melee_hitbox.is_colliding():
 		var _collider = melee_hitbox.get_collider()
@@ -190,8 +213,15 @@ func _state_attacking(_delta: float) -> void:
 				_collider.take_damage(1.0, attack_force)
 				GameManager.register_hit()
 	
+	if attack_count < 2 and Input.is_action_just_pressed("attack"):
+		continue_attack = true
+	
 	attack_timer -= _delta
 	if attack_timer <= 0.0:
+		if continue_attack:
+			_start_attacking()
+			return
+
 		_change_state(State.IDLE)
 
 func _kunai_throw() -> void:
