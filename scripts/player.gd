@@ -27,7 +27,7 @@ const MELEE_RANGE = 32.0
 const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 300
-const THROW_RANGE = 80.0
+const THROW_RANGE = 120.0
 const GRAPPLE_VELOCITY = 500
 const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
@@ -50,6 +50,8 @@ func _ready() -> void:
 
 	GameManager.register_player(self)
 	GameManager.camera = camera
+	
+	_animate(Vector2.RIGHT)
 
 func _physics_process(delta: float) -> void:	
 	if current_state in [State.IDLE, State.RUNNING, State.DASHING]:
