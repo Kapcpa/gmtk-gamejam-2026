@@ -6,6 +6,14 @@
 script = ExtResource("1_ahhtf")
 
 [node name="combo_debug" type="Label" parent="." unique_id=42772112]
-offset_right = 40.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -119.5
+offset_right = 119.5
 offset_bottom = 23.0
+grow_horizontal = 2
+pivot_offset = Vector2(124.5, 11)
 text = "COMBO TIMER: XX; COMBO: XX"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -27,6 +27,9 @@ interakcja:
 
 		adrenalnia = HP???
 
+		większa adrenalina = większy dmg, efekty wizualne, szybkość akcji i gry wzrasta
+		
+
 		rally system:
 			lies of P
 			Bloodborne
