@@ -9,6 +9,7 @@ class_name PlayerCharacter
 @onready var debug_throw: Line2D = $throw_hitbox/debug_throw
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var camera: Camera2D = $Camera2D
 
 enum State {
 	IDLE,
@@ -48,6 +49,7 @@ func _ready() -> void:
 	add_child(validate_raycast)
 
 	GameManager.register_player(self)
+	GameManager.camera = camera
 
 func _physics_process(delta: float) -> void:	
 	if current_state in [State.IDLE, State.RUNNING, State.DASHING]:
