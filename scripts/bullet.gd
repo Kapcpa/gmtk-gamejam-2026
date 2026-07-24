@@ -7,8 +7,6 @@ const BULLET_FORCE = 200
 var player: PlayerCharacter
 var already_dodged: bool = false
 
-signal player_dodged_a_bullet
-
 func _ready() -> void:
 	velocity = Vector2(0, -SPEED).rotated(rotation)
 
@@ -22,7 +20,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			if not already_dodged:
 				already_dodged = true
-				player_dodged_a_bullet.emit()
+				GameManager.on_player_dodged_a_bullet()
 			
 	
 	move_and_slide()

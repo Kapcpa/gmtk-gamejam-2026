@@ -16,11 +16,6 @@ func _process(delta: float) -> void:
 		combo_time_left -= delta
 		if combo_time_left <= 0.0:
 			reset_combo()
-	
-	for child in get_children():
-		if child.is_in_group("bullets"):
-			child.player_dodged_a_bullet.connect(on_player_dodged_a_bullet)
-	
 
 func register_hit() -> void:
 	combo_count += 1

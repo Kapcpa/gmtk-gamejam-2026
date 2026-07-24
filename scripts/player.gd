@@ -231,11 +231,8 @@ func _state_grappled(_delta: float) -> void:
 	
 func _state_grappling(_delta: float) -> void:
 	if not kunai_target:
-		collision_layer = 2
 		_change_state(State.IDLE)
 		return
-	
-	collision_layer = 0
 	
 	var grapple_end = kunai_target.position + throw_hitbox.target_position.normalized() * 32.0
 	var grapple_direction = (grapple_end - position).normalized()
@@ -253,7 +250,6 @@ func _state_grappling(_delta: float) -> void:
 	if position.distance_to(grapple_end) <= 8.0 or world_collision:
 		velocity /= 1.5
 		
-		collision_layer = 2
 		kunai_target = null
 		
 		_change_state(State.IDLE)
