@@ -43,4 +43,6 @@ func unregister_enemy(enemy_node: Node2D) -> void:
 			room_cleared.emit()
 			
 func on_player_dodged_a_bullet() -> void:
-	print("dodged a bullet!")
+	combo_count += 1
+	combo_time_left = COMBO_WINDOW
+	combo_updated.emit(combo_count)
