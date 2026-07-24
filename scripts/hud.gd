@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var combo_label: Label = $combo_debug
+@onready var adrenaline_label: Label = $AdrenalineLabel
 
 func _ready() -> void:
 	GameManager.combo_updated.connect(_on_combo_updated)
@@ -11,6 +12,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if GameManager.combo_count > 0:
 		combo_label.text = "COMBO: %d\nTimer: %.2f" % [GameManager.combo_count, GameManager.combo_time_left]
+	
+	adrenaline_label.text = "Adrenaline: %.2f%%\nStamina: %.2f" % [GameManager.adrenaline, GameManager.stamina_left]
 
 func _on_combo_updated(_new_combo: int) -> void:
 	var tween = create_tween()

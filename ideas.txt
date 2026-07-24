@@ -28,7 +28,9 @@ interakcja:
 		adrenalnia = HP???
 
 		większa adrenalina = większy dmg, efekty wizualne, szybkość akcji i gry wzrasta
-		
+
+		im dłużej robisz poziom tym szybciej adrenalina spada - 
+		GLOBAL FATIGUE na kazdy level
 
 		rally system:
 			lies of P

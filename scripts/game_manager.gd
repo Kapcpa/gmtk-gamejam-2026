@@ -8,6 +8,11 @@ const COMBO_WINDOW: float = 2.5
 const SLOWMO_TIME: float = 0.3
 const SHAKE_STRENGTH_CONST: float = 5.0
 
+const STAMINA = [
+	30.0,
+	60.0
+]
+
 var player: PlayerCharacter
 var active_enemies: Array[EnemyCharacter] = []
 var shake_strength: float = 0.0
@@ -17,12 +22,22 @@ var shake_fade_out_speed: float = 0.0
 
 var combo_count: int = 0
 var combo_time_left: float = 0.0
+var adrenaline: float = 50.0
+var stamina_left: float = STAMINA[0]
+var stamina_start: float = STAMINA[0]
 
 func _process(delta: float) -> void:
+	stamina_left -= delta
+	
 	if combo_count > 0:
 		combo_time_left -= delta
 		if combo_time_left <= 0.0:
 			reset_combo()
+	
+	adrenaline -= 5 * delta * (1.0 - stamina_left/stamina_start)
+	
+	stamina_left = clamp(stamina_left, 0.0, stamina_start)
+	adrenaline = clamp(adrenaline, 0.0, 100.0)
 	
 	if shake_strength >= 0.0:
 		camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
@@ -38,6 +53,7 @@ func register_hit() -> void:
 	combo_time_left = COMBO_WINDOW
 	_apply_shake(3, 10)
 	combo_updated.emit(combo_count)
+	_boost_adrenaline(2)
 
 func on_player_dodged_a_bullet() -> void:
 	Engine.time_scale = 0.3
@@ -45,6 +61,7 @@ func on_player_dodged_a_bullet() -> void:
 	combo_count += 1
 	combo_time_left = COMBO_WINDOW
 	combo_updated.emit(combo_count)
+	_boost_adrenaline(0.5)
 
 func reset_combo() -> void:
 	if combo_count > 0:
@@ -70,3 +87,6 @@ func unregister_enemy(enemy_node: Node2D) -> void:
 func _apply_shake(strength, speed) -> void:
 	shake_strength = strength
 	shake_fade_out_speed = speed
+
+func _boost_adrenaline(intensity):
+	adrenaline += combo_count * intensity

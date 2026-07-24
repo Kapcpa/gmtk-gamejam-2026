@@ -27,7 +27,7 @@ const MELEE_RANGE = 32.0
 const MELEE_SPEED = 200
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 300
-const THROW_RANGE = 80.0
+const THROW_RANGE = 120.0
 const GRAPPLE_VELOCITY = 500
 const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
@@ -41,6 +41,8 @@ var kunai_target: EnemyCharacter = null
 var validate_raycast: RayCast2D = RayCast2D.new()
 
 var animation_direction: Vector2 = Vector2.ZERO
+@onready var step_sound: AudioStreamPlayer2D = $step_sound
+@onready var attack_sound: AudioStreamPlayer2D = $attack_sound
 
 var knockback: Vector2 = Vector2.ZERO
 
@@ -50,8 +52,10 @@ func _ready() -> void:
 
 	GameManager.register_player(self)
 	GameManager.camera = camera
+	
+	_animate(Vector2.RIGHT)
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
 	if current_state in [State.IDLE, State.RUNNING, State.DASHING]:
 		_aim()
 	
@@ -110,6 +114,8 @@ func _animate(direction: Vector2, action: String = "") -> void:
 		var animation = direction_map.get(direction_key)
 		if action and sprite.sprite_frames.has_animation(animation + "_" + action):
 			animation = animation + "_" + action
+			
+			# sprite.animation_finished
 		
 		sprite.play(animation)
 
@@ -164,6 +170,8 @@ func _state_dashing(_delta: float) -> void:
 			_change_state(State.IDLE)
 
 func _start_attacking() -> void:
+	attack_sound.play()
+	
 	attack_timer = 0.25
 	hit_enemies.clear()
 	velocity = melee_hitbox.target_position.normalized() * MELEE_SPEED
@@ -293,3 +301,8 @@ func take_damage(knockback_force: Vector2) -> void:
 	
 	knockback = knockback_force
 	_change_state(State.HIT)
+
+
+func _on_frame_changed() -> void:
+	if current_state == State.RUNNING and sprite.frame in [1, 5]:
+		step_sound.play()

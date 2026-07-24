@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://by4dbcayo4jmq" path="res://sprites/player.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://comxecvd7knf8" path="res://scripts/enemy.gd" id="1_md0e3"]
 [ext_resource type="Script" uid="uid://cam1mjnw0c6wa" path="res://scripts/melee_attack.gd" id="3_vaj5w"]
+[ext_resource type="AudioStream" uid="uid://dgx6sdoekrpr5" path="res://audio/damage_0.wav" id="4_xcjf7"]
+[ext_resource type="AudioStream" uid="uid://bywm7dk1oqw33" path="res://audio/damage_1.wav" id="5_x3ymb"]
+[ext_resource type="AudioStream" uid="uid://ccqfbl828l8mw" path="res://audio/damage_2.wav" id="6_t7tl4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
 radius = 6.0827627
@@ -12,6 +15,12 @@ radius = 25.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oamls"]
 radius = 8.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_87140"]
+streams_count = 3
+stream_0/stream = ExtResource("4_xcjf7")
+stream_1/stream = ExtResource("5_x3ymb")
+stream_2/stream = ExtResource("6_t7tl4")
 
 [node name="MeleeEnemy" type="CharacterBody2D" unique_id=617679549 node_paths=PackedStringArray("attack") groups=["enemies"]]
 z_index = 2
@@ -42,3 +51,6 @@ script = ExtResource("3_vaj5w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1406469227]
 shape = SubResource("CircleShape2D_oamls")
+
+[node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=1949202475]
+stream = SubResource("AudioStreamRandomizer_87140")
