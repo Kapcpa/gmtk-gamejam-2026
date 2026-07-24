@@ -170,7 +170,7 @@ func _start_attacking() -> void:
 func _state_attacking(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, MELEE_FRICTION * _delta)
 	
-	_animate(velocity.normalized())
+	_animate(velocity.normalized(), "attack")
 	
 	if melee_hitbox.is_colliding():
 		var _collider = melee_hitbox.get_collider()
