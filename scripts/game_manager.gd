@@ -17,6 +17,10 @@ func _process(delta: float) -> void:
 		if combo_time_left <= 0.0:
 			reset_combo()
 	
+	for child in get_children():
+		if child.is_in_group("bullets"):
+			child.player_dodged_a_bullet.connect(on_player_dodged_a_bullet)
+	
 
 func register_hit() -> void:
 	combo_count += 1
@@ -42,3 +46,6 @@ func unregister_enemy(enemy_node: Node2D) -> void:
 		# check if wave is complete at the end?
 		if active_enemies.is_empty():
 			room_cleared.emit()
+			
+func on_player_dodged_a_bullet() -> void:
+	print("dodged a bullet!")

@@ -11,7 +11,7 @@ height = 12.2449
 radius = 5.0
 height = 11.428572
 
-[node name="bullet" type="CharacterBody2D" unique_id=1534914301]
+[node name="bullet" type="CharacterBody2D" unique_id=1534914301 groups=["bullets"]]
 scale = Vector2(0.4, 0.7)
 collision_layer = 8
 motion_mode = 1
@@ -28,7 +28,7 @@ position = Vector2(0, -5.9604645e-08)
 scale = Vector2(0.4, 0.7)
 texture = ExtResource("1_mkf8s")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=513286240]
+[node name="Area2D" type="Area2D" parent="." unique_id=513286240 groups=["bullets"]]
 collision_layer = 0
 collision_mask = 2
 

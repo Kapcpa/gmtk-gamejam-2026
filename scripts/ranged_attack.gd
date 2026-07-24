@@ -17,7 +17,9 @@ func attack(player: PlayerCharacter):
 	bullet.rotation = angle
 	bullet.global_position = global_position
 	bullet.player = player
-	get_tree().root.get_child(0).add_child(bullet)
+	var game_manager = get_tree().root.get_child(0)
+	
+	game_manager.add_child(bullet)
 	
 	bullet_shot = true
 
