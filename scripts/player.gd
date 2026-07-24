@@ -9,6 +9,13 @@ class_name PlayerCharacter
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var camera: Camera2D = $Camera2D
+@onready var dash_particles: GPUParticles2D = $GPUParticles2D
+
+@onready var dash_up: GPUParticles2D = $dash_particle/dash_up
+@onready var dash_left: GPUParticles2D = $dash_particle/dash_left
+@onready var dash_right: GPUParticles2D = $dash_particle/dash_right
+@onready var dash_down: GPUParticles2D = $dash_particle/dash_down
+@onready var line_particle: GPUParticles2D = $dash_particle/line
 
 enum State {
 	IDLE,
@@ -50,7 +57,7 @@ var animation_direction: Vector2 = Vector2.ZERO
 @onready var attack_sound: AudioStreamPlayer2D = $attack_sound
 
 var knockback: Vector2 = Vector2.ZERO
-
+var afterimage = preload("res://scenes/afterimage.tscn")
 func _ready() -> void:
 	validate_raycast.collision_mask = 1
 	add_child(validate_raycast)
@@ -167,13 +174,26 @@ func _state_running(_delta: float) -> void:
 	if Input.is_action_just_pressed("dash"):
 		dash_timer = DASH_TIME
 		_change_state(State.DASHING)
+		line_particle.restart()
+		if animation_direction.x < 0:
+			dash_left.restart()
+		elif animation_direction.x > 0:
+			dash_right.restart()
+		elif animation_direction.y < 0:
+			dash_up.restart()
+		elif animation_direction.y > 0:
+			dash_down.restart()	
 
 func _state_dashing(_delta: float) -> void:
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
+	#var afterimage_instance = afterimage.instance()
+
+	
+
 	
 	_animate(dash_direction, "dash")
-	
+	#get_parent().get_parent().add_child(afterimage_instance)
 	velocity = dash_direction * DASH_VELOCITY
 	if kunai_target and not Input.is_action_pressed("throw"):
 		_change_state(State.GRAPPLING)
