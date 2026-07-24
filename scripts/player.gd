@@ -119,16 +119,15 @@ func _animate(direction: Vector2, action: String = "") -> void:
 	if abs(animation_direction.y) > threshold:
 		snap_y = sign(animation_direction.y)
 	
-	if "attack" in action and snap_y != 0:
-		sprite.flip_h = attack_count % 2 == 0
-	
 	var direction_key = Vector2i(int(abs(snap_x)), int(snap_y))
 	
 	if direction_map.has(direction_key):
 		var animation = direction_map.get(direction_key)
 		if action and sprite.sprite_frames.has_animation(animation + "_" + action):
 			animation = animation + "_" + action
-			
+		
+		if "attack" in action and "side" not in animation:
+			sprite.flip_h = attack_count % 2 == 0
 			# sprite.animation_finished
 		
 		sprite.play(animation)
