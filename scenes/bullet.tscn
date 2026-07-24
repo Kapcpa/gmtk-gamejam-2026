@@ -23,6 +23,7 @@ scale = Vector2(0.4, 0.7)
 shape = SubResource("CapsuleShape2D_o2nk3")
 
 [node name="BulletSprite" type="Sprite2D" parent="." unique_id=1664982792]
+z_index = 3
 position = Vector2(0, -5.9604645e-08)
 scale = Vector2(0.4, 0.7)
 texture = ExtResource("1_mkf8s")

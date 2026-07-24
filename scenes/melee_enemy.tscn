@@ -14,6 +14,7 @@ radius = 25.0
 radius = 8.0
 
 [node name="MeleeEnemy" type="CharacterBody2D" unique_id=617679549 node_paths=PackedStringArray("attack") groups=["enemies"]]
+z_index = 2
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_md0e3")

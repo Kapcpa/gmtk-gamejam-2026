@@ -12,6 +12,7 @@ radius = 6.0827627
 radius = 144.03125
 
 [node name="RangedEnemy" type="CharacterBody2D" unique_id=617679549 node_paths=PackedStringArray("attack") groups=["enemies"]]
+z_index = 2
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_rs3ab")

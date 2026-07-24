@@ -84,8 +84,8 @@ func _animate(direction: Vector2, action: String = "") -> void:
 		Vector2i(0, -1): "up",
 		Vector2i(0, 1): "down",
 		Vector2i(1, 0): "side",
-		Vector2i(1, -1): "up",
-		Vector2i(1, 1): "down"
+		Vector2i(1, -1): "side",
+		Vector2i(1, 1): "side"
 	}
 	
 	if animation_direction.x:
