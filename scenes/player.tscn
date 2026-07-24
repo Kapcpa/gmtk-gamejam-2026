@@ -404,4 +404,5 @@ target_position = Vector2(0, 80)
 collision_mask = 4
 
 [node name="debug_throw" type="Line2D" parent="throw_hitbox" unique_id=1014247595]
+visible = false
 points = PackedVector2Array(0, 0, 0, 0)
