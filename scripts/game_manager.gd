@@ -8,6 +8,11 @@ const COMBO_WINDOW: float = 2.5
 const SLOWMO_TIME: float = 0.3
 const SHAKE_STRENGTH_CONST: float = 5.0
 
+const STAMINA = [
+	120.0,
+	60.0
+]
+
 var player: PlayerCharacter
 var active_enemies: Array[EnemyCharacter] = []
 var shake_strength: float = 0.0
@@ -17,12 +22,25 @@ var shake_fade_out_speed: float = 0.0
 
 var combo_count: int = 0
 var combo_time_left: float = 0.0
+var adrenaline: float = 50.0
+var stamina_left: float = STAMINA[1]
+var stamina_start: float = STAMINA[1]
 
 func _process(delta: float) -> void:
+	stamina_left -= delta
+	
 	if combo_count > 0:
 		combo_time_left -= delta
 		if combo_time_left <= 0.0:
 			reset_combo()
+	
+	adrenaline += combo_count * 3 * delta
+	
+	if combo_count <= 0:
+		adrenaline -= 5 * delta * (1.0 - stamina_left/stamina_start)
+	
+	stamina_left = clamp(stamina_left, 0.0, stamina_start)
+	adrenaline = clamp(adrenaline, 0.0, 100.0)
 	
 	if shake_strength >= 0.0:
 		camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))

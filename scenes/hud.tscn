@@ -17,3 +17,8 @@ pivot_offset = Vector2(124.5, 11)
 text = "COMBO TIMER: XX; COMBO: XX"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AdrenalineLabel" type="Label" parent="." unique_id=453205230]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Adrenaline: 50.0%"
