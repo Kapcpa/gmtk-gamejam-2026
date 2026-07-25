@@ -133,7 +133,10 @@ func _state_idle(_delta: float) -> void:
 
 func _state_running(_delta: float) -> void:
 	_flip_sprite()
-	sprite.play("walk")
+	if enemy_type != "charging":
+		sprite.play("walk")
+	else:
+		sprite.play("idle")
 	attack_cooldown_timer -= _delta
 	if attack_cooldown_timer <= 0.0 and _can_attack():
 		_start_attacking()
