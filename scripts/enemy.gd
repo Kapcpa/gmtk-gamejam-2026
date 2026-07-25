@@ -91,6 +91,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
+	sprite.play("idle_move")
 	velocity = Vector2.ZERO
 	attack_cooldown_timer -= _delta
 	var start_cell = tilemap.local_to_map(global_position)
