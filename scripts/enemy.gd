@@ -28,8 +28,6 @@ enum State {
 @export var bullets_in_a_row: int
 @export var enemy_type: String
 
-
-
 var validate_raycast: RayCast2D = RayCast2D.new()
 
 var knockback: Vector2 = Vector2.ZERO
@@ -37,6 +35,8 @@ var attack_timer: float = 0.0
 var attack_cooldown_timer: float = 0.0
 var will_push_back: bool = false
 var charging_timer: float = 0.0
+var charging_direction: Vector2 = Vector2.ZERO
+var already_shaken: bool = false
 
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
@@ -124,7 +124,9 @@ func _state_running(_delta: float) -> void:
 	var target_cell = tilemap.local_to_map(player.global_position)
 	
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
-	
+	if enemy_type == "charging" and path.size() <= 5 and _can_attack():
+		_change_state(State.IDLE)
+		return
 	if path.size() <= 1:
 		_change_state(State.IDLE)
 		return
@@ -182,6 +184,7 @@ func _start_attacking() -> void:
 		velocity = direction.normalized() * ATTACK_SPEED
 	elif enemy_type == "charging":
 		charging_timer = CHARGING_TIME
+		charging_direction = Vector2.ZERO
 		_change_state(State.CHARGING)
 		return
 	
@@ -199,7 +202,6 @@ func _state_attacking(_delta: float) -> void:
 	elif enemy_type == "ranged":
 		attack.attack(player, bullets_in_a_row)
 	elif enemy_type == "charging":
-		
 		sprite.play("attack")
 		if get_slide_collision_count() > 0:
 			GameManager._apply_shake(4, 10)
@@ -218,11 +220,12 @@ func _state_charging(_delta: float) -> void:
 	sprite.play("telegraph")
 	charging_timer -= _delta
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
+	if charging_direction == Vector2.ZERO:
+		charging_direction = global_position.direction_to(player.global_position)
 	if charging_timer <= 0.0:
 		var dash_right: GPUParticles2D = $dash_right
 		dash_right.restart()
-		var direction = global_position.direction_to(player.global_position)
-		velocity = direction.normalized() * ATTACK_SPEED
+		velocity = charging_direction.normalized() * ATTACK_SPEED
 		_change_state(State.ATTACKING)
 
 func _state_hit(_delta: float) -> void:
@@ -233,8 +236,20 @@ func _state_hit(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
+	if enemy_type == "ranged" and not (sprite.is_playing() and sprite.animation == "death") and not sprite.animation == "death_2":
+		sprite.play("death")
+		_flip_sprite()
+		
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
+	
+	if enemy_type == "ranged" and get_slide_collision_count() > 0:
+		sprite.play("death_2")
+		sprite.flip_h = get_last_slide_collision().get_normal().x < 0
+		
+		if not already_shaken:
+			GameManager._apply_shake(3, 10)
+			already_shaken = true
 	
 	if death_sound.playing:
 		if death_sound.get_playback_position() > 0.8:
