@@ -748,16 +748,6 @@ radial_accel_max = -2.2351742e-06
 scale_curve = SubResource("CurveTexture_pqq0b")
 color = Color(1, 0, 0, 1)
 
-[sub_resource type="Gradient" id="Gradient_3v2ag"]
-offsets = PackedFloat32Array(0.18679245, 0.9264151)
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_447s4"]
-gradient = SubResource("Gradient_3v2ag")
-fill = 1
-fill_from = Vector2(0.50341296, 0.5238908)
-fill_to = Vector2(0.5307167, 1)
-
 [node name="player" type="CharacterBody2D" unique_id=121862516]
 collision_layer = 2
 motion_mode = 1
@@ -865,12 +855,5 @@ energy = 0.46
 range_item_cull_mask = 3
 texture = ExtResource("12_jej6c")
 texture_scale = 0.13
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1044670064]
-modulate = Color(0.5741211, 0.5741211, 0.5741211, 1)
-self_modulate = Color(1, 1, 1, 0.98039216)
-position = Vector2(0, 2)
-scale = Vector2(1, 0.47999984)
-texture = SubResource("GradientTexture2D_447s4")
 
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_frame_changed"]

@@ -5,7 +5,6 @@ class_name EnemyCharacter
 enum State {
 	IDLE,
 	RUNNING,
-	RUNNING_AWAY,
 	ATTACKING,
 	HIT,
 	DEAD
@@ -14,7 +13,7 @@ enum State {
 @onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
 @onready var attack_trigger: Area2D = $trigger
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var SPEED = 100.0
 @export var ATTACK_SPEED = 200.0
@@ -23,7 +22,6 @@ enum State {
 @export var vision: int = 20
 @export var attack: Node
 @export var bullets_in_a_row: int
-@export var enemy_type: String
 
 
 var validate_raycast: RayCast2D = RayCast2D.new()
@@ -31,7 +29,6 @@ var validate_raycast: RayCast2D = RayCast2D.new()
 var knockback: Vector2 = Vector2.ZERO
 var attack_timer: float = 0.0
 var attack_cooldown: float = 0.0
-var will_push_back: bool = false
 
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
@@ -62,23 +59,21 @@ func setup_grid() -> void:
 	for cell in tilemap.get_used_cells():
 		pathfinding_grid.set_point_solid(cell, true)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not player:
 		return
 	
 	match current_state:
 		State.IDLE:
-			_state_idle(delta)
+			_state_idle(_delta)
 		State.RUNNING:
-			_state_running(delta)
-		State.RUNNING_AWAY:
-			_state_running_away(delta)
+			_state_running(_delta)
 		State.ATTACKING:
-			_state_attacking(delta)
+			_state_attacking(_delta)
 		State.HIT:
-			_state_hit(delta)
+			_state_hit(_delta)
 		State.DEAD:
-			_state_dead(delta)
+			_state_dead(_delta)
 		_:
 			pass
 	
@@ -86,21 +81,18 @@ func _physics_process(delta: float) -> void:
 
 func _state_idle(_delta: float) -> void:
 	velocity = Vector2.ZERO
-	attack_cooldown -= _delta
-	var start_cell = tilemap.local_to_map(global_position)
-	var target_cell = tilemap.local_to_map(player.global_position)
-	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
+	attack_cooldown -= _delta
 	if attack_cooldown <= 0.0 and _can_attack():
-		if  1 < path.size() and path.size() < 7 and enemy_type == "ranged":
-			_change_state(State.RUNNING_AWAY)
-			return
-		if path.size() <= 1 and enemy_type == "ranged" and attack:
-			will_push_back = true
-			
 		_start_attacking()
 		return
-	elif not _can_attack() and 1 < path.size() and path.size() < vision:
+
+	var start_cell = tilemap.local_to_map(global_position)
+	var target_cell = tilemap.local_to_map(player.global_position)
+	
+	path = pathfinding_grid.get_point_path(start_cell, target_cell)
+	
+	if 1 < path.size() and path.size() < vision:
 		_change_state(State.RUNNING)
 		return
 
@@ -124,23 +116,6 @@ func _state_running(_delta: float) -> void:
 	
 	velocity = direction * SPEED
 
-func _state_running_away(_delta) -> void:
-	attack_cooldown -= _delta
-	
-	var start_cell = tilemap.local_to_map(global_position)
-	var target_cell = tilemap.local_to_map(player.global_position)
-	
-	path = pathfinding_grid.get_point_path(start_cell, target_cell)
-	
-	if path.size() <= 1 or path.size() >= 8:
-		_change_state(State.IDLE)
-		return
-	
-	var next_point = path[1]
-	var direction = global_position.direction_to(next_point)
-	
-	velocity = direction * SPEED * -1
-
 func _can_attack() -> bool:
 	if player in attack_trigger.get_overlapping_bodies():
 		validate_raycast.target_position = player.position - position
@@ -153,13 +128,12 @@ func _can_attack() -> bool:
 		
 	return false
 
-
 func _start_attacking() -> void:
-	if bullets_in_a_row == 0 or will_push_back:
+	if bullets_in_a_row == 0:
 		attack_timer = 0.25
 	else:
 		attack_timer = bullets_in_a_row/10.0
-	attack_cooldown = 1.0
+	attack_cooldown = 0.8
 	
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction.normalized() * ATTACK_SPEED
@@ -169,13 +143,7 @@ func _start_attacking() -> void:
 func _state_attacking(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	
-	if will_push_back:
-		attack.push_back(player)
-		will_push_back = false
-		_change_state(State.IDLE)
-		return
-	else:
-		attack.attack(player, bullets_in_a_row)
+	attack.attack(player, bullets_in_a_row)
 	
 	attack_timer -= _delta
 	attack_cooldown -= _delta
