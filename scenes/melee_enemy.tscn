@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://by4dbcayo4jmq" path="res://sprites/player.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://comxecvd7knf8" path="res://scripts/enemy.gd" id="1_md0e3"]
 [ext_resource type="Script" uid="uid://cam1mjnw0c6wa" path="res://scripts/melee_attack.gd" id="3_vaj5w"]
+[ext_resource type="AudioStream" uid="uid://b43w3aaikdvu6" path="res://audio/death_0.wav" id="4_x3ymb"]
 [ext_resource type="AudioStream" uid="uid://dgx6sdoekrpr5" path="res://audio/damage_0.wav" id="4_xcjf7"]
 [ext_resource type="AudioStream" uid="uid://bywm7dk1oqw33" path="res://audio/damage_1.wav" id="5_x3ymb"]
 [ext_resource type="AudioStream" uid="uid://ccqfbl828l8mw" path="res://audio/damage_2.wav" id="6_t7tl4"]
@@ -51,6 +52,9 @@ script = ExtResource("3_vaj5w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hurtbox" unique_id=1406469227]
 shape = SubResource("CircleShape2D_oamls")
+
+[node name="death_sound" type="AudioStreamPlayer2D" parent="." unique_id=156903562]
+stream = ExtResource("4_x3ymb")
 
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=1949202475]
 stream = SubResource("AudioStreamRandomizer_87140")

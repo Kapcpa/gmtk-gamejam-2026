@@ -11,7 +11,6 @@
 [ext_resource type="AudioStream" uid="uid://db8cliwql134m" path="res://audio/sword_2.wav" id="9_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://cxxu7e6tntb6p" path="res://sprites/dash particle.png" id="10_y4r1p"]
 [ext_resource type="Texture2D" uid="uid://cxiathp1p20td" path="res://sprites/dash particle1.png" id="12_3v2ag"]
-[ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="12_jej6c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cm1v6"]
 radius = 5.0
@@ -762,7 +761,7 @@ shape = SubResource("CapsuleShape2D_cm1v6")
 z_index = 2
 position = Vector2(93, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"up_run"
+animation = &"side_dash"
 offset = Vector2(-93, 0)
 
 [node name="melee_hitbox" type="Area2D" parent="." unique_id=722629095]
@@ -795,9 +794,9 @@ stream = SubResource("AudioStreamRandomizer_87140")
 stream = SubResource("AudioStreamRandomizer_oamls")
 
 [node name="dash_particle" type="Node2D" parent="." unique_id=2007334217]
-z_index = 1
 
 [node name="dash_right" type="GPUParticles2D" parent="dash_particle" unique_id=1363720148]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -807,6 +806,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_up" type="GPUParticles2D" parent="dash_particle" unique_id=1462870282]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -816,6 +816,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_down" type="GPUParticles2D" parent="dash_particle" unique_id=16254177]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -825,6 +826,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_left" type="GPUParticles2D" parent="dash_particle" unique_id=103900618]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -834,6 +836,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_burst" type="GPUParticles2D" parent="dash_particle" unique_id=1712615164]
+z_index = 1
 position = Vector2(1, -8)
 emitting = false
 amount = 100
@@ -843,14 +846,5 @@ speed_scale = 1.06
 explosiveness = 0.61
 randomness = 0.37
 process_material = SubResource("ParticleProcessMaterial_fceub")
-
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=182493982]
-position = Vector2(0, -12)
-scale = Vector2(-1.5442629, 1.505559)
-color = Color(1.5144593, 1.2520044, 0.6856546, 1)
-energy = 0.41
-range_item_cull_mask = 3
-texture = ExtResource("12_jej6c")
-texture_scale = 0.13
 
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_frame_changed"]

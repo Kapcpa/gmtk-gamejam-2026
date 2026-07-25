@@ -14,6 +14,8 @@ enum State {
 @onready var tilemap: TileMapLayer = %tilemap
 @onready var attack_trigger: Area2D = $trigger
 
+@onready var sprite: Sprite2D = $Sprite2D
+
 @export var SPEED = 100.0
 @export var ATTACK_SPEED = 200.0
 @export var ATTACK_FRICTION = 1200
@@ -34,6 +36,7 @@ var path: PackedVector2Array
 var current_state: State = State.IDLE
 
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
+@onready var death_sound: AudioStreamPlayer2D = $death_sound
 
 func _ready() -> void:
 	GameManager.register_enemy(self)
@@ -70,7 +73,7 @@ func _physics_process(_delta: float) -> void:
 		State.HIT:
 			_state_hit(_delta)
 		State.DEAD:
-			_state_dead()
+			_state_dead(_delta)
 		_:
 			pass
 	
@@ -152,7 +155,15 @@ func _state_hit(_delta: float) -> void:
 	if knockback == Vector2.ZERO:
 		_change_state(State.IDLE)
 
-func _state_dead() -> void:
+func _state_dead(_delta: float) -> void:
+	velocity = knockback
+	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
+	
+	if death_sound.playing:
+		if death_sound.get_playback_position() > 0.8:
+			sprite.visible = false
+		return
+	
 	GameManager.unregister_enemy(self)
 	queue_free()
 
@@ -160,7 +171,7 @@ func _change_state(new_state: State) -> void:
 	current_state = new_state
 
 func take_damage(damage: float, knockback_force: Vector2) -> void:
-	if current_state == State.HIT:
+	if current_state in [State.HIT, State.DEAD]:
 		return
 	
 	if damage > 0:
@@ -172,4 +183,6 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 	_change_state(State.HIT)
 	
 	if health <= 0:
+		death_sound.play()
+		knockback = knockback_force * 1.5
 		_change_state(State.DEAD)
