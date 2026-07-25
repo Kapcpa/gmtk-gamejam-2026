@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cgjujcy13oenf"]
 
-[ext_resource type="Texture2D" uid="uid://by4dbcayo4jmq" path="res://sprites/player.png" id="1_mkf8s"]
 [ext_resource type="Script" uid="uid://bhyip2mu3u7bk" path="res://scripts/bullet.gd" id="1_y25gk"]
+[ext_resource type="Texture2D" uid="uid://bqd6blruxnkxb" path="res://sprites/bullet.png" id="2_y25gk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o2nk3"]
 radius = 6.12245
@@ -12,7 +12,6 @@ radius = 5.0
 height = 11.428572
 
 [node name="bullet" type="CharacterBody2D" unique_id=1534914301 groups=["bullets"]]
-scale = Vector2(0.4, 0.7)
 collision_layer = 8
 motion_mode = 1
 script = ExtResource("1_y25gk")
@@ -25,8 +24,13 @@ shape = SubResource("CapsuleShape2D_o2nk3")
 [node name="BulletSprite" type="Sprite2D" parent="." unique_id=1664982792]
 z_index = 3
 position = Vector2(0, -5.9604645e-08)
-scale = Vector2(0.4, 0.7)
-texture = ExtResource("1_mkf8s")
+texture = ExtResource("2_y25gk")
+
+[node name="PointLight2D" type="PointLight2D" parent="BulletSprite" unique_id=790838158]
+position = Vector2(0, 5.9604645e-08)
+color = Color(0.94, 0, 0, 1)
+texture = ExtResource("2_y25gk")
+texture_scale = 2.0
 
 [node name="Area2D" type="Area2D" parent="." unique_id=513286240 groups=["bullets"]]
 collision_layer = 0
