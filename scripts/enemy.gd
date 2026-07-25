@@ -101,7 +101,7 @@ func _state_idle(_delta: float) -> void:
 		if  1 < path.size() and path.size() < 7 and enemy_type == "ranged":
 			_change_state(State.RUNNING_AWAY)
 			return
-		if path.size() <= 1 and enemy_type == "ranged" and attack:
+		if path.size() <= 1 and enemy_type == "ranged":
 			will_push_back = true
 			
 		_start_attacking()
