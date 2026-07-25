@@ -555,6 +555,14 @@ sources/0 = SubResource("TileSetAtlasSource_6q6d4")
 
 [node name="level0" type="Node2D" unique_id=1847793235]
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=544388924]
+offset_left = -3711.0
+offset_top = -2250.0
+offset_right = -3671.0
+offset_bottom = -2210.0
+scale = Vector2(183.93188, 114.64505)
+color = Color(0.14901961, 0.1254902, 0.17254902, 0.89411765)
+
 [node name="player" parent="." unique_id=121862516 instance=ExtResource("1_o5qli")]
 unique_name_in_owner = true
 position = Vector2(-8, -8)
