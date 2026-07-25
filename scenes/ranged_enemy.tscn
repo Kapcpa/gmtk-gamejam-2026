@@ -301,6 +301,7 @@ shape = SubResource("CircleShape2D_87140")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=925446412]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
+position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dvjff")
 animation = &"attack_no_gun"
 autoplay = "walk"
@@ -308,7 +309,7 @@ autoplay = "walk"
 [node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
-position = Vector2(-5, -3)
+position = Vector2(-5, -15)
 texture = SubResource("AtlasTexture_o2nk3")
 offset = Vector2(7, 0)
 
