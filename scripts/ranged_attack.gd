@@ -2,6 +2,8 @@ extends Node2D
 
 @export var bullet_scene: PackedScene
 
+@onready var hurtbox: Area2D = $hurtbox
+
 var bullets_shot: int = 0
 var bullet_cooldown = 0.0
 
@@ -28,6 +30,10 @@ func attack(player: PlayerCharacter, bullets_in_a_row):
 		bullets_shot += 1
 		bullet_cooldown = 0.1
 
+func push_back(player: PlayerCharacter):
+	if player in hurtbox.get_overlapping_bodies() and player.current_state not in [player.State.DASHING, player.State.GRAPPLING]:
+		var direction = global_position.direction_to(player.global_position)
+		player.take_damage(direction * ATTACK_FORCE)
 
 func reset():
 	bullets_shot = 0

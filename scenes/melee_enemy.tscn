@@ -30,7 +30,7 @@ motion_mode = 1
 script = ExtResource("1_md0e3")
 health = 3.0
 attack = NodePath("hurtbox")
-shooting_speed = 0.25
+enemy_type = "melee"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
 shape = SubResource("CircleShape2D_87140")
