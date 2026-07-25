@@ -41,6 +41,9 @@ var already_shaken: bool = false
 var pathfinding_grid: AStarGrid2D
 var path: PackedVector2Array
 
+var gun_sprite: Sprite2D
+var default_gun_sprite_position: Vector2
+
 var current_state: State = State.IDLE
 
 @onready var damage_sound: AudioStreamPlayer2D = $damage_sound
@@ -52,6 +55,11 @@ func _ready() -> void:
 	
 	validate_raycast.collision_mask = 1
 	add_child(validate_raycast)
+	
+	if enemy_type == "ranged":
+		gun_sprite = $GunSprite
+		default_gun_sprite_position = gun_sprite.position
+		print(default_gun_sprite_position.x)
 
 func setup_grid() -> void:
 	pathfinding_grid = AStarGrid2D.new()
@@ -89,10 +97,22 @@ func _physics_process(delta: float) -> void:
 		_:
 			pass
 	
+	if enemy_type == "ranged":
+		if sprite.flip_h:
+			gun_sprite.position.x = default_gun_sprite_position.x * -1
+		else:
+			gun_sprite.position.x = default_gun_sprite_position.x
+	
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
-	sprite.play("idle")
+	if enemy_type == "ranged":
+		gun_sprite.rotation = PI/2
+		if (sprite.is_playing() and sprite.animation == "attack_no_gun"):
+			pass
+	else:
+		sprite.play("idle")
+		
 	velocity = Vector2.ZERO
 	attack_cooldown_timer -= _delta
 	var start_cell = tilemap.local_to_map(global_position)
@@ -164,10 +184,17 @@ func _can_attack() -> bool:
 		validate_raycast.force_raycast_update()
 		
 		if validate_raycast.is_colliding():
+			if enemy_type == "ranged":
+				gun_sprite.hide()
 			return false
-		
+			
+		if enemy_type == "ranged":
+			gun_sprite.rotation = get_angle_to(player.global_position)
+			gun_sprite.show()
 		return true
 		
+	if enemy_type == "ranged":
+		gun_sprite.hide()
 	return false
 
 
@@ -200,6 +227,8 @@ func _state_attacking(_delta: float) -> void:
 		_change_state(State.IDLE)
 		return
 	elif enemy_type == "ranged":
+		if sprite.animation != "attack_no_gun":
+			sprite.play("attack_no_gun")
 		attack.attack(player, bullets_in_a_row)
 	elif enemy_type == "charging":
 		sprite.play("attack")
@@ -254,6 +283,8 @@ func _state_dead(_delta: float) -> void:
 	if death_sound.playing:
 		if death_sound.get_playback_position() > 0.8:
 			sprite.visible = false
+			if enemy_type == "ranged":
+				gun_sprite.visible = false
 		return
 	
 	GameManager.unregister_enemy(self)

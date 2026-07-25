@@ -180,7 +180,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qoih2")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"attack_no_gun",
 "speed": 15.0
 }, {
@@ -267,6 +267,10 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2nk3"]
+atlas = ExtResource("2_w150n")
+region = Rect2(833, 0, 32, 32)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3o11d"]
 radius = 144.03125
 
@@ -298,10 +302,15 @@ shape = SubResource("CircleShape2D_87140")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"death"
+animation = &"attack_no_gun"
 autoplay = "walk"
-frame = 2
-frame_progress = 1.0
+
+[node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]
+modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
+z_index = 1
+position = Vector2(-5, -3)
+texture = SubResource("AtlasTexture_o2nk3")
+offset = Vector2(7, 0)
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
 collision_layer = 0
