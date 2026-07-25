@@ -133,7 +133,7 @@ func _start_attacking() -> void:
 		attack_timer = 0.25
 	else:
 		attack_timer = bullets_in_a_row/10.0
-	attack_cooldown = 0.8
+	attack_cooldown = 1.0
 	
 	var direction = global_position.direction_to(player.global_position)
 	velocity = direction.normalized() * ATTACK_SPEED

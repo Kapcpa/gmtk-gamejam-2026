@@ -605,6 +605,7 @@ scale = Vector2(1.0061551, 1)
 position = Vector2(124.99999, 77)
 
 [node name="RangedEnemyBurst" parent="." unique_id=1425890523 instance=ExtResource("7_cm1v6")]
+position = Vector2(335, 119)
 bullets_in_a_row = 3
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=536918014]
