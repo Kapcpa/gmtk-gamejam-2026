@@ -92,7 +92,7 @@ func _state_idle(_delta: float) -> void:
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
 	if attack_cooldown <= 0.0 and _can_attack():
-		if  1 < path.size() and path.size() < 7 and enemy_type == "ranged":
+		if  1 < path.size() and path.size() < 6 and enemy_type == "ranged":
 			_change_state(State.RUNNING_AWAY)
 			return
 		if path.size() <= 1 and enemy_type == "ranged" and attack:
@@ -127,12 +127,15 @@ func _state_running(_delta: float) -> void:
 func _state_running_away(_delta) -> void:
 	attack_cooldown -= _delta
 	
+	if get_slide_collision_count() > 0:
+		_start_attacking()
+	
 	var start_cell = tilemap.local_to_map(global_position)
 	var target_cell = tilemap.local_to_map(player.global_position)
 	
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
-	if path.size() <= 1 or path.size() >= 8:
+	if path.size() <= 1 or path.size() >= 7:
 		_change_state(State.IDLE)
 		return
 	
