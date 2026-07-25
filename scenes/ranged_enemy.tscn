@@ -302,8 +302,10 @@ shape = SubResource("CircleShape2D_87140")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"attack_no_gun"
+animation = &"walk"
 autoplay = "walk"
+frame = 6
+frame_progress = 0.22284894
 
 [node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
