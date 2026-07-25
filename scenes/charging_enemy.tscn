@@ -15,26 +15,6 @@ radius = 6.0827627
 atlas = ExtResource("2_yhpoi")
 region = Rect2(480, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4trc7"]
-atlas = ExtResource("2_yhpoi")
-region = Rect2(320, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_34nm0"]
-atlas = ExtResource("2_yhpoi")
-region = Rect2(352, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8ppig"]
-atlas = ExtResource("2_yhpoi")
-region = Rect2(384, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c5pw0"]
-atlas = ExtResource("2_yhpoi")
-region = Rect2(416, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_md266"]
-atlas = ExtResource("2_yhpoi")
-region = Rect2(448, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_57jc1"]
 atlas = ExtResource("2_yhpoi")
 region = Rect2(0, 0, 32, 32)
@@ -75,6 +55,26 @@ region = Rect2(256, 0, 32, 32)
 atlas = ExtResource("2_yhpoi")
 region = Rect2(288, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4trc7"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_34nm0"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(352, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ppig"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(384, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5pw0"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(416, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md266"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(448, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ib0mu"]
 animations = [{
 "frames": [{
@@ -82,28 +82,8 @@ animations = [{
 "texture": SubResource("AtlasTexture_t7tl4")
 }],
 "loop": 0,
-"name": &"attack_dash",
+"name": &"attack",
 "speed": 2.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4trc7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_34nm0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8ppig")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c5pw0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_md266")
-}],
-"loop": 1,
-"name": &"attack_telegraph",
-"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -137,7 +117,27 @@ animations = [{
 "texture": SubResource("AtlasTexture_sf6p0")
 }],
 "loop": 1,
-"name": &"idle_move",
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4trc7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_34nm0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ppig")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5pw0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md266")
+}],
+"loop": 1,
+"name": &"telegraph",
 "speed": 10.0
 }]
 
@@ -195,8 +195,8 @@ shape = SubResource("CircleShape2D_87140")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"attack_dash"
-autoplay = "idle_move"
+animation = &"attack"
+autoplay = "idle"
 
 [node name="dash_right" type="GPUParticles2D" parent="." unique_id=541090992]
 position = Vector2(-1, -2)
