@@ -197,6 +197,8 @@ func _state_attacking(_delta: float) -> void:
 	elif enemy_type == "ranged":
 		attack.attack(player, bullets_in_a_row)
 	elif enemy_type == "charging":
+		if get_slide_collision_count() > 0:
+			GameManager._apply_shake(4, 10)
 		attack.attack(player)
 	elif enemy_type == "melee":
 		attack.attack(player)
