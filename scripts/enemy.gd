@@ -133,7 +133,7 @@ func _state_idle(_delta: float) -> void:
 
 func _state_running(_delta: float) -> void:
 	_flip_sprite()
-	sprite.play("idle")
+	sprite.play("walk")
 	attack_cooldown_timer -= _delta
 	if attack_cooldown_timer <= 0.0 and _can_attack():
 		_start_attacking()
@@ -156,6 +156,8 @@ func _state_running(_delta: float) -> void:
 	velocity = direction * SPEED
 
 func _state_running_away(_delta) -> void:
+	gun_sprite.hide()
+	sprite.play("walk")
 	attack_cooldown_timer -= _delta
 	
 	if get_slide_collision_count() > 0:
