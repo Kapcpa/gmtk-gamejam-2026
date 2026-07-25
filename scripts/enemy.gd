@@ -124,7 +124,7 @@ func _state_idle(_delta: float) -> void:
 			return
 		if path.size() <= 1 and enemy_type == "ranged":
 			will_push_back = true
-		
+			
 		_start_attacking()
 		return
 	elif not _can_attack() and 1 < path.size() and path.size() < vision:
@@ -133,10 +133,10 @@ func _state_idle(_delta: float) -> void:
 
 func _state_running(_delta: float) -> void:
 	_flip_sprite()
-	if enemy_type != "charging":
-		sprite.play("walk")
-	else:
+	if enemy_type == "charging":
 		sprite.play("idle")
+	else:
+		sprite.play("walk")
 	attack_cooldown_timer -= _delta
 	if attack_cooldown_timer <= 0.0 and _can_attack():
 		_start_attacking()
@@ -210,12 +210,16 @@ func _start_attacking() -> void:
 		
 	attack_cooldown_timer = ATTACK_COOLDOWN
 	
-	if enemy_type in ["melee", "ranged"]:
+	if enemy_type == "ranged":
 		var direction = global_position.direction_to(player.global_position)
 		velocity = direction.normalized() * ATTACK_SPEED
 	elif enemy_type == "charging":
 		charging_timer = CHARGING_TIME
 		charging_direction = Vector2.ZERO
+		_change_state(State.CHARGING)
+		return
+	elif enemy_type == "melee":
+		charging_timer = CHARGING_TIME
 		_change_state(State.CHARGING)
 		return
 	
@@ -239,7 +243,6 @@ func _state_attacking(_delta: float) -> void:
 		if get_slide_collision_count() > 0:
 			GameManager._apply_shake(4, 10)
 		attack.attack(player)
-		
 	elif enemy_type == "melee":
 		sprite.play("attack")
 		attack.attack(player)
@@ -254,12 +257,17 @@ func _state_charging(_delta: float) -> void:
 	sprite.play("telegraph")
 	charging_timer -= _delta
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
-	if charging_direction == Vector2.ZERO:
-		charging_direction = global_position.direction_to(player.global_position)
-	if charging_timer <= 0.0:
-		var dash_right: GPUParticles2D = $dash_right
-		dash_right.restart()
-		velocity = charging_direction.normalized() * ATTACK_SPEED
+	if enemy_type == "charging":
+		if charging_direction == Vector2.ZERO:
+			charging_direction = global_position.direction_to(player.global_position)
+		if charging_timer <= 0.0:
+			var dash_right: GPUParticles2D = $dash_right
+			dash_right.restart()
+			velocity = charging_direction.normalized() * ATTACK_SPEED
+			_change_state(State.ATTACKING)
+	if enemy_type == "melee" and charging_timer <= 0.0:
+		var direction = global_position.direction_to(player.global_position)
+		velocity = direction.normalized() * ATTACK_SPEED
 		_change_state(State.ATTACKING)
 
 func _state_hit(_delta: float) -> void:
@@ -270,16 +278,20 @@ func _state_hit(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
-	if not (sprite.is_playing() and sprite.animation == "death") and not sprite.animation == "death_2":
+	if (enemy_type == "ranged" or enemy_type == "melee") and not (sprite.is_playing() and sprite.animation == "death") and not (sprite.animation == "death_2" or  sprite.animation == "death_3"):
 		sprite.play("death")
 		_flip_sprite()
 		
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
 	
-	if get_slide_collision_count() > 0:
-		sprite.play("death_2")
-		sprite.flip_h = get_last_slide_collision().get_normal().x < 0
+	if (enemy_type == "ranged" or enemy_type == "melee") and get_slide_collision_count() > 0:
+		var last_slide_collision_normal = get_last_slide_collision().get_normal()
+		if last_slide_collision_normal.y > 0.0:
+			sprite.play("death_3")
+		else:
+			sprite.play("death_2")
+		sprite.flip_h = last_slide_collision_normal.x < 0
 		
 		if not already_shaken:
 			GameManager._apply_shake(3, 10)
