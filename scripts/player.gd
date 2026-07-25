@@ -38,6 +38,7 @@ const THROW_RANGE = 120.0
 const GRAPPLE_VELOCITY = 500
 const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
+const DASH_COOLDOWN = 0.5
 
 var current_state: State = State.IDLE
 
@@ -49,6 +50,7 @@ var continue_attack: bool = false
 
 var hit_enemies: Array[EnemyCharacter] = []
 var dash_timer: float = DASH_TIME
+var dash_cooldown_timer: float = DASH_COOLDOWN
 
 var kunai_target: EnemyCharacter = null
 var validate_raycast: RayCast2D = RayCast2D.new()
@@ -69,6 +71,8 @@ func _ready() -> void:
 	_animate(Vector2.RIGHT)
 
 func _physics_process(delta: float) -> void:
+	if dash_cooldown_timer > 0.0:
+		dash_cooldown_timer -= delta
 	combo_window -= delta 
 	if combo_window <= 0.0:
 		attack_count = 0
@@ -172,7 +176,7 @@ func _state_running(_delta: float) -> void:
 	if Input.is_action_just_pressed("throw"):
 		_kunai_throw()
 		return
-	if Input.is_action_just_pressed("dash"):
+	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:
 		dash_timer = DASH_TIME
 		_change_state(State.DASHING)
 		dash_explode.restart()
@@ -186,6 +190,8 @@ func _state_running(_delta: float) -> void:
 			dash_down.restart()	
 
 func _state_dashing(_delta: float) -> void:
+	if dash_cooldown_timer <= 0.0:
+		dash_cooldown_timer = DASH_COOLDOWN
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
 	#var afterimage_instance = afterimage.instance()
@@ -267,7 +273,7 @@ func _state_grappled(_delta: float) -> void:
 	if direction:
 		velocity = direction * SPEED
 		_animate(direction, "run")
-		if Input.is_action_just_pressed("dash"):
+		if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:
 			dash_timer = DASH_TIME
 			_change_state(State.DASHING)
 	else:
