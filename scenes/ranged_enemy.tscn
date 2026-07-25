@@ -193,9 +193,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_15fjt")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yk4ja")
 }],
 "loop": 0,
 "name": &"death",
@@ -301,8 +298,10 @@ shape = SubResource("CircleShape2D_87140")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"walk"
+animation = &"death"
 autoplay = "walk"
+frame = 2
+frame_progress = 1.0
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
 collision_layer = 0
