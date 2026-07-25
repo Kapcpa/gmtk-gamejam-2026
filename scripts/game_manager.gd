@@ -47,7 +47,11 @@ func _process(delta: float) -> void:
 		slowmo_timer -= delta * 1/Engine.time_scale
 	else:
 		Engine.time_scale = 1.0
-
+		
+	if adrenaline <= 0.0:
+		GameOverManager.is_game_over = true
+		player.take_damage(Vector2.ZERO)
+		
 func register_hit() -> void:
 	combo_count += 1
 	combo_time_left = COMBO_WINDOW
