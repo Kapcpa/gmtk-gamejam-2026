@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c4km4sremwige" path="res://scenes/transition_zone.tscn" id="5_x1x1l"]
 [ext_resource type="Texture2D" uid="uid://dlt5ugp634gho" path="res://sprites/tilemaps/tilemap_yellow_night.png" id="7_6hrqr"]
 [ext_resource type="PackedScene" uid="uid://c0osy2d103goy" path="res://scenes/ranged_enemy.tscn" id="7_cm1v6"]
+[ext_resource type="PackedScene" uid="uid://cy7v8e4jh3ul" path="res://scenes/charging_enemy.tscn" id="9_6q6d4"]
 [ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="9_tcqsn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6q6d4"]
@@ -605,16 +606,18 @@ tile_set = SubResource("TileSet_87140")
 position = Vector2(352, -117)
 next_scene_path = "uid://cxq6mmq7yxdbb"
 
+[node name="ChargingEnemy" parent="." unique_id=833669167 instance=ExtResource("9_6q6d4")]
+position = Vector2(-144, -103)
+
 [node name="MeleeEnemy" parent="." unique_id=617679549 instance=ExtResource("3_sugp2")]
-position = Vector2(109, -54)
-scale = Vector2(1.0061551, 1)
+position = Vector2(196, -60)
 
-[node name="RangedEnemy" parent="." unique_id=1298088436 instance=ExtResource("7_cm1v6")]
-position = Vector2(124.99999, 77)
-
-[node name="RangedEnemyBurst" parent="." unique_id=1425890523 instance=ExtResource("7_cm1v6")]
-position = Vector2(335, 119)
+[node name="RangedEnemy3Bullets" parent="." unique_id=1017890484 instance=ExtResource("7_cm1v6")]
+position = Vector2(292, 51)
 bullets_in_a_row = 3
+
+[node name="RangedEnemy1Bullet" parent="." unique_id=1249686857 instance=ExtResource("7_cm1v6")]
+position = Vector2(291, -53)
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=536918014]
 position = Vector2(-90, -7)
