@@ -76,6 +76,10 @@ region = Rect2(928, 0, 32, 32)
 atlas = ExtResource("2_w150n")
 region = Rect2(960, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_w150n"]
+atlas = ExtResource("2_w150n")
+region = Rect2(992, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_xuuaa"]
 atlas = ExtResource("2_w150n")
 region = Rect2(832, 0, 32, 32)
@@ -208,6 +212,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_w150n")
+}],
+"loop": 1,
+"name": &"death_3",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_xuuaa")
 }],
 "loop": 1,
@@ -302,10 +314,8 @@ shape = SubResource("CircleShape2D_87140")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"walk"
+animation = &"death_2"
 autoplay = "walk"
-frame = 6
-frame_progress = 0.22284894
 
 [node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)

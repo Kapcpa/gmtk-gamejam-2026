@@ -124,7 +124,7 @@ func _state_idle(_delta: float) -> void:
 			return
 		if path.size() <= 1 and enemy_type == "ranged":
 			will_push_back = true
-			
+		
 		_start_attacking()
 		return
 	elif not _can_attack() and 1 < path.size() and path.size() < vision:
@@ -238,6 +238,7 @@ func _state_attacking(_delta: float) -> void:
 		attack.attack(player)
 		
 	elif enemy_type == "melee":
+		sprite.play("attack")
 		attack.attack(player)
 	
 	attack_timer -= _delta
@@ -266,14 +267,14 @@ func _state_hit(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
-	if enemy_type == "ranged" and not (sprite.is_playing() and sprite.animation == "death") and not sprite.animation == "death_2":
+	if not (sprite.is_playing() and sprite.animation == "death") and not sprite.animation == "death_2":
 		sprite.play("death")
 		_flip_sprite()
 		
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
 	
-	if enemy_type == "ranged" and get_slide_collision_count() > 0:
+	if get_slide_collision_count() > 0:
 		sprite.play("death_2")
 		sprite.flip_h = get_last_slide_collision().get_normal().x < 0
 		
