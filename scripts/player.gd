@@ -9,7 +9,6 @@ class_name PlayerCharacter
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var camera: Camera2D = $Camera2D
-@onready var dash_particles: GPUParticles2D = $GPUParticles2D
 
 @onready var dash_up: GPUParticles2D = $dash_particle/dash_up
 @onready var dash_left: GPUParticles2D = $dash_particle/dash_left
