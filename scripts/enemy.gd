@@ -269,16 +269,20 @@ func _state_hit(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
-	if enemy_type == "ranged" and not (sprite.is_playing() and sprite.animation == "death") and not sprite.animation == "death_2":
+	if (enemy_type == "ranged" or enemy_type == "melee") and not (sprite.is_playing() and sprite.animation == "death") and not (sprite.animation == "death_2" or  sprite.animation == "death_3"):
 		sprite.play("death")
 		_flip_sprite()
 		
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
 	
-	if enemy_type == "ranged" and get_slide_collision_count() > 0:
-		sprite.play("death_2")
-		sprite.flip_h = get_last_slide_collision().get_normal().x < 0
+	if (enemy_type == "ranged" or enemy_type == "melee") and get_slide_collision_count() > 0:
+		var last_slide_collision_normal = get_last_slide_collision().get_normal()
+		if last_slide_collision_normal.y > 0.0:
+			sprite.play("death_3")
+		else:
+			sprite.play("death_2")
+		sprite.flip_h = last_slide_collision_normal.x < 0
 		
 		if not already_shaken:
 			GameManager._apply_shake(3, 10)

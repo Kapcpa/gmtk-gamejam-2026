@@ -269,20 +269,24 @@ z_index = 2
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_md0e3")
+CHARGING_TIME = 0.7
 health = 3.0
 attack = NodePath("MeleeAttack")
 enemy_type = "melee"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
+position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_87140")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1153178971]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
+position = Vector2(0, -9)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"death_3"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
+position = Vector2(0, -5)
 collision_layer = 0
 collision_mask = 2
 
@@ -290,6 +294,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_3o11d")
 
 [node name="MeleeAttack" type="Area2D" parent="." unique_id=1383664206]
+position = Vector2(0, -5)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("3_vaj5w")
