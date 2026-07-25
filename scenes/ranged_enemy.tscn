@@ -164,16 +164,20 @@ ATTACK_SPEED = -100.0
 health = 3.0
 attack = NodePath("RangedAttack")
 bullets_in_a_row = 1
+enemy_type = "ranged"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
+visible = false
 shape = SubResource("CircleShape2D_87140")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=925446412]
+modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 sprite_frames = SubResource("SpriteFrames_dvjff")
 animation = &"idle_move"
 autoplay = "idle_move"
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -185,6 +189,7 @@ script = ExtResource("3_32iyl")
 bullet_scene = ExtResource("4_ptmmb")
 
 [node name="hurtbox" type="Area2D" parent="RangedAttack" unique_id=2044175103]
+visible = false
 collision_layer = 4
 collision_mask = 2
 

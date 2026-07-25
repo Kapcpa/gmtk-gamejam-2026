@@ -92,7 +92,7 @@ func _state_idle(_delta: float) -> void:
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
 	if attack_cooldown <= 0.0 and _can_attack():
-		if  1 < path.size() and path.size() < 6 and enemy_type == "ranged":
+		if  1 < path.size() and path.size() < 7 and enemy_type == "ranged":
 			_change_state(State.RUNNING_AWAY)
 			return
 		if path.size() <= 1 and enemy_type == "ranged" and attack:
@@ -105,6 +105,8 @@ func _state_idle(_delta: float) -> void:
 		return
 
 func _state_running(_delta: float) -> void:
+	_flip_sprite()
+	
 	attack_cooldown -= _delta
 	if attack_cooldown <= 0.0 and _can_attack():
 		_start_attacking()
@@ -135,12 +137,14 @@ func _state_running_away(_delta) -> void:
 	
 	path = pathfinding_grid.get_point_path(start_cell, target_cell)
 	
-	if path.size() <= 1 or path.size() >= 7:
+	if path.size() <= 1 or path.size() >= 8:
 		_change_state(State.IDLE)
 		return
 	
 	var next_point = path[1]
 	var direction = global_position.direction_to(next_point)
+	
+	sprite.flip_h = direction.x > 0
 	
 	velocity = direction * SPEED * -1
 
@@ -170,6 +174,8 @@ func _start_attacking() -> void:
 	_change_state(State.ATTACKING)
 
 func _state_attacking(_delta: float) -> void:
+	_flip_sprite()
+	
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	
 	if will_push_back:
@@ -224,3 +230,7 @@ func take_damage(damage: float, knockback_force: Vector2) -> void:
 		death_sound.play()
 		knockback = knockback_force * 1.5
 		_change_state(State.DEAD)
+
+func _flip_sprite() -> void:
+	var direction = global_position.direction_to(player.global_position)
+	sprite.flip_h = direction.x < 0

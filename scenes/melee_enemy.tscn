@@ -160,17 +160,21 @@ motion_mode = 1
 script = ExtResource("1_md0e3")
 health = 3.0
 attack = NodePath("hurtbox")
+enemy_type = "melee"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
+visible = false
 shape = SubResource("CircleShape2D_87140")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1153178971]
+modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
 animation = &"idle_move"
 autoplay = "idle_move"
-frame_progress = 0.17548476
+frame_progress = 0.19434966
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -178,6 +182,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_3o11d")
 
 [node name="hurtbox" type="Area2D" parent="." unique_id=1383664206]
+visible = false
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("3_vaj5w")
