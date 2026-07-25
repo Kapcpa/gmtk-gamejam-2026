@@ -59,7 +59,6 @@ func _ready() -> void:
 	if enemy_type == "ranged":
 		gun_sprite = $GunSprite
 		default_gun_sprite_position = gun_sprite.position
-		print(default_gun_sprite_position.x)
 
 func setup_grid() -> void:
 	pathfinding_grid = AStarGrid2D.new()
