@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cxxu7e6tntb6p" path="res://sprites/dash particle.png" id="10_y4r1p"]
 [ext_resource type="Texture2D" uid="uid://cxiathp1p20td" path="res://sprites/dash particle1.png" id="12_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="12_jej6c"]
+[ext_resource type="AudioStream" uid="uid://d4nrjqxhlstal" path="res://audio/kunai_target_acquired_0.wav" id="13_jej6c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cm1v6"]
 radius = 5.0
@@ -854,5 +855,8 @@ energy = 0.46
 range_item_cull_mask = 3
 texture = ExtResource("12_jej6c")
 texture_scale = 0.13
+
+[node name="kunai_sound" type="AudioStreamPlayer2D" parent="." unique_id=1855243340]
+stream = ExtResource("13_jej6c")
 
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_frame_changed"]
