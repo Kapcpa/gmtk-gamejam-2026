@@ -13,16 +13,16 @@ enum State {
 @onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
 @onready var attack_trigger: Area2D = $trigger
-
 @onready var sprite: Sprite2D = $Sprite2D
 
 @export var SPEED = 100.0
 @export var ATTACK_SPEED = 200.0
 @export var ATTACK_FRICTION = 1200
-
 @export var health: float
 @export var vision: int = 20
 @export var attack: Node
+@export var bullets_in_a_row: int
+
 
 var validate_raycast: RayCast2D = RayCast2D.new()
 
@@ -129,7 +129,10 @@ func _can_attack() -> bool:
 	return false
 
 func _start_attacking() -> void:
-	attack_timer = 0.25
+	if bullets_in_a_row == 0:
+		attack_timer = 0.25
+	else:
+		attack_timer = bullets_in_a_row/10.0
 	attack_cooldown = 0.8
 	
 	var direction = global_position.direction_to(player.global_position)
@@ -140,7 +143,7 @@ func _start_attacking() -> void:
 func _state_attacking(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	
-	attack.attack(player)
+	attack.attack(player, bullets_in_a_row)
 	
 	attack_timer -= _delta
 	attack_cooldown -= _delta

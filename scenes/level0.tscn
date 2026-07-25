@@ -601,8 +601,11 @@ next_scene_path = "uid://cxq6mmq7yxdbb"
 position = Vector2(109, -54)
 scale = Vector2(1.0061551, 1)
 
-[node name="RangedEnemy" parent="." unique_id=1494898214 instance=ExtResource("7_cm1v6")]
-position = Vector2(152, 67)
+[node name="RangedEnemy" parent="." unique_id=1298088436 instance=ExtResource("7_cm1v6")]
+position = Vector2(124.99999, 77)
+
+[node name="RangedEnemyBurst" parent="." unique_id=1425890523 instance=ExtResource("7_cm1v6")]
+bullets_in_a_row = 3
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=536918014]
 position = Vector2(-90, -7)

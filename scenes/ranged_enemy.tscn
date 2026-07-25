@@ -30,6 +30,7 @@ SPEED = 50.0
 ATTACK_SPEED = -100.0
 health = 3.0
 attack = NodePath("RangedAttack")
+bullets_in_a_row = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
 shape = SubResource("CircleShape2D_87140")
