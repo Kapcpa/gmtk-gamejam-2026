@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c4km4sremwige" path="res://scenes/transition_zone.tscn" id="5_x1x1l"]
 [ext_resource type="Texture2D" uid="uid://dlt5ugp634gho" path="res://sprites/tilemaps/tilemap_yellow_night.png" id="7_6hrqr"]
 [ext_resource type="PackedScene" uid="uid://c0osy2d103goy" path="res://scenes/ranged_enemy.tscn" id="7_cm1v6"]
+[ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="9_tcqsn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6q6d4"]
 texture = ExtResource("3_wrnl3")
@@ -598,9 +599,78 @@ next_scene_path = "uid://cxq6mmq7yxdbb"
 
 [node name="MeleeEnemy" parent="." unique_id=617679549 instance=ExtResource("3_sugp2")]
 position = Vector2(109, -54)
+scale = Vector2(1.0061551, 1)
 
 [node name="RangedEnemy" parent="." unique_id=1494898214 instance=ExtResource("7_cm1v6")]
 position = Vector2(152, 67)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=536918014]
+position = Vector2(-90, -7)
+color = Color(0.96862745, 0.8039216, 0.4745098, 0.67058825)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D8" type="PointLight2D" parent="." unique_id=1767235733]
+position = Vector2(41, -5)
+color = Color(0.96862745, 0.8039216, 0.4745098, 0.67058825)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D9" type="PointLight2D" parent="." unique_id=1222815536]
+position = Vector2(296, -84)
+color = Color(0.96862745, 0.8039216, 0.4745098, 0.67058825)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D10" type="PointLight2D" parent="." unique_id=42871082]
+position = Vector2(297, 55)
+color = Color(0.96862745, 0.8039216, 0.4745098, 0.67058825)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=953686981]
+position = Vector2(-25, 107)
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D3" type="PointLight2D" parent="." unique_id=161778469]
+position = Vector2(49, 133)
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D4" type="PointLight2D" parent="." unique_id=1048802780]
+position = Vector2(81.00003, -104)
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D5" type="PointLight2D" parent="." unique_id=67786091]
+position = Vector2(170, -105)
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D6" type="PointLight2D" parent="." unique_id=964585756]
+position = Vector2(89.00001, 76.00001)
+rotation = 1.5707964
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
+
+[node name="PointLight2D7" type="PointLight2D" parent="." unique_id=1535765516]
+position = Vector2(326, 44.000008)
+rotation = 1.5707964
+scale = Vector2(0.4399997, 0.20000124)
+color = Color(1, 0.78100944, 0.33983585, 0.9647059)
+texture = ExtResource("9_tcqsn")
+texture_scale = 0.75
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=848643460]
 position = Vector2(263, -99)
