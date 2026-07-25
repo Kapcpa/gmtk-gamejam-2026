@@ -92,7 +92,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _state_idle(_delta: float) -> void:
-	sprite.play("idle_move")
+	sprite.play("idle")
 	velocity = Vector2.ZERO
 	attack_cooldown_timer -= _delta
 	var start_cell = tilemap.local_to_map(global_position)
@@ -114,7 +114,7 @@ func _state_idle(_delta: float) -> void:
 
 func _state_running(_delta: float) -> void:
 	_flip_sprite()
-	sprite.play("idle_move")
+	sprite.play("idle")
 	attack_cooldown_timer -= _delta
 	if attack_cooldown_timer <= 0.0 and _can_attack():
 		_start_attacking()
@@ -200,7 +200,7 @@ func _state_attacking(_delta: float) -> void:
 		attack.attack(player, bullets_in_a_row)
 	elif enemy_type == "charging":
 		
-		sprite.play("attack_dash")
+		sprite.play("attack")
 		if get_slide_collision_count() > 0:
 			GameManager._apply_shake(4, 10)
 		attack.attack(player)
@@ -215,7 +215,7 @@ func _state_attacking(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_charging(_delta: float) -> void:
-	sprite.play("attack_telegraph")
+	sprite.play("telegraph")
 	charging_timer -= _delta
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	if charging_timer <= 0.0:
