@@ -3,6 +3,8 @@ extends Node2D
 @export var bullet_scene: PackedScene
 
 @onready var hurtbox: Area2D = $hurtbox
+@onready var gun_burst: AudioStreamPlayer2D = $GunBurst
+@onready var gun_single: AudioStreamPlayer2D = $GunSingle
 
 var bullets_shot: int = 0
 var bullet_cooldown = 0.0
@@ -26,6 +28,11 @@ func attack(player: PlayerCharacter, bullets_in_a_row):
 		var game_manager = get_tree().root.get_child(0)
 		
 		game_manager.add_child(bullet)
+		
+		if bullets_in_a_row == 1:
+			gun_single.play()
+		else:
+			gun_burst.play()
 		
 		bullets_shot += 1
 		bullet_cooldown = 0.1

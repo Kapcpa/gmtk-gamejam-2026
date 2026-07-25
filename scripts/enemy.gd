@@ -106,6 +106,7 @@ func _physics_process(delta: float) -> void:
 
 func _state_idle(_delta: float) -> void:
 	if enemy_type == "ranged":
+		attack.position = gun_sprite.position
 		gun_sprite.rotation = PI/2
 		if (sprite.is_playing() and sprite.animation == "attack_no_gun"):
 			pass

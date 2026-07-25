@@ -15,8 +15,7 @@ class_name PlayerCharacter
 @onready var dash_right: GPUParticles2D = $dash_particle/dash_right
 @onready var dash_down: GPUParticles2D = $dash_particle/dash_down
 @onready var dash_explode: GPUParticles2D = $dash_particle/dash_burst
-
-
+@onready var kunai_sound: AudioStreamPlayer2D = $kunai_sound
 
 enum State {
 	IDLE,
@@ -260,7 +259,7 @@ func _kunai_throw() -> void:
 			var attack_force = throw_hitbox.target_position.normalized() * MELEE_FORCE
 			_collider.take_damage(0.0, attack_force)  # don't deal damage in the beginning?
 			GameManager.register_hit()
-			
+			kunai_sound.play()
 			_change_state(State.GRAPPLED)
 
 func _state_grappled(_delta: float) -> void:

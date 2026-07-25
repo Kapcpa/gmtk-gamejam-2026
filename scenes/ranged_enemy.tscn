@@ -8,6 +8,8 @@
 [ext_resource type="AudioStream" uid="uid://bywm7dk1oqw33" path="res://audio/damage_1.wav" id="6_w150n"]
 [ext_resource type="AudioStream" uid="uid://ccqfbl828l8mw" path="res://audio/damage_2.wav" id="7_dvjff"]
 [ext_resource type="AudioStream" uid="uid://b43w3aaikdvu6" path="res://audio/death_0.wav" id="8_w150n"]
+[ext_resource type="AudioStream" uid="uid://17xvh2wvodcx" path="res://audio/gun_1.wav" id="9_6r77u"]
+[ext_resource type="AudioStream" uid="uid://duivvfmbixmwy" path="res://audio/gun_0.wav" id="10_g3aa2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_87140"]
 radius = 6.0827627
@@ -316,7 +318,7 @@ modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"death_3"
+animation = &"idle"
 autoplay = "walk"
 
 [node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]
@@ -343,6 +345,12 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangedAttack/hurtbox" unique_id=1860667349]
 shape = SubResource("CircleShape2D_o2nk3")
+
+[node name="GunBurst" type="AudioStreamPlayer2D" parent="RangedAttack" unique_id=1824107985]
+stream = ExtResource("10_g3aa2")
+
+[node name="GunSingle" type="AudioStreamPlayer2D" parent="RangedAttack" unique_id=545175294]
+stream = ExtResource("9_6r77u")
 
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=1986690404]
 stream = SubResource("AudioStreamRandomizer_6r77u")
