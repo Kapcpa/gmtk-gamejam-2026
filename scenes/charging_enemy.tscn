@@ -141,6 +141,30 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_clu12"]
+atlas = ExtResource("2_yhpoi")
+region = Rect2(480, 0, 32, 32)
+
+[sub_resource type="Curve" id="Curve_43ycq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ve47d"]
+curve = SubResource("Curve_43ycq")
+
+[sub_resource type="Gradient" id="Gradient_2wy65"]
+colors = PackedColorArray(0.9333264, 4.813075e-06, 9.62615e-07, 1, 0.83383924, 0.031975955, 0.84517235, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mw11r"]
+gradient = SubResource("Gradient_2wy65")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1dwmq"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+color = Color(2.5713813, 0.16949554, 0.087038875, 1)
+color_initial_ramp = SubResource("GradientTexture1D_mw11r")
+alpha_curve = SubResource("CurveTexture_ve47d")
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3o11d"]
 radius = 25.0
 
@@ -172,6 +196,17 @@ modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
 animation = &"attack_dash"
 autoplay = "idle_move"
+
+[node name="dash_right" type="GPUParticles2D" parent="." unique_id=541090992]
+z_index = 1
+position = Vector2(-1, -2)
+scale = Vector2(11.450492, 3.7259836)
+emitting = false
+amount = 5
+texture = SubResource("AtlasTexture_clu12")
+lifetime = 0.3
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_1dwmq")
 
 [node name="trigger" type="Area2D" parent="." unique_id=1453928519]
 scale = Vector2(5.196203, 5.196203)

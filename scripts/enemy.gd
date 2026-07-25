@@ -29,6 +29,7 @@ enum State {
 @export var enemy_type: String
 
 
+
 var validate_raycast: RayCast2D = RayCast2D.new()
 
 var knockback: Vector2 = Vector2.ZERO
@@ -198,6 +199,7 @@ func _state_attacking(_delta: float) -> void:
 	elif enemy_type == "ranged":
 		attack.attack(player, bullets_in_a_row)
 	elif enemy_type == "charging":
+		
 		sprite.play("attack_dash")
 		if get_slide_collision_count() > 0:
 			GameManager._apply_shake(4, 10)
@@ -217,6 +219,8 @@ func _state_charging(_delta: float) -> void:
 	charging_timer -= _delta
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	if charging_timer <= 0.0:
+		var dash_right: GPUParticles2D = $dash_right
+		dash_right.restart()
 		var direction = global_position.direction_to(player.global_position)
 		velocity = direction.normalized() * ATTACK_SPEED
 		_change_state(State.ATTACKING)

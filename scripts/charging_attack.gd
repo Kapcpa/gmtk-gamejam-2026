@@ -1,5 +1,6 @@
 extends Area2D
 
+
 const ATTACK_FORCE = 300
 
 func attack(player: PlayerCharacter):
