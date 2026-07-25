@@ -289,7 +289,6 @@ motion_mode = 1
 script = ExtResource("1_rs3ab")
 SPEED = 50.0
 ATTACK_SPEED = -100.0
-ATTACK_FRICTION = null
 CHARGING_TIME = null
 ATTACK_COOLDOWN = null
 health = 3.0
