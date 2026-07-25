@@ -761,7 +761,7 @@ shape = SubResource("CapsuleShape2D_cm1v6")
 z_index = 2
 position = Vector2(93, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"side_attack_2"
+animation = &"side_dash"
 offset = Vector2(-93, 0)
 
 [node name="melee_hitbox" type="Area2D" parent="." unique_id=722629095]
@@ -796,6 +796,7 @@ stream = SubResource("AudioStreamRandomizer_oamls")
 [node name="dash_particle" type="Node2D" parent="." unique_id=2007334217]
 
 [node name="dash_right" type="GPUParticles2D" parent="dash_particle" unique_id=1363720148]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -805,6 +806,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_up" type="GPUParticles2D" parent="dash_particle" unique_id=1462870282]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -814,6 +816,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_down" type="GPUParticles2D" parent="dash_particle" unique_id=16254177]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -823,6 +826,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_left" type="GPUParticles2D" parent="dash_particle" unique_id=103900618]
+z_index = 1
 position = Vector2(2, -7)
 emitting = false
 amount = 5
@@ -832,6 +836,7 @@ one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
 [node name="dash_burst" type="GPUParticles2D" parent="dash_particle" unique_id=1712615164]
+z_index = 1
 position = Vector2(1, -8)
 emitting = false
 amount = 100
