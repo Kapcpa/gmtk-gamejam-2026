@@ -15,7 +15,9 @@ class_name PlayerCharacter
 @onready var dash_left: GPUParticles2D = $dash_particle/dash_left
 @onready var dash_right: GPUParticles2D = $dash_particle/dash_right
 @onready var dash_down: GPUParticles2D = $dash_particle/dash_down
-@onready var line_particle: GPUParticles2D = $dash_particle/line
+@onready var dash_explode: GPUParticles2D = $dash_particle/dash_burst
+
+
 
 enum State {
 	IDLE,
@@ -174,7 +176,7 @@ func _state_running(_delta: float) -> void:
 	if Input.is_action_just_pressed("dash"):
 		dash_timer = DASH_TIME
 		_change_state(State.DASHING)
-		line_particle.restart()
+		dash_explode.restart()
 		if animation_direction.x < 0:
 			dash_left.restart()
 		elif animation_direction.x > 0:
@@ -191,7 +193,6 @@ func _state_dashing(_delta: float) -> void:
 
 	
 
-	
 	_animate(dash_direction, "dash")
 	#get_parent().get_parent().add_child(afterimage_instance)
 	velocity = dash_direction * DASH_VELOCITY
