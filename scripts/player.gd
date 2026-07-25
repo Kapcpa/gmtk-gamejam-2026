@@ -58,7 +58,7 @@ var animation_direction: Vector2 = Vector2.ZERO
 @onready var attack_sound: AudioStreamPlayer2D = $attack_sound
 
 var knockback: Vector2 = Vector2.ZERO
-var afterimage = preload("res://scenes/afterimage.tscn")
+
 func _ready() -> void:
 	validate_raycast.collision_mask = 1
 	add_child(validate_raycast)
@@ -336,7 +336,7 @@ func _aim():
 		]
 		
 func take_damage(knockback_force: Vector2) -> void:
-	if current_state == State.HIT:
+	if current_state in [State.HIT, State.DEAD]:
 		return
 	
 	GameManager.reset_combo()
@@ -345,7 +345,9 @@ func take_damage(knockback_force: Vector2) -> void:
 	
 	knockback = knockback_force
 	_change_state(State.HIT)
-
+	
+	if GameManager.adrenaline <= 0.0:
+		_change_state(State.DEAD)
 
 func _on_frame_changed() -> void:
 	if current_state == State.RUNNING and sprite.frame in [1, 5]:
