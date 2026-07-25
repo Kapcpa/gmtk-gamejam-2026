@@ -301,6 +301,8 @@ func _state_grappling(_delta: float) -> void:
 	var grapple_direction = (grapple_end - position).normalized()
 	velocity = grapple_direction * GRAPPLE_VELOCITY
 	
+	_animate(grapple_direction, "dash")
+	
 	var world_collision = false
 	
 	for index in range(get_slide_collision_count()):
