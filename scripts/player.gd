@@ -39,6 +39,8 @@ const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
 const DASH_COOLDOWN = 0.5
 const KUNAI_COOLDOWN = 2.0
+const COMBO_WINDOW: float = 2.5
+const KUNAI_COMBO_WINDOW: float = 2.0
 
 var current_state: State = State.IDLE
 
@@ -235,8 +237,9 @@ func _state_attacking(_delta: float) -> void:
 		if enemy not in hit_enemies:
 			if enemy.current_state != enemy.State.HIT:
 				var attack_force = to_local(get_global_mouse_position()).normalized() * MELEE_FORCE
+				hit_enemies.append(enemy)
 				enemy.take_damage(1.0, attack_force)
-				GameManager.register_hit()
+				GameManager.register_hit(COMBO_WINDOW)
 	
 	if attack_count < 2 and Input.is_action_just_pressed("attack"):
 		continue_attack = true
@@ -263,7 +266,10 @@ func _kunai_throw() -> void:
 			
 			var attack_force = throw_hitbox.target_position.normalized() * MELEE_FORCE
 			_collider.get_parent().take_damage(0.0, attack_force)  # don't deal damage in the beginning?
-			GameManager.register_hit()
+			if GameManager.combo_time_left >= KUNAI_COMBO_WINDOW:
+				GameManager.register_hit(GameManager.combo_time_left)
+			else:
+				GameManager.register_hit(KUNAI_COMBO_WINDOW)
 			kunai_sound.play()
 			
 			_change_state(State.GRAPPLED)

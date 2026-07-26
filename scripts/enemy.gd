@@ -284,7 +284,8 @@ func _state_dead(_delta: float) -> void:
 	if (enemy_type == "ranged" or enemy_type == "melee") and not (sprite.is_playing() and sprite.animation == "death") and not (sprite.animation == "death_2" or  sprite.animation == "death_3"):
 		sprite.play("death")
 		_flip_sprite()
-		
+	if enemy_type == "charging" and not (sprite.is_playing() and sprite.animation == "attack"):
+		sprite.play("attack")
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta)
 	

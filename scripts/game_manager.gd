@@ -5,7 +5,6 @@ signal combo_dropped
 signal room_cleared 
 signal kunai_triggered(kunai_cooldown)
 
-const COMBO_WINDOW: float = 2.0
 const SLOWMO_TIME: float = 0.3
 
 const STAMINA = [
@@ -52,9 +51,9 @@ func _process(delta: float) -> void:
 		GameOverManager.is_game_over = true
 		player.take_damage(Vector2.ZERO)
 		
-func register_hit() -> void:
+func register_hit(combo_seconds) -> void:
 	combo_count += 1
-	combo_time_left = COMBO_WINDOW
+	combo_time_left = combo_seconds
 	_apply_shake(3, 10)
 	combo_updated.emit(combo_count)
 	_boost_adrenaline(2)
@@ -63,7 +62,7 @@ func on_player_dodged_a_bullet() -> void:
 	Engine.time_scale = 0.3
 	slowmo_timer = SLOWMO_TIME
 	combo_count += 1
-	combo_time_left = COMBO_WINDOW
+	combo_time_left = 2.5
 	combo_updated.emit(combo_count)
 	_boost_adrenaline(0.5)
 
