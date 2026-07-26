@@ -861,7 +861,7 @@ shape = SubResource("CapsuleShape2D_cm1v6")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=176100917]
 z_index = 2
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"up_kunai"
+animation = &"side"
 offset = Vector2(0, -13)
 
 [node name="melee_hitbox" type="Area2D" parent="." unique_id=722629095]

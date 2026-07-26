@@ -161,6 +161,7 @@ func _state_idle(_delta: float) -> void:
 		return
 	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
 		kunai_cooldown_timer = KUNAI_COOLDOWN
+		GameManager.kunai_triggered.emit(kunai_cooldown_timer)
 		_kunai_throw()
 		return
 
@@ -179,6 +180,7 @@ func _state_running(_delta: float) -> void:
 		return
 	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
 		kunai_cooldown_timer = KUNAI_COOLDOWN
+		GameManager.kunai_triggered.emit(kunai_cooldown_timer)
 		_kunai_throw()
 		return
 	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:

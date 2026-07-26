@@ -3,14 +3,14 @@ extends Node
 signal combo_updated(new_combo: int)
 signal combo_dropped
 signal room_cleared 
+signal kunai_triggered(kunai_cooldown)
 
-const COMBO_WINDOW: float = 2.5
+const COMBO_WINDOW: float = 2.0
 const SLOWMO_TIME: float = 0.3
-const SHAKE_STRENGTH_CONST: float = 5.0
 
 const STAMINA = [
-	30.0,
-	60.0
+	15.0,
+	30.0
 ]
 
 var player: PlayerCharacter

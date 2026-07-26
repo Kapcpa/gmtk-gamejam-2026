@@ -8,9 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://bywm7dk1oqw33" path="res://audio/damage_1.wav" id="5_x3ymb"]
 [ext_resource type="AudioStream" uid="uid://ccqfbl828l8mw" path="res://audio/damage_2.wav" id="6_t7tl4"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jej6c"]
-radius = 5.0
-height = 26.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_x3ymb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t7tl4"]
 atlas = ExtResource("2_x3ymb")
@@ -253,6 +251,10 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jej6c"]
+radius = 5.0
+height = 26.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3o11d"]
 radius = 25.0
 
@@ -268,7 +270,9 @@ stream_2/stream = ExtResource("6_t7tl4")
 [node name="MeleeEnemy" type="CharacterBody2D" unique_id=617679549 node_paths=PackedStringArray("attack") groups=["enemies"]]
 z_index = 2
 collision_layer = 4
+collision_mask = 5
 motion_mode = 1
+wall_min_slide_angle = 0.17453292
 script = ExtResource("1_md0e3")
 CHARGING_TIME = 0.7
 health = 3.0
@@ -276,9 +280,9 @@ attack = NodePath("MeleeAttack")
 enemy_type = "melee"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
-position = Vector2(0, -4.0000005)
-scale = Vector2(0.8400021, 0.36000034)
-shape = SubResource("CapsuleShape2D_jej6c")
+position = Vector2(0, -5)
+scale = Vector2(0.63999563, 0.64000237)
+shape = SubResource("CircleShape2D_x3ymb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1153178971]
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
