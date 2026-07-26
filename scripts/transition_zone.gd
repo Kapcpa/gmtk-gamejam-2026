@@ -4,7 +4,7 @@ extends Area2D
 @export_file("*.tscn") var next_scene_path: String
 
 func _on_body_entered(body: Node2D) -> void:
-	if body == player:
+	if body == player and GameManager.active_enemies.size() <= 0:
 		if next_scene_path.is_empty():
 			return
 			

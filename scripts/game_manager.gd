@@ -9,7 +9,9 @@ const SLOWMO_TIME: float = 0.3
 
 const STAMINA = [
 	25.0,
-	60.0
+	60.0,
+	60.0,
+	100000.0
 ]
 
 var player: PlayerCharacter
