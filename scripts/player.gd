@@ -247,6 +247,8 @@ func _state_attacking(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _kunai_throw() -> void:
+	var direction = Input.get_vector("left", "right", "up", "down")
+	
 	if throw_hitbox.is_colliding():
 		var _collider = throw_hitbox.get_collider()
 		
@@ -260,14 +262,16 @@ func _kunai_throw() -> void:
 			_collider.take_damage(0.0, attack_force)  # don't deal damage in the beginning?
 			GameManager.register_hit()
 			kunai_sound.play()
+			
 			_change_state(State.GRAPPLED)
 
 func _state_grappled(_delta: float) -> void:
+	var direction = Input.get_vector("left", "right", "up", "down")
+	_animate(direction, "kunai")
 	if not kunai_target:
 		_change_state(State.IDLE)
 		return
 	
-	var direction = Input.get_vector("left", "right", "up", "down")
 	
 	if direction:
 		velocity = direction * SPEED
