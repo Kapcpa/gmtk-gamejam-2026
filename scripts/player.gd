@@ -293,13 +293,19 @@ func _state_grappled(_delta: float) -> void:
 	
 	if direction:
 		velocity = direction * SPEED
-		_animate(direction, "run")
+		if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
+			pass
+		else:
+			_animate(direction, "run")
 		if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:
 			dash_timer = DASH_TIME
 			_change_state(State.DASHING)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, 3000 * _delta)
-		_animate(direction)
+		if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
+			pass
+		else:
+			_animate(direction)
 	
 	validate_raycast.target_position = kunai_target.position - position
 	validate_raycast.force_raycast_update()
@@ -322,7 +328,10 @@ func _state_grappling(_delta: float) -> void:
 	var grapple_direction = (grapple_end - position).normalized()
 	velocity = grapple_direction * GRAPPLE_VELOCITY
 	
-	_animate(grapple_direction, "dash")
+	if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
+		pass
+	else:
+		_animate(grapple_direction, "dash")
 	
 	var world_collision = false
 	
