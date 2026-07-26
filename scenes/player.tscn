@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://db8cliwql134m" path="res://audio/sword_2.wav" id="9_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://cxxu7e6tntb6p" path="res://sprites/dash particle.png" id="10_y4r1p"]
 [ext_resource type="Texture2D" uid="uid://cxiathp1p20td" path="res://sprites/dash particle1.png" id="12_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://du47foijys2q8" path="res://sprites/dust.png" id="12_f1ej7"]
 [ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="12_jej6c"]
 [ext_resource type="AudioStream" uid="uid://d4nrjqxhlstal" path="res://audio/kunai_target_acquired_0.wav" id="13_jej6c"]
 
@@ -824,29 +825,60 @@ region = Rect2(193, 193, 48, 48)
 atlas = ExtResource("2_g2els")
 region = Rect2(96, 96, 48, 48)
 
-[sub_resource type="Curve" id="Curve_d2wvv"]
-_data = [Vector2(0.011538461, 1), 0.0, 0.0, 0, 0, Vector2(0.9961539, 0), -2.8709466, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_447s4"]
+_data = [Vector2(0.25925922, 1), 0.0, 0.15637054, 0, 0, Vector2(1, 0.014285684), -3.3147295, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_pqq0b"]
-curve = SubResource("Curve_d2wvv")
+[sub_resource type="CurveTexture" id="CurveTexture_ib0mu"]
+curve = SubResource("Curve_447s4")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fceub"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ib0mu"]
+lifetime_randomness = 0.27
 particle_flag_disable_z = true
-emission_shape_scale = Vector3(10, 10, 1)
-emission_shape = 1
-emission_sphere_radius = 1.0
-angle_min = 1.0728835e-05
-angle_max = 720.0
-direction = Vector3(1, 1, 0)
-spread = 13.741
+inherit_velocity_ratio = 0.255
+velocity_pivot = Vector3(1, 0, 0)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
 gravity = Vector3(0, 0, 0)
-linear_accel_min = -100.0
-linear_accel_max = -100.0
-radial_accel_min = -2.2351742e-06
-radial_accel_max = -2.2351742e-06
-scale_curve = SubResource("CurveTexture_pqq0b")
-color = Color(1, 0, 0, 1)
+scale_max = 2.0
+color = Color(1, 0.060000002, 0.060000002, 1)
+alpha_curve = SubResource("CurveTexture_ib0mu")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fceub"]
+particles_animation = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_m2qik"]
+_data = [Vector2(0, 0.82380944), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_afuoy"]
+curve = SubResource("Curve_m2qik")
+
+[sub_resource type="Curve" id="Curve_f1ej7"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.017699122), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_f1ej7"]
+curve = SubResource("Curve_f1ej7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_447s4"]
+particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 360.00003
+direction = Vector3(0, 0, 0)
+spread = 145.417
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -5, 0)
+scale_curve = SubResource("CurveTexture_f1ej7")
+alpha_curve = SubResource("CurveTexture_afuoy")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
 
 [node name="player" type="CharacterBody2D" unique_id=121862516]
 collision_layer = 2
@@ -861,7 +893,8 @@ shape = SubResource("CapsuleShape2D_cm1v6")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=176100917]
 z_index = 2
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"side"
+animation = &"side_dash"
+frame_progress = 0.50319296
 offset = Vector2(0, -13)
 
 [node name="melee_hitbox" type="Area2D" parent="." unique_id=722629095]
@@ -870,11 +903,11 @@ collision_mask = 4
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="melee_hitbox" unique_id=1477110463]
+visible = false
 position = Vector2(3, -11)
 shape = SubResource("CircleShape2D_gj24f")
 
 [node name="debug_melee" type="Sprite2D" parent="melee_hitbox/CollisionShape2D" unique_id=1269187532]
-visible = false
 modulate = Color(0.8626159, 0.30585665, 1.92523e-07, 0.5686275)
 scale = Vector2(1.84, 1.84)
 texture = ExtResource("3_y4r1p")
@@ -886,7 +919,6 @@ collide_with_areas = true
 collide_with_bodies = false
 
 [node name="debug_throw" type="Line2D" parent="throw_hitbox" unique_id=1014247595]
-visible = false
 z_index = 1
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
@@ -939,17 +971,24 @@ lifetime = 0.3
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_idpl1")
 
-[node name="dash_burst" type="GPUParticles2D" parent="dash_particle" unique_id=1712615164]
+[node name="dash_burst" type="GPUParticles2D" parent="dash_particle" unique_id=1067143232]
 z_index = 1
-position = Vector2(1, -8)
+position = Vector2(0, -1)
 emitting = false
-amount = 100
-lifetime = 0.3
+amount = 22
+lifetime = 0.5
 one_shot = true
-speed_scale = 1.06
-explosiveness = 0.61
-randomness = 0.37
-process_material = SubResource("ParticleProcessMaterial_fceub")
+process_material = SubResource("ParticleProcessMaterial_ib0mu")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="dash_particle" unique_id=1204315142]
+z_index = 1
+material = SubResource("CanvasItemMaterial_fceub")
+position = Vector2(0, 1)
+emitting = false
+texture = ExtResource("12_f1ej7")
+lifetime = 0.5
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_447s4")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1058637055]
 position = Vector2(0, -10)
