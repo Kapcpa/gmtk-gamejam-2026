@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-class_name EnemyCharacter
-
 @onready var player: PlayerCharacter = %player
 @onready var tilemap: TileMapLayer = %tilemap
 

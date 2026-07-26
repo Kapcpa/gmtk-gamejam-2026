@@ -51,7 +51,7 @@ var attack_cooldown: float = 0.0
 var combo_window: float = 0.0
 var continue_attack: bool = false
 
-var hit_enemies: Array[EnemyCharacter] = []
+var hit_enemies: Array = []
 var dash_timer: float = DASH_TIME
 var dash_cooldown_timer: float = DASH_COOLDOWN
 
