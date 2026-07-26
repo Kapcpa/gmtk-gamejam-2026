@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://dsdksdrfgqx1c" path="res://sprites/charger_boss.png" id="2_fc6h1"]
 [ext_resource type="Texture2D" uid="uid://b73qdjehbkxbf" path="res://sprites/buff_dude.png" id="2_ru3q7"]
 [ext_resource type="Script" uid="uid://cgfombbtjqdyk" path="res://scripts/boss_attack.gd" id="3_65wu2"]
-[ext_resource type="Texture2D" uid="uid://c4certa6gqcxq" path="res://sprites/charger_bot.png" id="3_sd45t"]
 [ext_resource type="AudioStream" uid="uid://b43w3aaikdvu6" path="res://audio/death_0.wav" id="4_7vxfr"]
+[ext_resource type="Texture2D" uid="uid://djm2hl1q473ab" path="res://sprites/boss_dash_ghost.png" id="4_fc6h1"]
 [ext_resource type="AudioStream" uid="uid://duivvfmbixmwy" path="res://audio/gun_0.wav" id="4_jv5yo"]
 [ext_resource type="PackedScene" uid="uid://cgjujcy13oenf" path="res://scenes/bullet.tscn" id="4_sd45t"]
 [ext_resource type="AudioStream" uid="uid://17xvh2wvodcx" path="res://audio/gun_1.wav" id="5_7vxfr"]
@@ -39,9 +39,9 @@ region = Rect2(1856, 0, 64, 64)
 atlas = ExtResource("2_fc6h1")
 region = Rect2(1920, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_57jc1"]
-atlas = ExtResource("2_ru3q7")
-region = Rect2(1248, 0, 48, 48)
+[sub_resource type="AtlasTexture" id="AtlasTexture_sd45t"]
+atlas = ExtResource("2_fc6h1")
+region = Rect2(896, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xor78"]
 atlas = ExtResource("2_ru3q7")
@@ -162,7 +162,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_57jc1")
+"texture": SubResource("AtlasTexture_sd45t")
 }],
 "loop": 1,
 "name": &"death",
@@ -263,29 +263,18 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fc6h1"]
-atlas = ExtResource("3_sd45t")
-region = Rect2(480, 0, 32, 32)
-
-[sub_resource type="Curve" id="Curve_xf46t"]
+[sub_resource type="Curve" id="Curve_fc6h1"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_ve47d"]
-curve = SubResource("Curve_xf46t")
+[sub_resource type="CurveTexture" id="CurveTexture_xf46t"]
+curve = SubResource("Curve_fc6h1")
 
-[sub_resource type="Gradient" id="Gradient_rgng0"]
-colors = PackedColorArray(0.9333264, 4.813075e-06, 9.62615e-07, 1, 0.83383924, 0.031975955, 0.84517235, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_mw11r"]
-gradient = SubResource("Gradient_rgng0")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1pkni"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rgng0"]
 particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
-color = Color(2.5713813, 0.16949554, 0.087038875, 1)
-color_initial_ramp = SubResource("GradientTexture1D_mw11r")
-alpha_curve = SubResource("CurveTexture_ve47d")
+color = Color(0.68288094, 0.900086, 0.247821, 0.9254902)
+alpha_curve = SubResource("CurveTexture_xf46t")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jej6c"]
 radius = 5.0
@@ -320,18 +309,18 @@ shape = SubResource("CircleShape2D_x3ymb")
 modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 position = Vector2(0, -13)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
-animation = &"death_2"
+animation = &"death"
 autoplay = "idle"
 
 [node name="dash_right" type="GPUParticles2D" parent="." unique_id=1041472811]
-position = Vector2(-1, -2)
+position = Vector2(-1.9073486e-06, -13)
 scale = Vector2(11.450492, 3.7259836)
 emitting = false
-amount = 5
-texture = SubResource("AtlasTexture_fc6h1")
+amount = 12
+texture = ExtResource("4_fc6h1")
 lifetime = 0.3
 one_shot = true
-process_material = SubResource("ParticleProcessMaterial_1pkni")
+process_material = SubResource("ParticleProcessMaterial_rgng0")
 
 [node name="hitbox_for_kunai" type="Area2D" parent="." unique_id=9396596]
 position = Vector2(0, -13)
