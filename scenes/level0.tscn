@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bnkhm26tj3qyp" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://bqfdadld60cny" path="res://sprites/wall.png" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://lvmqbw3p5co7" path="res://scenes/hud.tscn" id="2_jyhfs"]
-[ext_resource type="Texture2D" uid="uid://j7yw5o3fid46" path="res://sprites/heartbeat.png" id="3_l3elg"]
 [ext_resource type="PackedScene" uid="uid://xnu83bpbu50l" path="res://scenes/melee_enemy.tscn" id="3_sugp2"]
 [ext_resource type="Texture2D" uid="uid://dqs0g4cxqogvc" path="res://sprites/tilemaps/roof.png" id="3_wrnl3"]
 [ext_resource type="PackedScene" uid="uid://c4km4sremwige" path="res://scenes/transition_zone.tscn" id="5_x1x1l"]
@@ -11,56 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://c0osy2d103goy" path="res://scenes/ranged_enemy.tscn" id="7_cm1v6"]
 [ext_resource type="PackedScene" uid="uid://cy7v8e4jh3ul" path="res://scenes/charging_enemy.tscn" id="9_6q6d4"]
 [ext_resource type="Texture2D" uid="uid://b2ulgt346sg4f" path="res://sprites/tilemaps/2d_lights_and_shadows_neutral_point_light.png" id="9_tcqsn"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6hrqr"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wetln"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ooohs"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pnrra"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(0, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yoi1k"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5xwn4"]
-atlas = ExtResource("3_l3elg")
-region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_ib0mu"]
-animations = [{
-"frames": [{
-"duration": 10.0,
-"texture": SubResource("AtlasTexture_6hrqr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wetln")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ooohs")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pnrra")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yoi1k")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5xwn4")
-}],
-"loop": 1,
-"name": &"default",
-"speed": 10.0
-}]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6q6d4"]
 texture = ExtResource("3_wrnl3")
@@ -622,14 +571,7 @@ wall_min_slide_angle = 0.7679449
 
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=2117657023]
 
-[node name="hud" parent="player" unique_id=1159213780 instance=ExtResource("2_jyhfs")]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="player/hud" unique_id=306245844]
-position = Vector2(244, 237)
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_ib0mu")
-autoplay = "default"
-frame_progress = 0.009985824
+[node name="hud" parent="player/Camera2D" unique_id=1159213780 instance=ExtResource("2_jyhfs")]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=670504358]
 z_index = 1
@@ -661,26 +603,7 @@ tile_set = SubResource("TileSet_87140")
 
 [node name="transition_zone" parent="." unique_id=1123111444 instance=ExtResource("5_x1x1l")]
 position = Vector2(352, -117)
-next_scene_path = "uid://cxq6mmq7yxdbb"
-
-[node name="ChargingEnemy" parent="." unique_id=833669167 instance=ExtResource("9_6q6d4")]
-position = Vector2(-144, -103)
-
-[node name="MeleeEnemy" parent="." unique_id=617679549 instance=ExtResource("3_sugp2")]
-position = Vector2(196, -60)
-collision_mask = 1
-wall_min_slide_angle = 0.2617994
-
-[node name="RangedEnemy3Bullets" parent="." unique_id=1017890484 instance=ExtResource("7_cm1v6")]
-position = Vector2(292, 51)
-collision_mask = 1
-wall_min_slide_angle = 0.2617994
-bullets_in_a_row = 3
-
-[node name="RangedEnemy1Bullet" parent="." unique_id=1249686857 instance=ExtResource("7_cm1v6")]
-position = Vector2(291, -53)
-collision_mask = 1
-wall_min_slide_angle = 0.2617994
+next_scene_path = "uid://wyawocj7l3c8"
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=536918014]
 position = Vector2(-90, -7)
@@ -759,3 +682,16 @@ range_item_cull_mask = 3
 shadow_enabled = true
 shadow_filter_smooth = 49.4
 shadow_item_cull_mask = 3
+
+[node name="MeleeEnemy" parent="." unique_id=617679549 instance=ExtResource("3_sugp2")]
+position = Vector2(-135, -77)
+
+[node name="RangedEnemy2" parent="." unique_id=799207159 instance=ExtResource("7_cm1v6")]
+position = Vector2(185, -57)
+bullets_in_a_row = 2
+
+[node name="RangedEnemy" parent="." unique_id=25067193 instance=ExtResource("7_cm1v6")]
+position = Vector2(313, 78)
+
+[node name="ChargingEnemy" parent="." unique_id=2007228006 instance=ExtResource("9_6q6d4")]
+position = Vector2(111, 125)

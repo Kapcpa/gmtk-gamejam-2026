@@ -3,8 +3,12 @@ extends CanvasLayer
 @onready var combo_label: Label = $combo_debug
 @onready var adrenaline_label: Label = $AdrenalineLabel
 @onready var kunai_cooldown_label: Label = $KunaiCooldown
+@onready var heart_sprite: AnimatedSprite2D = $HeartSprite
+@onready var heartbeat: AudioStreamPlayer = $Heartbeat
 
 var kunai: float = 0.0
+var tempo: float = 0.0
+var last_frame: int = -1
 
 func _ready() -> void:
 	GameManager.combo_updated.connect(_on_combo_updated)
@@ -18,9 +22,19 @@ func _process(delta: float) -> void:
 		kunai -= delta
 	if kunai < 0.0:
 		kunai = 0.0
-		
-	kunai_cooldown_label.text = "Kunai: %.2f" % kunai
 	
+	tempo = remap(GameManager.adrenaline, 0.0, 100.0, 0.9, 1.5)
+	heart_sprite.speed_scale = tempo
+	heartbeat.pitch_scale = tempo
+	
+	var current_frame = heart_sprite.frame
+	if current_frame == 2 and last_frame != 2 and last_frame < 2:
+		heartbeat.play(0.0)
+	last_frame = current_frame
+	
+	Engine.time_scale = tempo
+	
+	kunai_cooldown_label.text = "Kunai: %.2f" % kunai
 	
 	if GameManager.combo_count > 0:
 		combo_label.text = "COMBO: %d\nTimer: %.2f" % [GameManager.combo_count, GameManager.combo_time_left]

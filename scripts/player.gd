@@ -28,15 +28,15 @@ enum State {
 	DEAD
 }
 
-const SPEED = 200.0
+const SPEED = 150.0
 const MELEE_RANGE = 10.0
 const MELEE_SPEED = 300
 const MELEE_FRICTION = 1200
 const MELEE_FORCE = 250
 const THROW_RANGE = 120.0
 const GRAPPLE_VELOCITY = 500
-const DASH_VELOCITY = 400
-const DASH_TIME = 0.2
+const DASH_VELOCITY = 350
+const DASH_TIME = 0.15
 const DASH_COOLDOWN = 0.5
 const KUNAI_COOLDOWN = 2.0
 const COMBO_WINDOW: float = 2.5
@@ -417,6 +417,7 @@ func take_damage(knockback_force: Vector2) -> void:
 		return
 	
 	GameManager.reset_combo()
+	GameManager.stamina_left -= 3
 	
 	kunai_target = null
 	

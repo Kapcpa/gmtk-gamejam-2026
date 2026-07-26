@@ -1,6 +1,51 @@
 [gd_scene format=3 uid="uid://lvmqbw3p5co7"]
 
 [ext_resource type="Script" uid="uid://ebjxi2e3sg1j" path="res://scripts/hud.gd" id="1_ahhtf"]
+[ext_resource type="Texture2D" uid="uid://j7yw5o3fid46" path="res://sprites/heartbeat.png" id="2_oo0fn"]
+[ext_resource type="AudioStream" uid="uid://4urc86sdavur" path="res://audio/heartbeat.wav" id="3_5ysmq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hrqr"]
+atlas = ExtResource("2_oo0fn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wetln"]
+atlas = ExtResource("2_oo0fn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ooohs"]
+atlas = ExtResource("2_oo0fn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnrra"]
+atlas = ExtResource("2_oo0fn")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xwn4"]
+atlas = ExtResource("2_oo0fn")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5ysmq"]
+animations = [{
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_6hrqr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wetln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ooohs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnrra")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xwn4")
+}],
+"loop": 2,
+"name": &"default",
+"speed": 18.0
+}]
 
 [node name="hud" type="CanvasLayer" unique_id=1159213780]
 script = ExtResource("1_ahhtf")
@@ -36,3 +81,14 @@ grow_vertical = 0
 text = "Kunai: 2.0"
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[node name="HeartSprite" type="AnimatedSprite2D" parent="." unique_id=1002733751]
+position = Vector2(244, 237)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5ysmq")
+autoplay = "default"
+frame_progress = 0.10676402
+
+[node name="Heartbeat" type="AudioStreamPlayer" parent="." unique_id=1698243286]
+stream = ExtResource("3_5ysmq")
+pitch_scale = 1.82

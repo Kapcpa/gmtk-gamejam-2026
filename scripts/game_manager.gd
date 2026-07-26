@@ -8,7 +8,7 @@ signal kunai_triggered(kunai_cooldown)
 const SLOWMO_TIME: float = 0.3
 
 const STAMINA = [
-	60.0,
+	25.0,
 	60.0
 ]
 
@@ -21,7 +21,7 @@ var shake_fade_out_speed: float = 0.0
 
 var combo_count: int = 0
 var combo_time_left: float = 0.0
-var adrenaline: float = 50.0
+var adrenaline: float = 20.0
 var stamina_left: float = STAMINA[0]
 var stamina_start: float = STAMINA[0]
 
