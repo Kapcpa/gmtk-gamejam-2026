@@ -625,11 +625,11 @@ wall_min_slide_angle = 0.7679449
 [node name="hud" parent="player" unique_id=1159213780 instance=ExtResource("2_jyhfs")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="player/hud" unique_id=306245844]
-position = Vector2(255, 237)
+position = Vector2(244, 237)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_ib0mu")
 autoplay = "default"
-frame_progress = 0.22004634
+frame_progress = 0.009985824
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=670504358]
 z_index = 1

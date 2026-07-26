@@ -74,6 +74,16 @@ func _ready() -> void:
 	GameManager.camera = camera
 	
 	_animate(Vector2.RIGHT)
+	
+func dash_ghost_effect() -> void:
+	if animation_direction.x < 0:
+		dash_left.restart()
+	elif animation_direction.x > 0:
+		dash_right.restart()
+	elif animation_direction.y < 0:
+		dash_up.restart()
+	elif animation_direction.y > 0:
+		dash_down.restart()		
 
 func _physics_process(delta: float) -> void:
 	if dash_cooldown_timer > 0.0:
@@ -200,14 +210,8 @@ func _state_running(_delta: float) -> void:
 		dash_timer = DASH_TIME
 		_change_state(State.DASHING)
 		dash_explode.restart()
-		if animation_direction.x < 0:
-			dash_left.restart()
-		elif animation_direction.x > 0:
-			dash_right.restart()
-		elif animation_direction.y < 0:
-			dash_up.restart()
-		elif animation_direction.y > 0:
-			dash_down.restart()	
+		dash_ghost_effect()
+
 
 func _state_dashing(_delta: float) -> void:
 	if kunai_target:
@@ -297,6 +301,7 @@ func _kunai_throw() -> void:
 
 func _state_grappled(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
+	dash_ghost_effect()
 	if not kunai_target:
 		kunai_line.hide()
 		_change_state(State.IDLE)
