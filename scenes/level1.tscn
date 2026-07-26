@@ -614,76 +614,59 @@ shadow_filter_smooth = 49.4
 shadow_item_cull_mask = 3
 
 [node name="ChargingEnemy" parent="." unique_id=617679549 instance=ExtResource("10_jvkml")]
-visible = false
 position = Vector2(233, -13)
 
 [node name="ChargingEnemy2" parent="." unique_id=827750108 instance=ExtResource("10_jvkml")]
-visible = false
 position = Vector2(270, 5)
 
 [node name="RangedEnemy" parent="." unique_id=1973245782 instance=ExtResource("9_mvsps")]
-visible = false
 position = Vector2(665, -114)
 bullets_in_a_row = 2
 
 [node name="RangedEnemy4" parent="." unique_id=951408159 instance=ExtResource("9_mvsps")]
-visible = false
 position = Vector2(444, 256)
 bullets_in_a_row = 4
 
 [node name="RangedEnemy5" parent="." unique_id=2017449391 instance=ExtResource("9_mvsps")]
-visible = false
 position = Vector2(790, 250)
 bullets_in_a_row = 4
 
 [node name="RangedEnemy2" parent="." unique_id=992259476 instance=ExtResource("9_mvsps")]
-visible = false
 position = Vector2(662, -9)
 bullets_in_a_row = 2
 
 [node name="RangedEnemy3" parent="." unique_id=1363533178 instance=ExtResource("9_mvsps")]
-visible = false
 position = Vector2(662, -65)
 bullets_in_a_row = 2
 
 [node name="MeleeEnemy" parent="." unique_id=487875250 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(323, 65)
 
 [node name="MeleeEnemy4" parent="." unique_id=1263474778 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(326, -108)
 
 [node name="MeleeEnemy5" parent="." unique_id=1100399490 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(400, -110)
 
 [node name="MeleeEnemy2" parent="." unique_id=1444617631 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(407, 65)
 
 [node name="MeleeEnemy3" parent="." unique_id=2010043410 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(500, 351)
 
 [node name="MeleeEnemy6" parent="." unique_id=1548792345 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(788, 346)
 
 [node name="MeleeEnemy7" parent="." unique_id=1240919399 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(570, 352)
 
 [node name="MeleeEnemy8" parent="." unique_id=1080107690 instance=ExtResource("8_14jow")]
-visible = false
 position = Vector2(714, 349)
 
 [node name="ChargingEnemy3" parent="." unique_id=1569167908 instance=ExtResource("10_jvkml")]
-visible = false
 position = Vector2(497, -59)
 
 [node name="ChargingEnemy4" parent="." unique_id=594324210 instance=ExtResource("10_jvkml")]
-visible = false
 position = Vector2(497, -92)
 
 [node name="PointLight2D10" type="PointLight2D" parent="." unique_id=714046230]
