@@ -326,7 +326,7 @@ modulate = Color(1.1542227, 0.9044515, 0.679744, 1)
 z_index = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dvjff")
-animation = &"idle"
+animation = &"attack"
 autoplay = "walk"
 
 [node name="GunSprite" type="Sprite2D" parent="." unique_id=2063049535]

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://comxecvd7knf8" path="res://scripts/enemy.gd" id="1_x5w7i"]
 [ext_resource type="Texture2D" uid="uid://c4certa6gqcxq" path="res://sprites/charger_bot.png" id="2_yhpoi"]
-[ext_resource type="Script" uid="uid://cj8arhbfx1lxe" path="res://scripts/charging_attack.gd" id="3_x5w7i"]
+[ext_resource type="Script" uid="uid://cam1mjnw0c6wa" path="res://scripts/melee_attack.gd" id="3_x5w7i"]
 [ext_resource type="AudioStream" uid="uid://b43w3aaikdvu6" path="res://audio/death_0.wav" id="4_2wy65"]
 [ext_resource type="AudioStream" uid="uid://dgx6sdoekrpr5" path="res://audio/damage_0.wav" id="5_1dwmq"]
 [ext_resource type="AudioStream" uid="uid://bywm7dk1oqw33" path="res://audio/damage_1.wav" id="6_clu12"]
@@ -190,7 +190,6 @@ motion_mode = 1
 wall_min_slide_angle = 0.08726646
 script = ExtResource("1_x5w7i")
 ATTACK_SPEED = 600.0
-CHARGING_TIME = 0.7
 ATTACK_COOLDOWN = 2.0
 health = 3.0
 attack = NodePath("ChargingAttack")
