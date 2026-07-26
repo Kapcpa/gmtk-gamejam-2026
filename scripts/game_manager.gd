@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 		if combo_time_left <= 0.0:
 			reset_combo()
 	
-	adrenaline -= 5 * delta * (1.0 - stamina_left/stamina_start)
+	adrenaline -= 7 * delta * (1.0 - stamina_left/stamina_start)
 	
 	stamina_left = clamp(stamina_left, 0.0, stamina_start)
 	adrenaline = clamp(adrenaline, 0.0, 100.0)
