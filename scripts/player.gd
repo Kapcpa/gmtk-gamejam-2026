@@ -38,6 +38,7 @@ const GRAPPLE_VELOCITY = 500
 const DASH_VELOCITY = 400
 const DASH_TIME = 0.2
 const DASH_COOLDOWN = 0.5
+const KUNAI_COOLDOWN = 2.0
 
 var current_state: State = State.IDLE
 
@@ -51,7 +52,8 @@ var hit_enemies: Array[EnemyCharacter] = []
 var dash_timer: float = DASH_TIME
 var dash_cooldown_timer: float = DASH_COOLDOWN
 
-var kunai_target: EnemyCharacter = null
+var kunai_target: CharacterBody2D = null
+var kunai_cooldown_timer: float = 0.0
 var validate_raycast: RayCast2D = RayCast2D.new()
 
 var animation_direction: Vector2 = Vector2.ZERO
@@ -72,6 +74,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if dash_cooldown_timer > 0.0:
 		dash_cooldown_timer -= delta
+	if kunai_cooldown_timer > 0.0:
+		kunai_cooldown_timer -= delta
 	combo_window -= delta 
 	if combo_window <= 0.0:
 		attack_count = 0
@@ -155,7 +159,8 @@ func _state_idle(_delta: float) -> void:
 	if Input.is_action_just_pressed("attack") and (combo_window > 0.0 or attack_cooldown <= 0.0) and attack_count < 2:
 		_start_attacking()
 		return
-	if Input.is_action_just_pressed("throw"):
+	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
+		kunai_cooldown_timer = KUNAI_COOLDOWN
 		_kunai_throw()
 		return
 
@@ -172,7 +177,8 @@ func _state_running(_delta: float) -> void:
 	if Input.is_action_just_pressed("attack") and (combo_window > 0.0 or attack_cooldown <= 0.0) and attack_count < 2:
 		_start_attacking()
 		return
-	if Input.is_action_just_pressed("throw"):
+	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
+		kunai_cooldown_timer = KUNAI_COOLDOWN
 		_kunai_throw()
 		return
 	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:
@@ -193,12 +199,7 @@ func _state_dashing(_delta: float) -> void:
 		dash_cooldown_timer = DASH_COOLDOWN
 	dash_timer -= _delta
 	var dash_direction = velocity.normalized()
-	#var afterimage_instance = afterimage.instance()
-
-	
-
 	_animate(dash_direction, "dash")
-	#get_parent().get_parent().add_child(afterimage_instance)
 	velocity = dash_direction * DASH_VELOCITY
 	if kunai_target and not Input.is_action_pressed("throw"):
 		_change_state(State.GRAPPLING)
@@ -252,14 +253,14 @@ func _kunai_throw() -> void:
 	if throw_hitbox.is_colliding():
 		var _collider = throw_hitbox.get_collider()
 		
-		validate_raycast.target_position = _collider.position - position
+		validate_raycast.target_position = _collider.get_parent().position - position
 		validate_raycast.force_raycast_update()
 		
 		if not validate_raycast.is_colliding():
-			kunai_target = _collider
+			kunai_target = _collider.get_parent()
 			
 			var attack_force = throw_hitbox.target_position.normalized() * MELEE_FORCE
-			_collider.take_damage(0.0, attack_force)  # don't deal damage in the beginning?
+			_collider.get_parent().take_damage(0.0, attack_force)  # don't deal damage in the beginning?
 			GameManager.register_hit()
 			kunai_sound.play()
 			
