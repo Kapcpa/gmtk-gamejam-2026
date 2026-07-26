@@ -29,6 +29,7 @@ window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 mouse_cursor/custom_image="uid://rrym1enq8yik"
+mouse_cursor/custom_image_hotspot=Vector2(25, 25)
 
 [input]
 
