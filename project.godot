@@ -18,8 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*uid://5i6w2farth5q"
-TransitionManager="*uid://c7nienic331pm"
 GameOverManager="*uid://ct440lpqij0d0"
+TransitionManager="*uid://c7nienic331pm"
 
 [display]
 
