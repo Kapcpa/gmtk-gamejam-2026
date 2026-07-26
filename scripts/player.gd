@@ -330,7 +330,7 @@ func _state_grappled(_delta: float) -> void:
 	if validate_raycast.is_colliding():
 		kunai_line.hide()
 		kunai_target = null
-		_change_state(State.IDLE)		
+		_change_state(State.IDLE)
 		validate_raycast.target_position = Vector2.ZERO
 		return
 	
@@ -376,6 +376,7 @@ func _state_grappling(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:
+	kunai_line.hide()
 	if sprite.visible and flicker_on_hit_timer <= 0.0:
 		sprite.hide()
 		flicker_on_hit_timer = FLICKER_ON_HIT_HZ
