@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 	stamina_left = clamp(stamina_left, 0.0, stamina_start)
 	adrenaline = clamp(adrenaline, 0.0, 100.0)
 	
-	if shake_strength >= 0.0:
+	if shake_strength >= 0.0 and camera:
 		camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
 		shake_strength = lerpf(shake_strength, 0.0, shake_fade_out_speed)
 		
