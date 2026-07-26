@@ -213,7 +213,7 @@ func _state_dashing(_delta: float) -> void:
 	if kunai_target:
 		kunai_line.points = [
 			Vector2.ZERO + Vector2(0, -10),
-			to_local(kunai_target.position)
+			to_local(kunai_target.position) + Vector2(0, -10)
 		]
 		kunai_line.show()
 	if dash_cooldown_timer <= 0.0:
@@ -225,7 +225,7 @@ func _state_dashing(_delta: float) -> void:
 	if kunai_target and not Input.is_action_pressed("throw"):
 		kunai_line.points = [
 				Vector2.ZERO + Vector2(0, -10),
-				to_local(kunai_target.position)
+				to_local(kunai_target.position) + Vector2(0, -10)
 		]
 		_change_state(State.GRAPPLING)
 		return
@@ -304,7 +304,7 @@ func _state_grappled(_delta: float) -> void:
 	
 	kunai_line.points = [
 		Vector2.ZERO + Vector2(0, -10),
-		to_local(kunai_target.position)
+		to_local(kunai_target.position) + Vector2(0, -10)
 	]
 	kunai_line.show()
 	
@@ -344,7 +344,7 @@ func _state_grappling(_delta: float) -> void:
 	
 	kunai_line.points = [
 		Vector2.ZERO + Vector2(0, -10),
-		to_local(kunai_target.position)
+		to_local(kunai_target.position) + Vector2(0, -10)
 	]
 	kunai_line.show()
 	

@@ -7,6 +7,5 @@ func attack(player: PlayerCharacter):
 		var direction = global_position.direction_to(player.global_position)
 		player.take_damage(direction * ATTACK_FORCE)
 
-
 func reset():
 	pass

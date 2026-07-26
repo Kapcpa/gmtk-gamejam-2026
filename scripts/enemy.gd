@@ -16,11 +16,13 @@ enum State {
 @onready var tilemap: TileMapLayer = %tilemap
 @onready var attack_trigger: Area2D = $trigger
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var damage_sound: AudioStreamPlayer2D = $damage_sound
+@onready var death_sound: AudioStreamPlayer2D = $death_sound
 
 @export var SPEED = 100.0
 @export var ATTACK_SPEED = 200.0
 @export var ATTACK_FRICTION = 1200
-@export var CHARGING_TIME = 0.5
+@export var CHARGING_TIME = 0.7
 @export var ATTACK_COOLDOWN: float = 1.0
 @export var health: float
 @export var vision: int = 20
@@ -45,9 +47,6 @@ var gun_sprite: Sprite2D
 var default_gun_sprite_position: Vector2
 
 var current_state: State = State.IDLE
-
-@onready var damage_sound: AudioStreamPlayer2D = $damage_sound
-@onready var death_sound: AudioStreamPlayer2D = $death_sound
 
 func _ready() -> void:
 	GameManager.register_enemy(self)

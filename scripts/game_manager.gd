@@ -13,7 +13,7 @@ const STAMINA = [
 ]
 
 var player: PlayerCharacter
-var active_enemies: Array[EnemyCharacter] = []
+var active_enemies: Array = []
 var shake_strength: float = 0.0
 var camera: Camera2D
 var slowmo_timer: float = 0.0
@@ -75,7 +75,7 @@ func reset_combo() -> void:
 func register_player(player_node: PlayerCharacter) -> void:
 	player = player_node
 
-func register_enemy(enemy_node: EnemyCharacter) -> void:
+func register_enemy(enemy_node) -> void:
 	if not enemy_node in active_enemies:
 		active_enemies.append(enemy_node)
 
