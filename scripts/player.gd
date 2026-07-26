@@ -16,6 +16,7 @@ class_name PlayerCharacter
 @onready var dash_down: GPUParticles2D = $dash_particle/dash_down
 @onready var dash_explode: GPUParticles2D = $dash_particle/dash_burst
 @onready var kunai_sound: AudioStreamPlayer2D = $kunai_sound
+@onready var dust_particles: GPUParticles2D = $dash_particle/GPUParticles2D
 
 enum State {
 	IDLE,
@@ -211,6 +212,7 @@ func _state_running(_delta: float) -> void:
 		_change_state(State.DASHING)
 		dash_explode.restart()
 		dash_ghost_effect()
+		dust_particles.restart()
 
 
 func _state_dashing(_delta: float) -> void:
