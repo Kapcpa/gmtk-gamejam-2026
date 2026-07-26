@@ -87,7 +87,7 @@ position = Vector2(244, 237)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_5ysmq")
 autoplay = "default"
-frame_progress = 0.10676402
+frame_progress = 0.26192105
 
 [node name="Heartbeat" type="AudioStreamPlayer" parent="." unique_id=1698243286]
 stream = ExtResource("3_5ysmq")

@@ -43,11 +43,6 @@ func _process(delta: float) -> void:
 	if shake_strength >= 0.0:
 		camera.offset = Vector2(randf_range(-shake_strength, shake_strength), randf_range(-shake_strength, shake_strength))
 		shake_strength = lerpf(shake_strength, 0.0, shake_fade_out_speed)
-	
-	if slowmo_timer > 0.0:
-		slowmo_timer -= delta * 1/Engine.time_scale
-	else:
-		Engine.time_scale = 1.0
 		
 	if adrenaline <= 0.0:
 		GameOverManager.is_game_over = true
@@ -61,7 +56,6 @@ func register_hit(combo_seconds) -> void:
 	_boost_adrenaline(2)
 
 func on_player_dodged_a_bullet() -> void:
-	Engine.time_scale = 0.3
 	slowmo_timer = SLOWMO_TIME
 	combo_count += 1
 	combo_time_left = 2.5
