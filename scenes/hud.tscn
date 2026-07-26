@@ -8,23 +8,19 @@
 atlas = ExtResource("2_oo0fn")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5ysmq"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wetln"]
 atlas = ExtResource("2_oo0fn")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6fi6k"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ooohs"]
 atlas = ExtResource("2_oo0fn")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uo2fv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnrra"]
 atlas = ExtResource("2_oo0fn")
 region = Rect2(0, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_047uy"]
-atlas = ExtResource("2_oo0fn")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5pdws"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xwn4"]
 atlas = ExtResource("2_oo0fn")
 region = Rect2(64, 32, 32, 32)
 
@@ -35,21 +31,18 @@ animations = [{
 "texture": SubResource("AtlasTexture_6hrqr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5ysmq")
+"texture": SubResource("AtlasTexture_wetln")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6fi6k")
+"texture": SubResource("AtlasTexture_ooohs")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_uo2fv")
+"texture": SubResource("AtlasTexture_pnrra")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_047uy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5pdws")
+"texture": SubResource("AtlasTexture_5xwn4")
 }],
-"loop": 1,
+"loop": 2,
 "name": &"default",
 "speed": 18.0
 }]
@@ -94,7 +87,7 @@ position = Vector2(244, 237)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_5ysmq")
 autoplay = "default"
-frame_progress = 0.998644
+frame_progress = 0.26192105
 
 [node name="Heartbeat" type="AudioStreamPlayer" parent="." unique_id=1698243286]
 stream = ExtResource("3_5ysmq")

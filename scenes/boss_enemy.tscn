@@ -389,3 +389,7 @@ stream = ExtResource("4_7vxfr")
 [node name="damage_sound" type="AudioStreamPlayer2D" parent="." unique_id=1949202475]
 position = Vector2(0, -13)
 stream = SubResource("AudioStreamRandomizer_87140")
+
+[node name="HealthBar" type="Line2D" parent="." unique_id=1930021788]
+
+[node name="Line2D" type="Line2D" parent="HealthBar" unique_id=946291541]

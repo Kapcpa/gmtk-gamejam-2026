@@ -32,7 +32,11 @@ func _process(delta: float) -> void:
 		heartbeat.play(0.0)
 	last_frame = current_frame
 	
-	Engine.time_scale = tempo
+	if GameManager.slowmo_timer > 0.0:
+		GameManager.slowmo_timer -= delta * 1/Engine.time_scale
+		Engine.time_scale = 0.3
+	else:
+		Engine.time_scale = tempo
 	
 	kunai_cooldown_label.text = "Kunai: %.2f" % kunai
 	
