@@ -53,12 +53,14 @@ func _ready() -> void:
 	GameManager.register_enemy(self)
 	setup_grid()
 	
-	validate_raycast.collision_mask = 1
-	add_child(validate_raycast)
-	
 	if enemy_type == "ranged":
 		gun_sprite = $GunSprite
 		default_gun_sprite_position = gun_sprite.position
+	
+	validate_raycast.collision_mask = 1
+	if enemy_type == "ranged":
+		validate_raycast.position = gun_sprite.position
+	add_child(validate_raycast)
 
 func setup_grid() -> void:
 	pathfinding_grid = AStarGrid2D.new()
@@ -290,6 +292,8 @@ func _state_dead(_delta: float) -> void:
 		var last_slide_collision_normal = get_last_slide_collision().get_normal()
 		if last_slide_collision_normal.y > 0.0:
 			sprite.play("death_3")
+		elif last_slide_collision_normal.y < 0.0:
+			pass
 		else:
 			sprite.play("death_2")
 		sprite.flip_h = last_slide_collision_normal.x < 0

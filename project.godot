@@ -18,14 +18,15 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*uid://5i6w2farth5q"
-GameOverManager="*uid://ct440lpqij0d0"
 TransitionManager="*uid://c7nienic331pm"
+GameOverManager="*uid://ct440lpqij0d0"
 
 [display]
 
 window/size/viewport_width=480
 window/size/viewport_height=270
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 mouse_cursor/custom_image="uid://cbq3u1ql506m4"
 
@@ -86,6 +87,7 @@ exit={
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemies"
 2d_physics/layer_4="bullets"
+2d_physics/layer_5="enemies_kunai_hitboxes"
 
 [physics]
 
