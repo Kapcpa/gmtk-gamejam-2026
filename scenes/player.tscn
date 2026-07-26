@@ -453,7 +453,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_irpag")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"down_kunai",
 "speed": 10.0
 }, {
@@ -599,7 +599,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lw0jh")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"side_kunai",
 "speed": 10.0
 }, {
@@ -742,7 +742,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cbf1i")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"up_kunai",
 "speed": 10.0
 }, {

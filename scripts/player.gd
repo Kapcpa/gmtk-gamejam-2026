@@ -41,6 +41,7 @@ const DASH_COOLDOWN = 0.5
 const KUNAI_COOLDOWN = 2.0
 const COMBO_WINDOW: float = 2.5
 const KUNAI_COMBO_WINDOW: float = 2.0
+const FLICKER_ON_HIT_HZ: float = 0.05
 
 var current_state: State = State.IDLE
 
@@ -57,6 +58,7 @@ var dash_cooldown_timer: float = DASH_COOLDOWN
 var kunai_target: CharacterBody2D = null
 var kunai_cooldown_timer: float = 0.0
 var validate_raycast: RayCast2D = RayCast2D.new()
+var flicker_on_hit_timer: float = 0.0
 
 var animation_direction: Vector2 = Vector2.ZERO
 @onready var step_sound: AudioStreamPlayer2D = $step_sound
@@ -78,6 +80,8 @@ func _physics_process(delta: float) -> void:
 		dash_cooldown_timer -= delta
 	if kunai_cooldown_timer > 0.0:
 		kunai_cooldown_timer -= delta
+	if flicker_on_hit_timer > 0.0:
+		flicker_on_hit_timer -= delta
 	combo_window -= delta 
 	if combo_window <= 0.0:
 		attack_count = 0
@@ -151,7 +155,10 @@ func _animate(direction: Vector2, action: String = "") -> void:
 func _state_idle(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	
-	_animate(direction)
+	if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
+		pass
+	else:
+		_animate(direction)
 	
 	if direction:
 		_change_state(State.RUNNING)
@@ -164,13 +171,16 @@ func _state_idle(_delta: float) -> void:
 	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
 		kunai_cooldown_timer = KUNAI_COOLDOWN
 		GameManager.kunai_triggered.emit(kunai_cooldown_timer)
+		_animate((get_global_mouse_position() - global_position).normalized(), "kunai")
 		_kunai_throw()
 		return
 
 func _state_running(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
-	
-	_animate(direction, "run")
+	if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
+		pass
+	else:
+		_animate(direction, "run")
 	
 	if direction:
 		velocity = direction * SPEED
@@ -183,6 +193,7 @@ func _state_running(_delta: float) -> void:
 	if Input.is_action_just_pressed("throw") and kunai_cooldown_timer <= 0.0:
 		kunai_cooldown_timer = KUNAI_COOLDOWN
 		GameManager.kunai_triggered.emit(kunai_cooldown_timer)
+		_animate((get_global_mouse_position() - global_position).normalized(), "kunai")
 		_kunai_throw()
 		return
 	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0.0:
@@ -253,7 +264,6 @@ func _state_attacking(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _kunai_throw() -> void:
-	var direction = Input.get_vector("left", "right", "up", "down")
 	
 	if throw_hitbox.is_colliding():
 		var _collider = throw_hitbox.get_collider()
@@ -276,7 +286,6 @@ func _kunai_throw() -> void:
 
 func _state_grappled(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
-	_animate(direction, "kunai")
 	if not kunai_target:
 		_change_state(State.IDLE)
 		return
@@ -332,10 +341,17 @@ func _state_grappling(_delta: float) -> void:
 		_change_state(State.IDLE)
 
 func _state_hit(_delta: float) -> void:
+	if sprite.visible and flicker_on_hit_timer <= 0.0:
+		sprite.hide()
+		flicker_on_hit_timer = FLICKER_ON_HIT_HZ
+	if not sprite.visible and flicker_on_hit_timer <= 0.0:
+		sprite.show()
+		flicker_on_hit_timer = FLICKER_ON_HIT_HZ
 	velocity = knockback
 	knockback = velocity.move_toward(Vector2.ZERO, 750 * _delta) 
 	
 	if knockback == Vector2.ZERO:
+		sprite.show()
 		_change_state(State.IDLE)
 
 func _state_dead(_delta: float) -> void:
