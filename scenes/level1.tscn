@@ -657,18 +657,6 @@ position = Vector2(500, 351)
 [node name="MeleeEnemy6" parent="." unique_id=1548792345 instance=ExtResource("8_14jow")]
 position = Vector2(788, 346)
 
-[node name="MeleeEnemy7" parent="." unique_id=1240919399 instance=ExtResource("8_14jow")]
-position = Vector2(570, 352)
-
-[node name="MeleeEnemy8" parent="." unique_id=1080107690 instance=ExtResource("8_14jow")]
-position = Vector2(714, 349)
-
-[node name="ChargingEnemy3" parent="." unique_id=1569167908 instance=ExtResource("10_jvkml")]
-position = Vector2(497, -59)
-
-[node name="ChargingEnemy4" parent="." unique_id=594324210 instance=ExtResource("10_jvkml")]
-position = Vector2(497, -92)
-
 [node name="PointLight2D10" type="PointLight2D" parent="." unique_id=714046230]
 position = Vector2(-40, 39)
 color = Color(0.96862745, 0.8039216, 0.4745098, 0.67058825)
