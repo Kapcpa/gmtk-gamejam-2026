@@ -8,8 +8,8 @@ signal kunai_triggered(kunai_cooldown)
 const SLOWMO_TIME: float = 0.3
 
 const STAMINA = [
-	15.0,
-	30.0
+	60.0,
+	60.0
 ]
 
 var player: PlayerCharacter

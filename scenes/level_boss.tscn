@@ -552,7 +552,7 @@ sources/4 = SubResource("TileSetAtlasSource_pnrra")
 sources/5 = SubResource("TileSetAtlasSource_tcqsn")
 sources/0 = SubResource("TileSetAtlasSource_6q6d4")
 
-[node name="level0" type="Node2D" unique_id=1847793235]
+[node name="level1" type="Node2D" unique_id=1847793235]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=544388924]
 offset_left = -3711.0
@@ -601,20 +601,6 @@ tile_set = SubResource("TileSet_87140")
 
 [node name="BossEnemy" parent="." unique_id=617679549 instance=ExtResource("6_dnrae")]
 position = Vector2(128, 48)
-SPEED = 70.0
-ATTACK_SPEED = 200.0
-RANGED_ATTACK_SPEED = -200.0
-CHARGING_ATTACK_SPEED = 800.0
-CHARGING_TIME = 0.8
-MELEE_ATTACK_COOLDOWN = 1.0
-RANGED_ATTACK_COOLDOWN = 3.0
-LASER_ATTACK_COOLDOWN = 6.0
-CHARGING_ATTACK_COOLDOWN = 8.0
-health = 24.0
-vision = 20
-bullets_in_a_row = 3
-CHARGES_COUNT = 3
-INVINCIBILITY_TIME = 0.5
 
 [node name="transition_zone" parent="." unique_id=1123111444 instance=ExtResource("6_hxooy")]
 position = Vector2(352, -117)

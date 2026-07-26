@@ -195,10 +195,8 @@ func _start_attacking() -> void:
 	if attack_type == "ranged":
 		if bullets_in_a_row > 0:
 			attack_timer = bullets_in_a_row/10.0
-		
-		var direction = global_position.direction_to(player.global_position)
-		velocity = direction.normalized() * RANGED_ATTACK_SPEED
-		_change_state(State.SHOOTING_WITH_GUN)
+		charging_timer = 1.0
+		_change_state(State.CHARGING)
 		return
 	if attack_type == "charging":
 		attack_timer = 0.25
@@ -219,8 +217,10 @@ func _start_attacking() -> void:
 		return
 
 func _state_shooting_gun(_delta: float) -> void:
-	_flip_sprite()
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
+	_flip_sprite()
+	if sprite.animation != "attack":
+		sprite.play("attack")
 	attack.attack_ranged(player, bullets_in_a_row)
 	
 	attack_timer -= _delta
@@ -234,6 +234,8 @@ func _state_shooting_gun(_delta: float) -> void:
 func _state_charged(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	_flip_sprite()
+	if sprite.animation != "attack":
+		sprite.play("attack")
 	attack.attack_melee(player)
 	
 	attack_timer -= _delta
@@ -253,6 +255,8 @@ func _state_charged(_delta: float) -> void:
 func _state_attacking_melee(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	_flip_sprite()
+	if sprite.animation != "attack":
+		sprite.play("attack")
 	attack.attack_melee(player)
 	
 	attack_timer -= _delta
@@ -266,6 +270,8 @@ func _state_attacking_melee(_delta: float) -> void:
 func _state_shooting_laser(_delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	_flip_sprite()
+	if sprite.animation != "attack":
+		sprite.play("attack")
 	thick_laser.show()
 	thick_laser.points = [
 		Vector2.ZERO,
@@ -285,14 +291,9 @@ func _state_shooting_laser(_delta: float) -> void:
 		laser_attack_cooldown_timer = LASER_ATTACK_COOLDOWN
 		_change_state(State.IDLE)
 
-func _state_attacking(_delta: float) -> void:
-	if attack_timer <= 0.0:
-		attack.reset()
-		attack_type = ""
-		_change_state(State.IDLE)
-
 func _state_charging(_delta: float) -> void:
-	sprite.play("telegraph")
+	if sprite.animation != "telegraph":
+		sprite.play("telegraph")
 	charging_timer -= _delta
 	velocity = velocity.move_toward(Vector2.ZERO, ATTACK_FRICTION * _delta)
 	
@@ -327,8 +328,14 @@ func _state_charging(_delta: float) -> void:
 			thin_laser.hide()
 			velocity = direction.normalized() * RANGED_ATTACK_SPEED
 			_change_state(State.SHOOTING_LASER)
+	
+	if attack_type == "ranged" and charging_timer <= 0.0:
+		var direction = global_position.direction_to(player.global_position)
+		velocity = direction.normalized() * RANGED_ATTACK_SPEED
+		_change_state(State.SHOOTING_WITH_GUN)
 
-func _state_dead(_delta: float) -> void:	
+func _state_dead(_delta: float) -> void:
+	sprite.play("death")
 	if death_sound.playing:
 		if death_sound.get_playback_position() > 0.8:
 			sprite.visible = false
