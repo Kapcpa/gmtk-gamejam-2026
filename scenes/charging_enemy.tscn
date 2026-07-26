@@ -150,21 +150,21 @@ region = Rect2(480, 0, 32, 32)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_ve47d"]
+[sub_resource type="CurveTexture" id="CurveTexture_x5w7i"]
 curve = SubResource("Curve_43ycq")
 
 [sub_resource type="Gradient" id="Gradient_2wy65"]
 colors = PackedColorArray(0.9333264, 4.813075e-06, 9.62615e-07, 1, 0.83383924, 0.031975955, 0.84517235, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_mw11r"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yhpoi"]
 gradient = SubResource("Gradient_2wy65")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1dwmq"]
 particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
 color = Color(2.5713813, 0.16949554, 0.087038875, 1)
-color_initial_ramp = SubResource("GradientTexture1D_mw11r")
-alpha_curve = SubResource("CurveTexture_ve47d")
+color_initial_ramp = SubResource("GradientTexture1D_yhpoi")
+alpha_curve = SubResource("CurveTexture_x5w7i")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x5w7i"]
 radius = 5.0

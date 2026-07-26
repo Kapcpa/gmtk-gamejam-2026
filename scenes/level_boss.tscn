@@ -600,7 +600,21 @@ tile_map_data = PackedByteArray("AAATAPj/BAARAAcAAAASAPj/BAAQAAcAAAAQAAAABAASAAc
 tile_set = SubResource("TileSet_87140")
 
 [node name="BossEnemy" parent="." unique_id=617679549 instance=ExtResource("6_dnrae")]
-position = Vector2(146, 76)
+position = Vector2(128, 48)
+SPEED = 70.0
+ATTACK_SPEED = 200.0
+RANGED_ATTACK_SPEED = -200.0
+CHARGING_ATTACK_SPEED = 800.0
+CHARGING_TIME = 0.8
+MELEE_ATTACK_COOLDOWN = 1.0
+RANGED_ATTACK_COOLDOWN = 3.0
+LASER_ATTACK_COOLDOWN = 6.0
+CHARGING_ATTACK_COOLDOWN = 8.0
+health = 24.0
+vision = 20
+bullets_in_a_row = 3
+CHARGES_COUNT = 3
+INVINCIBILITY_TIME = 0.5
 
 [node name="transition_zone" parent="." unique_id=1123111444 instance=ExtResource("6_hxooy")]
 position = Vector2(352, -117)

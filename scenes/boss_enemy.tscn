@@ -302,7 +302,21 @@ collision_mask = 5
 motion_mode = 1
 wall_min_slide_angle = 0.08726646
 script = ExtResource("1_7vxfr")
-CHARGING_TIME = 0.7
+SPEED = null
+ATTACK_SPEED = null
+RANGED_ATTACK_SPEED = null
+CHARGING_ATTACK_SPEED = null
+ATTACK_FRICTION = 1200
+CHARGING_TIME = null
+MELEE_ATTACK_COOLDOWN = null
+RANGED_ATTACK_COOLDOWN = null
+LASER_ATTACK_COOLDOWN = null
+CHARGING_ATTACK_COOLDOWN = null
+health = null
+vision = null
+bullets_in_a_row = null
+CHARGES_COUNT = null
+INVINCIBILITY_TIME = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1968985931]
 position = Vector2(0, -5)
@@ -370,11 +384,17 @@ stream = ExtResource("4_jv5yo")
 stream = ExtResource("5_7vxfr")
 
 [node name="LaserRaycast" type="RayCast2D" parent="BossAttack" unique_id=426461384]
+collision_mask = 2
 
 [node name="thick_laser" type="Line2D" parent="BossAttack/LaserRaycast" unique_id=1963370616]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
 default_color = Color(0.94509804, 0, 0.05490196, 0.75686276)
 
 [node name="thin_laser" type="Line2D" parent="BossAttack/LaserRaycast" unique_id=411583684]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+width = 1.0
 default_color = Color(0.94509804, 0, 0.05490196, 0.75686276)
 
 [node name="death_sound" type="AudioStreamPlayer2D" parent="." unique_id=156903562]

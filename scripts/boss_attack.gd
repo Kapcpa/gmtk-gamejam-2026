@@ -5,13 +5,15 @@ extends Area2D
 @onready var gun_burst: AudioStreamPlayer2D = $GunBurst
 @onready var gun_single: AudioStreamPlayer2D = $GunSingle
 @onready var laser_raycast: RayCast2D = $LaserRaycast
-@onready var thick_laser: Line2D = $LaserRaycast/thick_laser
-@onready var thin_laser: Line2D = $LaserRaycast/thin_laser
 
 var bullets_shot: int = 0
 var bullet_cooldown = 0.0
 
 const ATTACK_FORCE = 300
+
+func _process(delta: float) -> void:
+	if bullet_cooldown > 0.0:
+		bullet_cooldown -= delta
 
 func attack_melee(player: PlayerCharacter):
 	if player in get_overlapping_bodies() and player.current_state not in [player.State.DASHING, player.State.GRAPPLING]:
@@ -22,13 +24,15 @@ func attack_ranged(player: PlayerCharacter, bullets_in_a_row):
 	if bullets_shot >= bullets_in_a_row:
 		return
 	if bullet_cooldown <= 0.0:
+		bullet_cooldown = 0.1
+		print("bullet should shot")
 		var direction = (player.global_position - global_position).normalized()
 		var angle = Vector2(0, -1).angle_to(direction)
 		var bullet = bullet_scene.instantiate()
 		bullet.rotation = angle
 		bullet.global_position = global_position
 		bullet.player = player
-		var game_manager = get_tree().root.get_child(0)
+		var game_manager = GameManager
 		
 		game_manager.add_child(bullet)
 		
@@ -38,10 +42,6 @@ func attack_ranged(player: PlayerCharacter, bullets_in_a_row):
 			gun_burst.play()
 		
 		bullets_shot += 1
-		bullet_cooldown = 0.1
-
-func attack_laser(player: PlayerCharacter):
-	pass
 
 func reset():
 	bullets_shot = 0
