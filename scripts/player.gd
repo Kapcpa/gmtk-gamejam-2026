@@ -5,7 +5,7 @@ class_name PlayerCharacter
 @onready var melee_hitbox: Area2D = $melee_hitbox
 
 @onready var throw_hitbox: RayCast2D = $throw_hitbox
-@onready var debug_throw: Line2D = $throw_hitbox/debug_throw
+@onready var kunai_line: Line2D = $throw_hitbox/debug_throw
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var camera: Camera2D = $Camera2D
@@ -210,6 +210,12 @@ func _state_running(_delta: float) -> void:
 			dash_down.restart()	
 
 func _state_dashing(_delta: float) -> void:
+	if kunai_target:
+		kunai_line.points = [
+			Vector2.ZERO + Vector2(0, -10),
+			to_local(kunai_target.position)
+		]
+		kunai_line.show()
 	if dash_cooldown_timer <= 0.0:
 		dash_cooldown_timer = DASH_COOLDOWN
 	dash_timer -= _delta
@@ -217,12 +223,17 @@ func _state_dashing(_delta: float) -> void:
 	_animate(dash_direction, "dash")
 	velocity = dash_direction * DASH_VELOCITY
 	if kunai_target and not Input.is_action_pressed("throw"):
+		kunai_line.points = [
+				Vector2.ZERO + Vector2(0, -10),
+				to_local(kunai_target.position)
+		]
 		_change_state(State.GRAPPLING)
 		return
 	if dash_timer <= 0.0:
 		if kunai_target:
 			_change_state(State.GRAPPLED)
 		else:
+			kunai_line.hide()
 			_change_state(State.IDLE)
 
 func _start_attacking() -> void:
@@ -287,9 +298,15 @@ func _kunai_throw() -> void:
 func _state_grappled(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
 	if not kunai_target:
+		kunai_line.hide()
 		_change_state(State.IDLE)
 		return
 	
+	kunai_line.points = [
+		Vector2.ZERO + Vector2(0, -10),
+		to_local(kunai_target.position)
+	]
+	kunai_line.show()
 	
 	if direction:
 		velocity = direction * SPEED
@@ -311,9 +328,10 @@ func _state_grappled(_delta: float) -> void:
 	validate_raycast.force_raycast_update()
 		
 	if validate_raycast.is_colliding():
+		kunai_line.hide()
+		kunai_target = null
 		_change_state(State.IDLE)		
 		validate_raycast.target_position = Vector2.ZERO
-		
 		return
 	
 	if Input.is_action_just_released("throw"):
@@ -323,6 +341,12 @@ func _state_grappling(_delta: float) -> void:
 	if not kunai_target:
 		_change_state(State.IDLE)
 		return
+	
+	kunai_line.points = [
+		Vector2.ZERO + Vector2(0, -10),
+		to_local(kunai_target.position)
+	]
+	kunai_line.show()
 	
 	var grapple_end = kunai_target.position + throw_hitbox.target_position.normalized() * 32.0
 	var grapple_direction = (grapple_end - position).normalized()
@@ -340,12 +364,14 @@ func _state_grappling(_delta: float) -> void:
 		
 		if grapple_direction.dot(_collision.get_normal()) < -0.71:
 			world_collision = true
+			kunai_line.hide()
 			break
 	
 	if position.distance_to(grapple_end) <= 8.0 or world_collision:
 		velocity /= 1.5
 		
 		kunai_target = null
+		kunai_line.hide()
 		
 		_change_state(State.IDLE)
 
@@ -376,7 +402,7 @@ func _aim():
 		melee_hitbox.position = direction.normalized() * MELEE_RANGE
 		
 		throw_hitbox.target_position = direction.normalized() * THROW_RANGE
-		debug_throw.points = [
+		kunai_line.points = [
 			Vector2.ZERO, throw_hitbox.target_position
 		]
 		

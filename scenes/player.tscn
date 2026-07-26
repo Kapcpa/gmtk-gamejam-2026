@@ -886,6 +886,7 @@ collide_with_areas = true
 collide_with_bodies = false
 
 [node name="debug_throw" type="Line2D" parent="throw_hitbox" unique_id=1014247595]
+visible = false
 z_index = 1
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
