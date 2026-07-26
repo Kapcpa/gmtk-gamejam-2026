@@ -165,6 +165,7 @@ func _animate(direction: Vector2, action: String = "") -> void:
 
 func _state_idle(_delta: float) -> void:
 	var direction = Input.get_vector("left", "right", "up", "down")
+	kunai_line.hide()
 	
 	if sprite.is_playing() and sprite.animation in ["down_kunai", "side_kunai", "up_kunai"]:
 		pass

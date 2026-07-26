@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="gmtk-gamejam-2026"
+config/name="pelvis_wrestler"
 run/main_scene="uid://cxq6mmq7yxdbb"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://cxxu7e6tntb6p"
 
 [autoload]
 
